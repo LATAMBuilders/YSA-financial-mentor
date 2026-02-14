@@ -13,7 +13,7 @@ contract YSATest is Test {
 
     address orchestrator = address(this);
     address founder = address(0xF001);
-    address poolCreator = address(0xP001);
+    address poolCreator = address(0xBB01);
 
     function setUp() public {
         badge = new YSABadge();

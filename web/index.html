@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YSA — Mentora Financiera</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.9.0/ethers.umd.min.js"></script>
+<style>
+:root {
+  --blue: #2B7BB9;
+  --yellow: #F5C518;
+  --cream: #FDF6E3;
+  --dark: #1a1a2e;
+  --text: #2d2d2d;
+  --light-gray: #e8e8e8;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter',sans-serif; background:var(--cream); color:var(--text); }
+.container { max-width:900px; margin:0 auto; padding:0 20px; }
+
+/* NAV */
+nav { background:var(--dark); padding:16px 0; }
+nav .container { display:flex; justify-content:space-between; align-items:center; }
+.logo { color:var(--yellow); font-size:28px; font-weight:800; letter-spacing:2px; }
+.logo span { color:white; font-weight:400; font-size:14px; margin-left:8px; }
+.connect-btn {
+  background:var(--blue); color:white; border:none; padding:10px 24px;
+  border-radius:8px; font-weight:600; cursor:pointer; font-size:14px;
+  transition:all .2s;
+}
+.connect-btn:hover { background:#1f6a9e; }
+.connect-btn.connected { background:#27ae60; }
+
+/* HERO */
+.hero { text-align:center; padding:60px 0 40px; }
+.hero h1 { font-size:36px; font-weight:800; color:var(--dark); margin-bottom:12px; }
+.hero h1 em { color:var(--blue); font-style:normal; }
+.hero p { font-size:18px; color:#666; max-width:500px; margin:0 auto; }
+
+/* SECTIONS */
+section { margin-bottom:32px; }
+.card {
+  background:white; border-radius:12px; padding:24px;
+  box-shadow:0 2px 12px rgba(0,0,0,.06); margin-bottom:16px;
+}
+.card h2 { font-size:20px; font-weight:700; color:var(--dark); margin-bottom:16px; }
+.badge-label {
+  display:inline-block; background:var(--yellow); color:var(--dark);
+  padding:4px 12px; border-radius:20px; font-weight:700; font-size:13px;
+}
+
+/* DASHBOARD GRID */
+.dash-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; }
+.stat { text-align:center; }
+.stat .num { font-size:32px; font-weight:800; color:var(--blue); }
+.stat .label { font-size:13px; color:#888; margin-top:4px; }
+
+/* CHAT */
+.chat-box {
+  background:#f7f3e9; border-radius:8px; padding:16px;
+  max-height:400px; overflow-y:auto; margin-bottom:12px;
+}
+.msg { margin-bottom:12px; }
+.msg .author { font-weight:700; font-size:13px; margin-bottom:2px; }
+.msg .author.ysa { color:var(--blue); }
+.msg .author.user { color:#e67e22; }
+.msg .text { font-size:14px; line-height:1.5; color:#333; }
+.chat-input-row { display:flex; gap:8px; }
+.chat-input-row input {
+  flex:1; padding:10px 14px; border:1px solid #ddd; border-radius:8px;
+  font-size:14px; font-family:inherit;
+}
+.chat-input-row button {
+  background:var(--blue); color:white; border:none; padding:10px 20px;
+  border-radius:8px; font-weight:600; cursor:pointer;
+}
+
+/* POOLS */
+.pool-item {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:12px 0; border-bottom:1px solid #eee;
+}
+.pool-item:last-child { border-bottom:none; }
+.pool-name { font-weight:600; }
+.pool-meta { font-size:13px; color:#888; }
+.btn-sm {
+  background:var(--blue); color:white; border:none; padding:6px 16px;
+  border-radius:6px; font-size:13px; font-weight:600; cursor:pointer;
+}
+.btn-sm:disabled { background:#ccc; cursor:not-allowed; }
+
+/* ACTION BTN */
+.action-btn {
+  background:var(--yellow); color:var(--dark); border:none; padding:14px 32px;
+  border-radius:10px; font-size:16px; font-weight:700; cursor:pointer;
+  transition:all .2s; display:block; margin:0 auto;
+}
+.action-btn:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,.1); }
+
+/* FOOTER */
+footer {
+  text-align:center; padding:40px 0 24px; color:#999; font-size:13px;
+  border-top:1px solid #eee; margin-top:40px;
+}
+footer a { color:var(--blue); text-decoration:none; }
+
+.hidden { display:none; }
+
+/* PROGRESS */
+.progress-bar { background:#eee; border-radius:8px; height:12px; overflow:hidden; }
+.progress-fill { background:var(--blue); height:100%; transition:width .3s; border-radius:8px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="logo">YSA <span>Mentora Financiera</span></div>
+    <button class="connect-btn" id="connectBtn" onclick="connectWallet()">Conectar Wallet</button>
+  </div>
+</nav>
+
+<div class="container">
+  <section class="hero" id="heroSection">
+    <h1>Tu disciplina financiera,<br><em>verificada onchain</em></h1>
+    <p>YSA es tu mentora financiera AI que te reta, te exige y certifica tu progreso en blockchain.</p>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section id="dashboard" class="hidden">
+    <div class="card">
+      <h2>📊 Dashboard</h2>
+      <div class="dash-grid">
+        <div class="stat">
+          <div class="num" id="cycleStatus">—</div>
+          <div class="label">Estado del Ciclo</div>
+        </div>
+        <div class="stat">
+          <div class="num" id="challengeCount">0/3</div>
+          <div class="label">Retos Completados</div>
+        </div>
+        <div class="stat">
+          <div class="num" id="badgeLevel">—</div>
+          <div class="label">Nivel de Badge</div>
+        </div>
+        <div class="stat">
+          <div class="num" id="monBalance">—</div>
+          <div class="label">Balance MON</div>
+        </div>
+      </div>
+      <div style="margin-top:16px">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- STAKE -->
+    <div class="card" id="stakeCard">
+      <h2>🚀 Iniciar Ciclo de Disciplina</h2>
+      <p style="margin-bottom:16px;color:#666">Stakea MON para comprometerte con 7 días de disciplina financiera. Completa 3 retos para recuperar tu stake y ganar tu badge.</p>
+      <button class="action-btn" id="stakeBtn" onclick="doStake()">Stakear 0.01 MON</button>
+    </div>
+  </section>
+
+  <!-- CHAT -->
+  <section id="chatSection" class="hidden">
+    <div class="card">
+      <h2>💬 Chat con Ysa</h2>
+      <div class="chat-box" id="chatBox"></div>
+      <div class="chat-input-row">
+        <input type="text" id="chatInput" placeholder="Escribe tu mensaje..." onkeydown="if(event.key==='Enter')sendChat()">
+        <button onclick="sendChat()">Enviar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- GRANT POOLS -->
+  <section id="poolsSection" class="hidden">
+    <div class="card">
+      <h2>🏦 Grant Pools</h2>
+      <div id="poolsList">
+        <div class="pool-item">
+          <div>
+            <div class="pool-name">LATAM Builders Fund</div>
+            <div class="pool-meta">Min Level: <span class="badge-label">Organized</span> · 5.0 MON disponibles</div>
+          </div>
+          <button class="btn-sm" id="applyPool1" onclick="applyToPool(1)">Aplicar</button>
+        </div>
+        <div class="pool-item">
+          <div>
+            <div class="pool-name">Monad Ecosystem Grant</div>
+            <div class="pool-meta">Min Level: <span class="badge-label">Disciplined</span> · 10.0 MON disponibles</div>
+          </div>
+          <button class="btn-sm" onclick="applyToPool(2)">Aplicar</button>
+        </div>
+        <div class="pool-item">
+          <div>
+            <div class="pool-name">Serie Semilla LATAM</div>
+            <div class="pool-meta">Min Level: <span class="badge-label">CapitalReady</span> · 25.0 MON disponibles</div>
+          </div>
+          <button class="btn-sm" onclick="applyToPool(3)">Aplicar</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="container">
+    Built for <a href="#">Moltiverse Hackathon</a> on <strong>Monad Testnet</strong><br>
+    <span style="font-size:11px;margin-top:4px;display:inline-block">YSA — Mentora Financiera · danielam (LATAMBuilders) + Aibus Dumbleclaw (AI Agent)</span>
+  </div>
+</footer>
+
+<script>
+// ============ CONTRACT CONFIG ============
+const CONTRACTS = {
+  discipline: "0x0000000000000000000000000000000000000000", // TBD after deploy
+  badge:      "0x0000000000000000000000000000000000000000",
+  grantPool:  "0x0000000000000000000000000000000000000000"
+};
+
+const MONAD_CHAIN = {
+  chainId: "0x27A7", // 10143
+  chainName: "Monad Testnet",
+  rpcUrls: ["https://testnet-rpc.monad.xyz"],
+  nativeCurrency: { name: "MON", symbol: "MON", decimals: 18 },
+  blockExplorerUrls: ["https://testnet.monadexplorer.com"]
+};
+
+const DISCIPLINE_ABI = [
+  "function stake() payable",
+  "function getCycleInfo(address) view returns (uint256,uint8,bool,bool,uint256)",
+  "function completeChallenge(address)",
+  "function completeCycle(address)",
+  "function slash(address)"
+];
+const BADGE_ABI = [
+  "function levelOf(address) view returns (uint8)"
+];
+const POOL_ABI = [
+  "function applyToPool(uint256)",
+  "function getPool(uint256) view returns (address,string,uint256,uint256,bool)"
+];
+
+const LEVEL_NAMES = ["Sin Badge", "Organized", "Disciplined", "CapitalReady", "InvestorGrade"];
+
+let provider, signer, userAddress;
+
+// ============ WALLET ============
+async function connectWallet() {
+  if (!window.ethereum) { alert("Instala MetaMask"); return; }
+  try {
+    provider = new ethers.BrowserProvider(window.ethereum);
+    await switchToMonad();
+    signer = await provider.getSigner();
+    userAddress = await signer.getAddress();
+    document.getElementById("connectBtn").textContent = userAddress.slice(0,6) + "..." + userAddress.slice(-4);
+    document.getElementById("connectBtn").classList.add("connected");
+    showDashboard();
+  } catch(e) { console.error(e); alert("Error conectando: " + e.message); }
+}
+
+async function switchToMonad() {
+  try {
+    await window.ethereum.request({ method:"wallet_switchEthereumChain", params:[{chainId:MONAD_CHAIN.chainId}] });
+  } catch(e) {
+    if (e.code === 4902) {
+      await window.ethereum.request({ method:"wallet_addEthereumChain", params:[MONAD_CHAIN] });
+    }
+  }
+}
+
+async function showDashboard() {
+  document.getElementById("heroSection").classList.add("hidden");
+  document.getElementById("dashboard").classList.remove("hidden");
+  document.getElementById("chatSection").classList.remove("hidden");
+  document.getElementById("poolsSection").classList.remove("hidden");
+  await refreshDashboard();
+  loadDemoChat();
+}
+
+async function refreshDashboard() {
+  try {
+    const bal = await provider.getBalance(userAddress);
+    document.getElementById("monBalance").textContent = parseFloat(ethers.formatEther(bal)).toFixed(3);
+
+    if (CONTRACTS.discipline !== "0x0000000000000000000000000000000000000000") {
+      const disc = new ethers.Contract(CONTRACTS.discipline, DISCIPLINE_ABI, provider);
+      const [start, challenges, active, complete, staked] = await disc.getCycleInfo(userAddress);
+      document.getElementById("challengeCount").textContent = challenges + "/3";
+      document.getElementById("progressFill").style.width = (challenges/3*100) + "%";
+      if (active) {
+        document.getElementById("cycleStatus").textContent = "🔥 Activo";
+        document.getElementById("stakeCard").classList.add("hidden");
+      } else if (complete) {
+        document.getElementById("cycleStatus").textContent = "✅ Completo";
+      } else {
+        document.getElementById("cycleStatus").textContent = "⏳ Sin iniciar";
+      }
+
+      const bdg = new ethers.Contract(CONTRACTS.badge, BADGE_ABI, provider);
+      const lvl = await bdg.levelOf(userAddress);
+      document.getElementById("badgeLevel").innerHTML = lvl > 0
+        ? '<span class="badge-label">' + LEVEL_NAMES[lvl] + '</span>'
+        : "—";
+    } else {
+      document.getElementById("cycleStatus").textContent = "⏳ Demo";
+      document.getElementById("badgeLevel").textContent = "—";
+    }
+  } catch(e) { console.error("Dashboard error:", e); }
+}
+
+async function doStake() {
+  if (!signer) return;
+  try {
+    const disc = new ethers.Contract(CONTRACTS.discipline, DISCIPLINE_ABI, signer);
+    const tx = await disc.stake({ value: ethers.parseEther("0.01") });
+    document.getElementById("stakeBtn").textContent = "Confirmando...";
+    await tx.wait();
+    await refreshDashboard();
+  } catch(e) { console.error(e); alert("Error: " + e.message); }
+}
+
+async function applyToPool(poolId) {
+  if (!signer) { alert("Conecta tu wallet primero"); return; }
+  try {
+    const pool = new ethers.Contract(CONTRACTS.grantPool, POOL_ABI, signer);
+    const tx = await pool.applyToPool(poolId);
+    await tx.wait();
+    alert("¡Aplicación enviada!");
+  } catch(e) { console.error(e); alert("Error: " + (e.reason || e.message)); }
+}
+
+// ============ CHAT ============
+const demoConversation = [
+  { author:"daniela", text:"Hola Ysa, necesito ayuda organizando las finanzas de Hummus Máshu." },
+  { author:"ysa", text:"Bien. Antes de cualquier consejo necesito números reales. ¿Cuál fue tu revenue anual y cuál es tu margen bruto actual?" },
+  { author:"daniela", text:"$1M MXN de revenue anual, margen bruto del 32%." },
+  { author:"ysa", text:"32% de margen bruto en food service es aceptable, pero ajustado. ¿Cuál es tu punto de equilibrio mensual exacto? No me digas 'más o menos'. Número exacto." },
+  { author:"daniela", text:"Break-even en el mes 6, aproximadamente $83,000 MXN mensuales en costos fijos." },
+  { author:"ysa", text:"'Aproximadamente' no existe en finanzas, Daniela. Si tu revenue mensual promedio es ~$83K y tu margen bruto es 32%, tu utilidad bruta es $26,600 MXN. ¿Eso cubre tus costos fijos? Porque si tus fijos son $83K, estás perdiendo $56K al mes. Algo no cuadra. Revisa tus números y vuelve con cifras exactas." },
+  { author:"daniela", text:"Tienes razón, los costos fijos son $25,000 MXN mensuales. El break-even fue a los 6 meses de operación." },
+  { author:"ysa", text:"Ahora sí. $83K revenue × 32% = $26,600 bruto - $25,000 fijos = $1,600 MXN de utilidad neta mensual. Eso es un margen neto del 1.9%. Estás sobreviviendo, no creciendo. Para escalar necesitas: 1) Subir ticket promedio, 2) Reducir COGS, o 3) Encontrar un canal de venta con menores costos variables. ¿Cuál de los tres atacamos primero?" },
+  { author:"daniela", text:"Quiero subir el ticket promedio." },
+  { author:"ysa", text:"Perfecto. Primer reto de tu ciclo de disciplina: Quiero un análisis de tu ticket promedio actual segmentado por canal (local, delivery, catering). Sin ese desglose, cualquier estrategia es adivinanza. Tienes 48 horas. 💪" }
+];
+
+let chatIndex = 0;
+function loadDemoChat() {
+  chatIndex = 0;
+  document.getElementById("chatBox").innerHTML = "";
+  playNextMessage();
+}
+
+function playNextMessage() {
+  if (chatIndex >= demoConversation.length) return;
+  const msg = demoConversation[chatIndex++];
+  addMessage(msg.author, msg.text);
+  setTimeout(playNextMessage, 800);
+}
+
+function addMessage(author, text) {
+  const box = document.getElementById("chatBox");
+  const div = document.createElement("div");
+  div.className = "msg";
+  const isYsa = author === "ysa";
+  div.innerHTML = `<div class="author ${isYsa?'ysa':'user'}">${isYsa?'🤖 Ysa':'👩‍💼 Daniela'}</div><div class="text">${text}</div>`;
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+}
+
+function sendChat() {
+  const input = document.getElementById("chatInput");
+  const text = input.value.trim();
+  if (!text) return;
+  addMessage("daniela", text);
+  input.value = "";
+  setTimeout(() => {
+    addMessage("ysa", "Interesante. Dame los números que respaldan eso. Sin datos, son solo opiniones. 📊");
+  }, 1000);
+}
+</script>
+</body>
+</html>
