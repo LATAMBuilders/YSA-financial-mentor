@@ -9,225 +9,218 @@
 <style>
 :root {
   --blue: #2B7BB9;
+  --blue-dark: #1f6a9e;
   --yellow: #F5C518;
   --cream: #FDF6E3;
-  --dark: #1a1a2e;
-  --text: #2d2d2d;
-  --light-gray: #e8e8e8;
+  --dark: #333;
+  --text: #333;
+  --border: #e0e0e0;
+  --cell-bg: #fff;
+  --header-bg: #f0f0f0;
+  --glow: rgba(245,197,24,0.6);
 }
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Inter',sans-serif; background:var(--cream); color:var(--text); }
-.container { max-width:900px; margin:0 auto; padding:0 20px; }
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden;}
 
-/* NAV */
-nav { background:var(--dark); padding:16px 0; }
-nav .container { display:flex; justify-content:space-between; align-items:center; }
-.logo { color:var(--yellow); font-size:28px; font-weight:800; letter-spacing:2px; }
-.logo span { color:white; font-weight:400; font-size:14px; margin-left:8px; }
-.connect-btn {
-  background:var(--blue); color:white; border:none; padding:10px 24px;
-  border-radius:8px; font-weight:600; cursor:pointer; font-size:14px;
-  transition:all .2s;
-}
-.connect-btn:hover { background:#1f6a9e; }
-.connect-btn.connected { background:#27ae60; }
+/* TOP BAR */
+.topbar{background:#fff;border-bottom:1px solid var(--border);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:10;}
+.topbar-left{display:flex;align-items:center;gap:10px;}
+.logo{font-size:24px;font-weight:800;color:var(--blue);letter-spacing:1px;}
+.logo-sub{font-size:12px;color:#888;font-weight:500;}
+.topbar-center{display:flex;align-items:center;gap:10px;}
+.connect-btn{background:var(--blue);color:#fff;border:none;padding:8px 20px;border-radius:6px;font-weight:600;font-size:13px;cursor:pointer;font-family:inherit;transition:background .2s;}
+.connect-btn:hover{background:var(--blue-dark);}
+.connect-btn.connected{background:#27ae60;}
+.demo-btn{background:var(--yellow);color:var(--dark);border:none;padding:8px 20px;border-radius:6px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;transition:transform .15s;}
+.demo-btn:hover{transform:scale(1.03);}
+.demo-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.topbar-right{display:flex;align-items:center;gap:14px;font-size:13px;color:#666;}
+.cycle-badge{padding:4px 10px;border-radius:12px;font-weight:600;font-size:12px;background:#eee;color:#888;}
+.cycle-badge.active{background:#d4edda;color:#155724;}
 
-/* HERO */
-.hero { text-align:center; padding:60px 0 40px; }
-.hero h1 { font-size:36px; font-weight:800; color:var(--dark); margin-bottom:12px; }
-.hero h1 em { color:var(--blue); font-style:normal; }
-.hero p { font-size:18px; color:#666; max-width:500px; margin:0 auto; }
+/* MAIN LAYOUT */
+.main{flex:1;display:flex;overflow:hidden;}
 
-/* SECTIONS */
-section { margin-bottom:32px; }
-.card {
-  background:white; border-radius:12px; padding:24px;
-  box-shadow:0 2px 12px rgba(0,0,0,.06); margin-bottom:16px;
-}
-.card h2 { font-size:20px; font-weight:700; color:var(--dark); margin-bottom:16px; }
-.badge-label {
-  display:inline-block; background:var(--yellow); color:var(--dark);
-  padding:4px 12px; border-radius:20px; font-weight:700; font-size:13px;
+/* LEFT PANEL - CHAT */
+.panel-chat{width:25%;min-width:240px;display:flex;flex-direction:column;border-right:1px solid var(--border);background:#fff;}
+.panel-title{padding:12px 16px;font-weight:700;font-size:14px;border-bottom:1px solid var(--border);background:#fafafa;color:var(--dark);}
+.chat-messages{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;}
+.msg{max-width:88%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.5;animation:msgIn .3s ease;}
+.msg.ysa{align-self:flex-start;background:#e8f4fd;color:#1a3a5c;border-bottom-left-radius:4px;}
+.msg.daniela{align-self:flex-end;background:var(--yellow);color:#333;border-bottom-right-radius:4px;}
+.msg .author{font-weight:700;font-size:11px;margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px;}
+.msg.ysa .author{color:var(--blue);}
+.msg.daniela .author{color:#7a6200;}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.chat-input{padding:10px;border-top:1px solid var(--border);display:flex;gap:6px;}
+.chat-input input{flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:inherit;outline:none;}
+.chat-input input:focus{border-color:var(--blue);}
+.chat-input button{background:var(--blue);color:#fff;border:none;padding:8px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:13px;}
+
+/* CENTER PANEL - SPREADSHEET */
+.panel-excel{flex:1;display:flex;flex-direction:column;border-right:1px solid var(--border);background:#fff;}
+.excel-tabs{display:flex;border-bottom:1px solid var(--border);background:#fafafa;}
+.excel-tab{padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;color:#888;transition:all .15s;}
+.excel-tab:hover{color:var(--dark);}
+.excel-tab.active{color:var(--blue);border-bottom-color:var(--blue);background:#fff;}
+.excel-container{flex:1;overflow:auto;position:relative;}
+.excel-table{width:100%;border-collapse:collapse;font-size:12px;}
+.excel-table th{background:var(--header-bg);padding:8px 12px;text-align:left;font-weight:600;font-size:11px;color:#555;border:1px solid var(--border);position:sticky;top:0;z-index:1;white-space:nowrap;}
+.excel-table td{padding:7px 12px;border:1px solid var(--border);background:var(--cell-bg);font-variant-numeric:tabular-nums;transition:background .3s;}
+.excel-table td.number{text-align:right;font-family:'Inter',monospace;}
+.excel-table td.label{font-weight:600;color:#444;background:#fafafa;}
+.excel-table td.sub-label{padding-left:24px;color:#666;}
+.excel-table td.total-row{font-weight:700;border-top:2px solid var(--dark);background:#f9f7f0;}
+.excel-table tr.section-header td{background:#f0eee3;font-weight:700;color:var(--dark);font-size:12px;}
+@keyframes cellGlow{0%{box-shadow:inset 0 0 0 2px var(--glow);background:#fef9e7;}50%{box-shadow:inset 0 0 12px 2px var(--glow);background:#fdf3cd;}100%{box-shadow:inset 0 0 0 0 transparent;background:var(--cell-bg);}}
+.cell-highlight{animation:cellGlow 1.5s ease;}
+.row-nums{color:#999;font-size:11px;background:#fafafa !important;text-align:center;width:30px;}
+
+/* RIGHT PANEL - SIDEBAR */
+.panel-sidebar{width:25%;min-width:220px;display:flex;flex-direction:column;background:#fff;overflow-y:auto;}
+.sidebar-section{padding:16px;border-bottom:1px solid var(--border);}
+.sidebar-section h3{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px;}
+
+/* Progress bars */
+.progress-item{margin-bottom:10px;}
+.progress-label{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;color:#555;}
+.progress-bar{height:8px;background:#eee;border-radius:4px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:4px;transition:width .8s ease;background:linear-gradient(90deg,var(--blue),#48b1f3);}
+.progress-fill.complete{background:linear-gradient(90deg,#27ae60,#2ecc71);}
+.progress-check{color:#27ae60;font-weight:700;}
+
+/* Badges */
+.badge-list{display:flex;flex-direction:column;gap:8px;}
+.badge-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;font-size:13px;font-weight:600;transition:all .2s;}
+.badge-item.locked{opacity:.45;color:#999;}
+.badge-item.current{background:linear-gradient(135deg,#fef9e7,#fdf3cd);border:1px solid var(--yellow);color:var(--dark);}
+.badge-item.earned{background:#e8f8f0;color:#155724;}
+.badge-icon{font-size:18px;}
+.badge-level{font-size:11px;color:#888;font-weight:500;}
+
+/* Quiz */
+.quiz-score{font-size:12px;color:var(--blue);font-weight:600;margin-bottom:10px;}
+.quiz-q{margin-bottom:14px;}
+.quiz-q .q-text{font-size:13px;font-weight:600;margin-bottom:6px;color:#333;}
+.quiz-q .q-options{display:flex;flex-direction:column;gap:4px;}
+.quiz-q .q-opt{padding:6px 10px;font-size:12px;border:1px solid var(--border);border-radius:6px;cursor:pointer;transition:all .15s;background:#fff;}
+.quiz-q .q-opt:hover{background:#f0f7ff;border-color:var(--blue);}
+.quiz-q .q-opt.correct{background:#d4edda;border-color:#27ae60;color:#155724;}
+.quiz-q .q-opt.wrong{background:#f8d7da;border-color:#dc3545;color:#721c24;}
+.quiz-q .q-opt.disabled{pointer-events:none;opacity:.7;}
+
+/* Footer */
+.footer{height:28px;background:#fafafa;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;color:#aaa;flex-shrink:0;}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .main{flex-direction:column;overflow-y:auto;}
+  .panel-chat,.panel-sidebar{width:100%;min-width:0;border-right:none;border-bottom:1px solid var(--border);}
+  .panel-chat{max-height:40vh;}
+  .panel-excel{min-height:50vh;}
+  .panel-sidebar{max-height:none;}
 }
 
-/* DASHBOARD GRID */
-.dash-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; }
-.stat { text-align:center; }
-.stat .num { font-size:32px; font-weight:800; color:var(--blue); }
-.stat .label { font-size:13px; color:#888; margin-top:4px; }
-
-/* CHAT */
-.chat-box {
-  background:#f7f3e9; border-radius:8px; padding:16px;
-  max-height:400px; overflow-y:auto; margin-bottom:12px;
-}
-.msg { margin-bottom:12px; }
-.msg .author { font-weight:700; font-size:13px; margin-bottom:2px; }
-.msg .author.ysa { color:var(--blue); }
-.msg .author.user { color:#e67e22; }
-.msg .text { font-size:14px; line-height:1.5; color:#333; }
-.chat-input-row { display:flex; gap:8px; }
-.chat-input-row input {
-  flex:1; padding:10px 14px; border:1px solid #ddd; border-radius:8px;
-  font-size:14px; font-family:inherit;
-}
-.chat-input-row button {
-  background:var(--blue); color:white; border:none; padding:10px 20px;
-  border-radius:8px; font-weight:600; cursor:pointer;
-}
-
-/* POOLS */
-.pool-item {
-  display:flex; justify-content:space-between; align-items:center;
-  padding:12px 0; border-bottom:1px solid #eee;
-}
-.pool-item:last-child { border-bottom:none; }
-.pool-name { font-weight:600; }
-.pool-meta { font-size:13px; color:#888; }
-.btn-sm {
-  background:var(--blue); color:white; border:none; padding:6px 16px;
-  border-radius:6px; font-size:13px; font-weight:600; cursor:pointer;
-}
-.btn-sm:disabled { background:#ccc; cursor:not-allowed; }
-
-/* ACTION BTN */
-.action-btn {
-  background:var(--yellow); color:var(--dark); border:none; padding:14px 32px;
-  border-radius:10px; font-size:16px; font-weight:700; cursor:pointer;
-  transition:all .2s; display:block; margin:0 auto;
-}
-.action-btn:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,.1); }
-
-/* FOOTER */
-footer {
-  text-align:center; padding:40px 0 24px; color:#999; font-size:13px;
-  border-top:1px solid #eee; margin-top:40px;
-}
-footer a { color:var(--blue); text-decoration:none; }
-
-.hidden { display:none; }
-
-/* PROGRESS */
-.progress-bar { background:#eee; border-radius:8px; height:12px; overflow:hidden; }
-.progress-fill { background:var(--blue); height:100%; transition:width .3s; border-radius:8px; }
+/* Scrollbar */
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px;}
 </style>
 </head>
 <body>
 
-<nav>
-  <div class="container">
-    <div class="logo">YSA <span>Mentora Financiera</span></div>
-    <button class="connect-btn" id="connectBtn" onclick="connectWallet()">Conectar Wallet</button>
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="logo">YSA</div>
+    <span class="logo-sub">Mentora Financiera</span>
   </div>
-</nav>
-
-<div class="container">
-  <section class="hero" id="heroSection">
-    <h1>Tu disciplina financiera,<br><em>verificada onchain</em></h1>
-    <p>YSA es tu mentora financiera AI que te reta, te exige y certifica tu progreso en blockchain.</p>
-  </section>
-
-  <!-- DASHBOARD -->
-  <section id="dashboard" class="hidden">
-    <div class="card">
-      <h2>📊 Dashboard</h2>
-      <div class="dash-grid">
-        <div class="stat">
-          <div class="num" id="cycleStatus">—</div>
-          <div class="label">Estado del Ciclo</div>
-        </div>
-        <div class="stat">
-          <div class="num" id="challengeCount">0/3</div>
-          <div class="label">Retos Completados</div>
-        </div>
-        <div class="stat">
-          <div class="num" id="badgeLevel">—</div>
-          <div class="label">Nivel de Badge</div>
-        </div>
-        <div class="stat">
-          <div class="num" id="monBalance">—</div>
-          <div class="label">Balance MON</div>
-        </div>
-      </div>
-      <div style="margin-top:16px">
-        <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-      </div>
-    </div>
-
-    <!-- STAKE -->
-    <div class="card" id="stakeCard">
-      <h2>🚀 Iniciar Ciclo de Disciplina</h2>
-      <p style="margin-bottom:16px;color:#666">Stakea MON para comprometerte con 7 días de disciplina financiera. Completa 3 retos para recuperar tu stake y ganar tu badge.</p>
-      <button class="action-btn" id="stakeBtn" onclick="doStake()">Stakear 0.01 MON</button>
-    </div>
-  </section>
-
-  <!-- CHAT -->
-  <section id="chatSection" class="hidden">
-    <div class="card">
-      <h2>💬 Chat con Ysa</h2>
-      <div class="chat-box" id="chatBox"></div>
-      <div class="chat-input-row">
-        <input type="text" id="chatInput" placeholder="Escribe tu mensaje..." onkeydown="if(event.key==='Enter')sendChat()">
-        <button onclick="sendChat()">Enviar</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- GRANT POOLS -->
-  <section id="poolsSection" class="hidden">
-    <div class="card">
-      <h2>🏦 Grant Pools</h2>
-      <div id="poolsList">
-        <div class="pool-item">
-          <div>
-            <div class="pool-name">LATAM Builders Fund</div>
-            <div class="pool-meta">Min Level: <span class="badge-label">Organized</span> · 5.0 MON disponibles</div>
-          </div>
-          <button class="btn-sm" id="applyPool1" onclick="applyToPool(1)">Aplicar</button>
-        </div>
-        <div class="pool-item">
-          <div>
-            <div class="pool-name">Monad Ecosystem Grant</div>
-            <div class="pool-meta">Min Level: <span class="badge-label">Disciplined</span> · 10.0 MON disponibles</div>
-          </div>
-          <button class="btn-sm" onclick="applyToPool(2)">Aplicar</button>
-        </div>
-        <div class="pool-item">
-          <div>
-            <div class="pool-name">Serie Semilla LATAM</div>
-            <div class="pool-meta">Min Level: <span class="badge-label">CapitalReady</span> · 25.0 MON disponibles</div>
-          </div>
-          <button class="btn-sm" onclick="applyToPool(3)">Aplicar</button>
-        </div>
-      </div>
-    </div>
-  </section>
+  <div class="topbar-center">
+    <button class="demo-btn" id="demoBtn" onclick="startDemo()">▶ Ver Demo</button>
+    <button class="connect-btn" id="connectBtn" onclick="connectWallet()">🦊 Conectar Wallet</button>
+  </div>
+  <div class="topbar-right">
+    <span class="cycle-badge" id="cycleBadge">Sin iniciar</span>
+    <span id="monBalance"></span>
+  </div>
 </div>
 
-<footer>
-  <div class="container">
-    Built for <a href="#">Moltiverse Hackathon</a> on <strong>Monad Testnet</strong><br>
-    <span style="font-size:11px;margin-top:4px;display:inline-block">YSA — Mentora Financiera · danielam (LATAMBuilders) + Aibus Dumbleclaw (AI Agent)</span>
+<!-- MAIN 3-PANEL -->
+<div class="main">
+
+  <!-- LEFT: CHAT -->
+  <div class="panel-chat">
+    <div class="panel-title">💬 Chat con Ysa</div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input">
+      <input type="text" id="chatInput" placeholder="Escribe tu respuesta..." onkeydown="if(event.key==='Enter')sendChat()">
+      <button onclick="sendChat()">Enviar</button>
+    </div>
   </div>
-</footer>
+
+  <!-- CENTER: EXCEL -->
+  <div class="panel-excel">
+    <div class="excel-tabs">
+      <div class="excel-tab active" data-tab="pl" onclick="switchTab('pl')">📊 Estado de Resultados</div>
+      <div class="excel-tab" data-tab="cf" onclick="switchTab('cf')">💰 Flujo de Caja</div>
+      <div class="excel-tab" data-tab="bs" onclick="switchTab('bs')">📋 Balance General</div>
+    </div>
+    <div class="excel-container" id="excelContainer"></div>
+  </div>
+
+  <!-- RIGHT: SIDEBAR -->
+  <div class="panel-sidebar">
+    <div class="sidebar-section">
+      <h3>📄 Progreso de Documentos</h3>
+      <div class="progress-item">
+        <div class="progress-label"><span>Estado de Resultados</span><span id="plPct">0%</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="plBar" style="width:0%"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-label"><span>Flujo de Caja</span><span id="cfPct">0%</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="cfBar" style="width:0%"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-label"><span>Balance General</span><span id="bsPct">0%</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="bsBar" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h3>🏆 Nivel & Badges</h3>
+      <div class="badge-list" id="badgeList">
+        <div class="badge-item current" data-level="1"><span class="badge-icon">📋</span><div><div>Nivel 1: Organizada</div><div class="badge-level">Registro básico</div></div></div>
+        <div class="badge-item locked" data-level="2"><span class="badge-icon">🔒</span><div><div>Nivel 2: Disciplinada</div><div class="badge-level">Ciclo completado</div></div></div>
+        <div class="badge-item locked" data-level="3"><span class="badge-icon">🔒</span><div><div>Nivel 3: Capital Ready</div><div class="badge-level">Proyecciones listas</div></div></div>
+        <div class="badge-item locked" data-level="4"><span class="badge-icon">🔒</span><div><div>Nivel 4: Investor Grade</div><div class="badge-level">Documentos completos</div></div></div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h3>🧠 Quiz Diario</h3>
+      <div class="quiz-score" id="quizScore">0/3 completadas hoy</div>
+      <div id="quizContainer"></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">Powered by Monad · YSA Financial Mentor v2.0</div>
 
 <script>
 // ============ CONTRACT CONFIG ============
 const CONTRACTS = {
-  discipline: "0x0000000000000000000000000000000000000000", // TBD after deploy
+  discipline: "0x0000000000000000000000000000000000000000",
   badge:      "0x0000000000000000000000000000000000000000",
   grantPool:  "0x0000000000000000000000000000000000000000"
 };
-
-const MONAD_CHAIN = {
-  chainId: "0x27A7", // 10143
+const MONAD = {
+  chainId: "0x27A7",
   chainName: "Monad Testnet",
   rpcUrls: ["https://testnet-rpc.monad.xyz"],
-  nativeCurrency: { name: "MON", symbol: "MON", decimals: 18 },
+  nativeCurrency: { name:"MON", symbol:"MON", decimals:18 },
   blockExplorerUrls: ["https://testnet.monadexplorer.com"]
 };
-
 const DISCIPLINE_ABI = [
   "function stake() payable",
   "function getCycleInfo(address) view returns (uint256,uint8,bool,bool,uint256)",
@@ -239,135 +232,173 @@ const BADGE_ABI = [
   "function levelOf(address) view returns (uint8)"
 ];
 const POOL_ABI = [
-  "function applyToPool(uint256)",
+  "function deposit() payable",
   "function getPool(uint256) view returns (address,string,uint256,uint256,bool)"
 ];
-
-const LEVEL_NAMES = ["Sin Badge", "Organized", "Disciplined", "CapitalReady", "InvestorGrade"];
 
 let provider, signer, userAddress;
 
 // ============ WALLET ============
 async function connectWallet() {
-  if (!window.ethereum) { alert("Instala MetaMask"); return; }
+  if (!window.ethereum) return alert("Instala MetaMask");
   try {
+    await window.ethereum.request({ method:"eth_requestAccounts" });
+    try {
+      await window.ethereum.request({ method:"wallet_switchEthereumChain", params:[{chainId:MONAD.chainId}] });
+    } catch(e) {
+      if (e.code===4902) await window.ethereum.request({ method:"wallet_addEthereumChain", params:[MONAD] });
+    }
     provider = new ethers.BrowserProvider(window.ethereum);
-    await switchToMonad();
     signer = await provider.getSigner();
     userAddress = await signer.getAddress();
-    document.getElementById("connectBtn").textContent = userAddress.slice(0,6) + "..." + userAddress.slice(-4);
-    document.getElementById("connectBtn").classList.add("connected");
-    showDashboard();
-  } catch(e) { console.error(e); alert("Error conectando: " + e.message); }
+    const btn = document.getElementById("connectBtn");
+    btn.textContent = userAddress.slice(0,6)+"..."+userAddress.slice(-4);
+    btn.classList.add("connected");
+    const bal = await provider.getBalance(userAddress);
+    document.getElementById("monBalance").textContent = parseFloat(ethers.formatEther(bal)).toFixed(2)+" MON";
+    document.getElementById("cycleBadge").textContent = "Activo";
+    document.getElementById("cycleBadge").classList.add("active");
+  } catch(e) { console.error(e); }
 }
 
-async function switchToMonad() {
-  try {
-    await window.ethereum.request({ method:"wallet_switchEthereumChain", params:[{chainId:MONAD_CHAIN.chainId}] });
-  } catch(e) {
-    if (e.code === 4902) {
-      await window.ethereum.request({ method:"wallet_addEthereumChain", params:[MONAD_CHAIN] });
+// ============ SPREADSHEET DATA ============
+const months = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+
+const plData = {
+  headers: ["","Mes 1","Mes 2","Mes 3","Mes 4","Mes 5","Mes 6","Mes 7","Mes 8","Mes 9","Mes 10","Mes 11","Mes 12"],
+  rows: [
+    {type:"section",label:"INGRESOS"},
+    {id:"revenue",label:"Ventas",values:["","","","","","","","","","","",""],fmt:"$"},
+    {id:"other_rev",label:"Otros ingresos",values:["","","","","","","","","","","",""],fmt:"$",sub:true},
+    {id:"total_rev",label:"Total Ingresos",values:["","","","","","","","","","","",""],fmt:"$",total:true},
+    {type:"section",label:"COSTO DE VENTAS"},
+    {id:"cogs",label:"COGS",values:["","","","","","","","","","","",""],fmt:"$"},
+    {id:"gross_profit",label:"Utilidad Bruta",values:["","","","","","","","","","","",""],fmt:"$",total:true},
+    {id:"gross_margin",label:"Margen Bruto %",values:["","","","","","","","","","","",""],fmt:"%"},
+    {type:"section",label:"GASTOS OPERATIVOS"},
+    {id:"rent",label:"Renta",values:["","","","","","","","","","","",""],fmt:"$",sub:true},
+    {id:"salaries",label:"Nómina",values:["","","","","","","","","","","",""],fmt:"$",sub:true},
+    {id:"marketing",label:"Marketing",values:["","","","","","","","","","","",""],fmt:"$",sub:true},
+    {id:"utilities",label:"Servicios",values:["","","","","","","","","","","",""],fmt:"$",sub:true},
+    {id:"other_exp",label:"Otros gastos",values:["","","","","","","","","","","",""],fmt:"$",sub:true},
+    {id:"total_opex",label:"Total Gastos Op.",values:["","","","","","","","","","","",""],fmt:"$",total:true},
+    {type:"section",label:"RESULTADO"},
+    {id:"ebitda",label:"EBITDA",values:["","","","","","","","","","","",""],fmt:"$",total:true},
+    {id:"net_margin",label:"Margen Neto %",values:["","","","","","","","","","","",""],fmt:"%"},
+  ]
+};
+
+const cfData = {
+  headers: ["","Mes 1","Mes 2","Mes 3","Mes 4","Mes 5","Mes 6","Mes 7","Mes 8","Mes 9","Mes 10","Mes 11","Mes 12"],
+  rows: [
+    {type:"section",label:"ENTRADAS DE EFECTIVO"},
+    {id:"cf_sales",label:"Cobros por ventas",values:["","","","","","","","","","","",""],fmt:"$"},
+    {id:"cf_other",label:"Otros ingresos",values:["","","","","","","","","","","",""],fmt:"$"},
+    {id:"cf_total_in",label:"Total Entradas",values:["","","","","","","","","","","",""],fmt:"$",total:true},
+    {type:"section",label:"SALIDAS DE EFECTIVO"},
+    {id:"cf_cogs",label:"Pago proveedores",values:["","","","","","","","","","","",""],fmt:"$"},
+    {id:"cf_opex",label:"Gastos operativos",values:["","","","","","","","","","","",""],fmt:"$"},
+    {id:"cf_total_out",label:"Total Salidas",values:["","","","","","","","","","","",""],fmt:"$",total:true},
+    {type:"section",label:"FLUJO NETO"},
+    {id:"cf_net",label:"Flujo Neto Mensual",values:["","","","","","","","","","","",""],fmt:"$",total:true},
+    {id:"cf_cumulative",label:"Flujo Acumulado",values:["","","","","","","","","","","",""],fmt:"$",total:true},
+  ]
+};
+
+const bsData = {
+  headers: ["","Mes 1","Mes 6","Mes 12"],
+  rows: [
+    {type:"section",label:"ACTIVOS"},
+    {id:"bs_cash",label:"Efectivo",values:["","",""],fmt:"$"},
+    {id:"bs_inventory",label:"Inventario",values:["","",""],fmt:"$"},
+    {id:"bs_ar",label:"Cuentas por cobrar",values:["","",""],fmt:"$"},
+    {id:"bs_equipment",label:"Equipo",values:["","",""],fmt:"$"},
+    {id:"bs_total_a",label:"Total Activos",values:["","",""],fmt:"$",total:true},
+    {type:"section",label:"PASIVOS"},
+    {id:"bs_ap",label:"Cuentas por pagar",values:["","",""],fmt:"$"},
+    {id:"bs_loans",label:"Préstamos",values:["","",""],fmt:"$"},
+    {id:"bs_total_l",label:"Total Pasivos",values:["","",""],fmt:"$",total:true},
+    {type:"section",label:"CAPITAL"},
+    {id:"bs_equity",label:"Capital contable",values:["","",""],fmt:"$",total:true},
+  ]
+};
+
+const tabSheets = { pl: plData, cf: cfData, bs: bsData };
+let currentTab = "pl";
+
+function renderSheet(tabKey) {
+  const data = tabSheets[tabKey];
+  const container = document.getElementById("excelContainer");
+  let html = '<table class="excel-table"><thead><tr>';
+  data.headers.forEach((h,i) => {
+    html += `<th>${i===0?'':h}</th>`;
+  });
+  html += '</tr></thead><tbody>';
+  let rowNum = 1;
+  data.rows.forEach(row => {
+    if (row.type === "section") {
+      html += `<tr class="section-header"><td colspan="${data.headers.length}">${row.label}</td></tr>`;
+    } else {
+      html += '<tr>';
+      html += `<td class="${row.total?'label total-row':row.sub?'sub-label':'label'}">${row.label}</td>`;
+      row.values.forEach((v,ci) => {
+        const cls = [row.total?'number total-row':'number'];
+        const cellId = `${tabKey}_${row.id}_${ci}`;
+        html += `<td class="${cls.join(' ')}" id="${cellId}">${v?formatVal(v,row.fmt):''}</td>`;
+      });
+      html += '</tr>';
+      rowNum++;
+    }
+  });
+  html += '</tbody></table>';
+  container.innerHTML = html;
+}
+
+function formatVal(v, fmt) {
+  if (fmt === '%') return (typeof v==='number'? v.toFixed(2)+'%' : v);
+  if (fmt === '$') return (typeof v==='number'? '$'+v.toLocaleString('en-US',{minimumFractionDigits:0}) : v);
+  return v;
+}
+
+function setCellValue(tabKey, rowId, colIdx, value, fmt) {
+  const data = tabSheets[tabKey];
+  const row = data.rows.find(r => r.id === rowId);
+  if (row) row.values[colIdx] = value;
+  if (currentTab === tabKey) {
+    const cellId = `${tabKey}_${rowId}_${colIdx}`;
+    const el = document.getElementById(cellId);
+    if (el) {
+      el.textContent = formatVal(value, fmt||'$');
+      el.classList.remove('cell-highlight');
+      void el.offsetWidth;
+      el.classList.add('cell-highlight');
     }
   }
 }
 
-async function showDashboard() {
-  document.getElementById("heroSection").classList.add("hidden");
-  document.getElementById("dashboard").classList.remove("hidden");
-  document.getElementById("chatSection").classList.remove("hidden");
-  document.getElementById("poolsSection").classList.remove("hidden");
-  await refreshDashboard();
-  loadDemoChat();
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.excel-tab').forEach(t => t.classList.toggle('active', t.dataset.tab===tab));
+  renderSheet(tab);
 }
 
-async function refreshDashboard() {
-  try {
-    const bal = await provider.getBalance(userAddress);
-    document.getElementById("monBalance").textContent = parseFloat(ethers.formatEther(bal)).toFixed(3);
-
-    if (CONTRACTS.discipline !== "0x0000000000000000000000000000000000000000") {
-      const disc = new ethers.Contract(CONTRACTS.discipline, DISCIPLINE_ABI, provider);
-      const [start, challenges, active, complete, staked] = await disc.getCycleInfo(userAddress);
-      document.getElementById("challengeCount").textContent = challenges + "/3";
-      document.getElementById("progressFill").style.width = (challenges/3*100) + "%";
-      if (active) {
-        document.getElementById("cycleStatus").textContent = "🔥 Activo";
-        document.getElementById("stakeCard").classList.add("hidden");
-      } else if (complete) {
-        document.getElementById("cycleStatus").textContent = "✅ Completo";
-      } else {
-        document.getElementById("cycleStatus").textContent = "⏳ Sin iniciar";
-      }
-
-      const bdg = new ethers.Contract(CONTRACTS.badge, BADGE_ABI, provider);
-      const lvl = await bdg.levelOf(userAddress);
-      document.getElementById("badgeLevel").innerHTML = lvl > 0
-        ? '<span class="badge-label">' + LEVEL_NAMES[lvl] + '</span>'
-        : "—";
-    } else {
-      document.getElementById("cycleStatus").textContent = "⏳ Demo";
-      document.getElementById("badgeLevel").textContent = "—";
-    }
-  } catch(e) { console.error("Dashboard error:", e); }
-}
-
-async function doStake() {
-  if (!signer) return;
-  try {
-    const disc = new ethers.Contract(CONTRACTS.discipline, DISCIPLINE_ABI, signer);
-    const tx = await disc.stake({ value: ethers.parseEther("0.01") });
-    document.getElementById("stakeBtn").textContent = "Confirmando...";
-    await tx.wait();
-    await refreshDashboard();
-  } catch(e) { console.error(e); alert("Error: " + e.message); }
-}
-
-async function applyToPool(poolId) {
-  if (!signer) { alert("Conecta tu wallet primero"); return; }
-  try {
-    const pool = new ethers.Contract(CONTRACTS.grantPool, POOL_ABI, signer);
-    const tx = await pool.applyToPool(poolId);
-    await tx.wait();
-    alert("¡Aplicación enviada!");
-  } catch(e) { console.error(e); alert("Error: " + (e.reason || e.message)); }
+// ============ PROGRESS ============
+function setProgress(doc, pct) {
+  const bar = document.getElementById(doc+'Bar');
+  const label = document.getElementById(doc+'Pct');
+  bar.style.width = pct+'%';
+  label.textContent = pct+'%';
+  if (pct >= 100) bar.classList.add('complete');
 }
 
 // ============ CHAT ============
-const demoConversation = [
-  { author:"daniela", text:"Hola Ysa, necesito ayuda organizando las finanzas de Hummus Máshu." },
-  { author:"ysa", text:"Bien. Antes de cualquier consejo necesito números reales. ¿Cuál fue tu revenue anual y cuál es tu margen bruto actual?" },
-  { author:"daniela", text:"$1M MXN de revenue anual, margen bruto del 32%." },
-  { author:"ysa", text:"32% de margen bruto en food service es aceptable, pero ajustado. ¿Cuál es tu punto de equilibrio mensual exacto? No me digas 'más o menos'. Número exacto." },
-  { author:"daniela", text:"Break-even en el mes 6, aproximadamente $83,000 MXN mensuales en costos fijos." },
-  { author:"ysa", text:"'Aproximadamente' no existe en finanzas, Daniela. Si tu revenue mensual promedio es ~$83K y tu margen bruto es 32%, tu utilidad bruta es $26,600 MXN. ¿Eso cubre tus costos fijos? Porque si tus fijos son $83K, estás perdiendo $56K al mes. Algo no cuadra. Revisa tus números y vuelve con cifras exactas." },
-  { author:"daniela", text:"Tienes razón, los costos fijos son $25,000 MXN mensuales. El break-even fue a los 6 meses de operación." },
-  { author:"ysa", text:"Ahora sí. $83K revenue × 32% = $26,600 bruto - $25,000 fijos = $1,600 MXN de utilidad neta mensual. Eso es un margen neto del 1.9%. Estás sobreviviendo, no creciendo. Para escalar necesitas: 1) Subir ticket promedio, 2) Reducir COGS, o 3) Encontrar un canal de venta con menores costos variables. ¿Cuál de los tres atacamos primero?" },
-  { author:"daniela", text:"Quiero subir el ticket promedio." },
-  { author:"ysa", text:"Perfecto. Primer reto de tu ciclo de disciplina: Quiero un análisis de tu ticket promedio actual segmentado por canal (local, delivery, catering). Sin ese desglose, cualquier estrategia es adivinanza. Tienes 48 horas. 💪" }
-];
-
-let chatIndex = 0;
-function loadDemoChat() {
-  chatIndex = 0;
-  document.getElementById("chatBox").innerHTML = "";
-  playNextMessage();
-}
-
-function playNextMessage() {
-  if (chatIndex >= demoConversation.length) return;
-  const msg = demoConversation[chatIndex++];
-  addMessage(msg.author, msg.text);
-  setTimeout(playNextMessage, 800);
-}
-
-function addMessage(author, text) {
-  const box = document.getElementById("chatBox");
+function addMessage(who, text) {
+  const container = document.getElementById("chatMessages");
   const div = document.createElement("div");
-  div.className = "msg";
-  const isYsa = author === "ysa";
-  div.innerHTML = `<div class="author ${isYsa?'ysa':'user'}">${isYsa?'🤖 Ysa':'👩‍💼 Daniela'}</div><div class="text">${text}</div>`;
-  box.appendChild(div);
-  box.scrollTop = box.scrollHeight;
+  div.className = `msg ${who}`;
+  div.innerHTML = `<div class="author">${who==='ysa'?'YSA':'Daniela'}</div>${text}`;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
 }
 
 function sendChat() {
@@ -376,10 +407,168 @@ function sendChat() {
   if (!text) return;
   addMessage("daniela", text);
   input.value = "";
-  setTimeout(() => {
-    addMessage("ysa", "Interesante. Dame los números que respaldan eso. Sin datos, son solo opiniones. 📊");
-  }, 1000);
 }
+
+// ============ QUIZ ============
+const allQuizzes = [
+  {q:"¿Qué indica un margen bruto del 32%?",opts:["Que por cada $100 de venta, $32 son ganancia bruta","Que el negocio pierde 32%","Que los costos son 32% del precio"],correct:0},
+  {q:"¿Cuál es la diferencia entre flujo de caja y estado de resultados?",opts:["El flujo mide efectivo real; el P&L incluye devengados","Son lo mismo pero con diferente formato","El flujo solo mide ingresos"],correct:0},
+  {q:"Si tu COGS sube 10% y no ajustas precios, ¿qué pasa?",opts:["Tu margen bruto baja","Tu ingreso sube","No pasa nada si vendes más"],correct:0},
+  {q:"¿Qué es el EBITDA?",opts:["Utilidad antes de intereses, impuestos, depreciación y amortización","El total de gastos operativos","La utilidad neta después de impuestos"],correct:0},
+  {q:"¿Por qué es importante el punto de equilibrio?",opts:["Indica cuánto necesitas vender para cubrir costos","Es el precio máximo que puedes cobrar","Define tu margen de ganancia ideal"],correct:0},
+  {q:"¿Qué pasa si tu flujo de caja es negativo pero tienes utilidad?",opts:["Puedes quedarte sin efectivo para operar","Imposible, siempre son iguales","Significa que tu negocio es rentable"],correct:0},
+  {q:"Un margen bruto de 32% en alimentos es:",opts:["Aceptable pero ajustado para escalar","Excelente, no necesitas mejorar","Muy bajo, deberías cerrar"],correct:0},
+  {q:"¿Qué son las cuentas por cobrar?",opts:["Dinero que te deben tus clientes","Dinero que debes a proveedores","Efectivo en banco"],correct:0},
+  {q:"Si tu renta es fija y vendes más, ¿qué pasa con tu margen neto?",opts:["Mejora porque diluyes costos fijos","Empeora por más volumen","No cambia"],correct:0},
+];
+
+let quizSet = 0;
+let quizCorrect = 0;
+
+function renderQuiz() {
+  const container = document.getElementById("quizContainer");
+  const start = quizSet * 3;
+  const qs = allQuizzes.slice(start, start+3);
+  if (qs.length === 0) { container.innerHTML = '<p style="font-size:13px;color:#27ae60;">🎉 ¡Todas completadas!</p>'; return; }
+  container.innerHTML = qs.map((q,i) => {
+    const qi = start+i;
+    return `<div class="quiz-q" id="qq${qi}">
+      <div class="q-text">${i+1}. ${q.q}</div>
+      <div class="q-options">${q.opts.map((o,oi) =>
+        `<div class="q-opt" onclick="answerQuiz(${qi},${oi})">${String.fromCharCode(97+oi)}) ${o}</div>`
+      ).join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+function answerQuiz(qi, oi) {
+  const q = allQuizzes[qi];
+  const el = document.getElementById('qq'+qi);
+  const opts = el.querySelectorAll('.q-opt');
+  opts.forEach((o,i) => {
+    o.classList.add('disabled');
+    if (i===q.correct) o.classList.add('correct');
+    else if (i===oi && oi!==q.correct) o.classList.add('wrong');
+  });
+  if (oi===q.correct) quizCorrect++;
+  document.getElementById("quizScore").textContent = `${quizCorrect}/3 completadas hoy`;
+  if (quizCorrect === 3) {
+    setTimeout(() => { quizSet++; quizCorrect=0; document.getElementById("quizScore").textContent="0/3 completadas hoy"; renderQuiz(); }, 1500);
+  }
+}
+
+// ============ DEMO AUTO-PLAY ============
+const demoScript = [
+  {type:"msg",who:"ysa",text:"Hola Daniela. Vamos directo. ¿Cuánto facturas al mes en Hummus Máshu?"},
+  {type:"msg",who:"daniela",text:"Entre 80 y 100 mil pesos"},
+  {type:"msg",who:"ysa",text:"Entre 80 y 100 no es un número. ¿Cuánto <b>exactamente</b> el último mes?"},
+  {type:"msg",who:"daniela",text:"El último mes fueron $95,400"},
+  {type:"data",tab:"pl",row:"revenue",col:0,val:95400,fmt:"$"},
+  {type:"progress",doc:"pl",pct:8},
+  {type:"msg",who:"ysa",text:"Bien. ¿Y cuánto te costó producir eso? Dame el COGS completo."},
+  {type:"msg",who:"daniela",text:"Unos $64,800 en materias primas y producción"},
+  {type:"data",tab:"pl",row:"cogs",col:0,val:64800,fmt:"$"},
+  {type:"data",tab:"pl",row:"gross_profit",col:0,val:30600,fmt:"$"},
+  {type:"data",tab:"pl",row:"gross_margin",col:0,val:32.08,fmt:"%"},
+  {type:"progress",doc:"pl",pct:15},
+  {type:"msg",who:"ysa",text:"Margen bruto: 32%. No está mal para alimentos. Pero no es suficiente para escalar. Necesitamos desglosar tus gastos operativos."},
+  {type:"msg",who:"daniela",text:"Ok, la renta son $4,500, nómina $3,200, marketing $800, servicios $700, y otros $500"},
+  {type:"data",tab:"pl",row:"rent",col:0,val:4500,fmt:"$"},
+  {type:"data",tab:"pl",row:"salaries",col:0,val:3200,fmt:"$"},
+  {type:"data",tab:"pl",row:"marketing",col:0,val:800,fmt:"$"},
+  {type:"data",tab:"pl",row:"utilities",col:0,val:700,fmt:"$"},
+  {type:"data",tab:"pl",row:"other_exp",col:0,val:500,fmt:"$"},
+  {type:"data",tab:"pl",row:"total_opex",col:0,val:9700,fmt:"$"},
+  {type:"progress",doc:"pl",pct:35},
+  {type:"msg",who:"ysa",text:"Gastos operativos: $9,700. Tu EBITDA es $20,900. Margen neto de ~22%. Ahora dime: ¿esto es consistente mes a mes?"},
+  {type:"data",tab:"pl",row:"ebitda",col:0,val:20900,fmt:"$"},
+  {type:"data",tab:"pl",row:"net_margin",col:0,val:21.90,fmt:"%"},
+  {type:"data",tab:"pl",row:"total_rev",col:0,val:95400,fmt:"$"},
+  {type:"msg",who:"daniela",text:"Más o menos. En enero fueron $85,200 y febrero $88,000. Ha ido creciendo."},
+  // Fill months 2-6 revenue
+  {type:"data",tab:"pl",row:"revenue",col:1,val:88000,fmt:"$"},
+  {type:"data",tab:"pl",row:"revenue",col:2,val:90500,fmt:"$"},
+  {type:"data",tab:"pl",row:"revenue",col:3,val:92100,fmt:"$"},
+  {type:"data",tab:"pl",row:"revenue",col:4,val:93800,fmt:"$"},
+  {type:"data",tab:"pl",row:"revenue",col:5,val:95400,fmt:"$"},
+  {type:"progress",doc:"pl",pct:50},
+  {type:"msg",who:"ysa",text:"Crecimiento del 3-4% mensual. Modesto pero sólido. Vamos a proyectar los próximos 6 meses manteniendo esa tendencia."},
+  // Months 7-12 revenue projection
+  {type:"data",tab:"pl",row:"revenue",col:6,val:97500,fmt:"$"},
+  {type:"data",tab:"pl",row:"revenue",col:7,val:99800,fmt:"$"},
+  {type:"data",tab:"pl",row:"revenue",col:8,val:101500,fmt:"$"},
+  {type:"data",tab:"pl",row:"revenue",col:9,val:103200,fmt:"$"},
+  {type:"data",tab:"pl",row:"revenue",col:10,val:105000,fmt:"$"},
+  {type:"data",tab:"pl",row:"revenue",col:11,val:107000,fmt:"$"},
+  {type:"progress",doc:"pl",pct:70},
+  {type:"msg",who:"ysa",text:"Ahora el COGS para cada mes. Si mantienes 68%, estos son tus costos proyectados."},
+  {type:"data",tab:"pl",row:"cogs",col:1,val:59840,fmt:"$"},
+  {type:"data",tab:"pl",row:"cogs",col:2,val:61540,fmt:"$"},
+  {type:"data",tab:"pl",row:"cogs",col:3,val:62628,fmt:"$"},
+  {type:"data",tab:"pl",row:"cogs",col:4,val:63784,fmt:"$"},
+  {type:"data",tab:"pl",row:"cogs",col:5,val:64872,fmt:"$"},
+  {type:"data",tab:"pl",row:"cogs",col:6,val:66300,fmt:"$"},
+  {type:"data",tab:"pl",row:"cogs",col:7,val:67864,fmt:"$"},
+  {type:"data",tab:"pl",row:"cogs",col:8,val:69020,fmt:"$"},
+  {type:"data",tab:"pl",row:"cogs",col:9,val:70176,fmt:"$"},
+  {type:"data",tab:"pl",row:"cogs",col:10,val:71400,fmt:"$"},
+  {type:"data",tab:"pl",row:"cogs",col:11,val:72760,fmt:"$"},
+  {type:"progress",doc:"pl",pct:85},
+  {type:"msg",who:"ysa",text:"Estado de resultados casi completo. Vamos al flujo de caja. ¿Cuánto efectivo tienes hoy en el banco?"},
+  {type:"msg",who:"daniela",text:"Tenemos $32,000 en el banco"},
+  {type:"data",tab:"cf",row:"cf_sales",col:0,val:95400,fmt:"$"},
+  {type:"data",tab:"cf",row:"cf_cogs",col:0,val:64800,fmt:"$"},
+  {type:"data",tab:"cf",row:"cf_opex",col:0,val:9700,fmt:"$"},
+  {type:"data",tab:"cf",row:"cf_total_in",col:0,val:95400,fmt:"$"},
+  {type:"data",tab:"cf",row:"cf_total_out",col:0,val:74500,fmt:"$"},
+  {type:"data",tab:"cf",row:"cf_net",col:0,val:20900,fmt:"$"},
+  {type:"data",tab:"cf",row:"cf_cumulative",col:0,val:52900,fmt:"$"},
+  {type:"progress",doc:"cf",pct:25},
+  {type:"progress",doc:"pl",pct:95},
+  {type:"msg",who:"ysa",text:"Flujo positivo desde el mes 1. Eso es buena señal. Necesitamos proyectar 12 meses y registrar tu balance. Vamos bien, Daniela. Tu negocio tiene fundamentos sólidos."},
+  {type:"data",tab:"bs",row:"bs_cash",col:0,val:32000,fmt:"$"},
+  {type:"data",tab:"bs",row:"bs_inventory",col:0,val:8500,fmt:"$"},
+  {type:"data",tab:"bs",row:"bs_equipment",col:0,val:45000,fmt:"$"},
+  {type:"data",tab:"bs",row:"bs_total_a",col:0,val:85500,fmt:"$"},
+  {type:"data",tab:"bs",row:"bs_ap",col:0,val:12000,fmt:"$"},
+  {type:"data",tab:"bs",row:"bs_total_l",col:0,val:12000,fmt:"$"},
+  {type:"data",tab:"bs",row:"bs_equity",col:0,val:73500,fmt:"$"},
+  {type:"progress",doc:"bs",pct:30},
+  {type:"progress",doc:"pl",pct:100},
+  {type:"msg",who:"ysa",text:"Estado de resultados: ✅ completo. Siguiente paso: completar flujo de caja y balance. Estás en camino al Nivel 2. No aflojes."},
+];
+
+let demoRunning = false;
+async function startDemo() {
+  if (demoRunning) return;
+  demoRunning = true;
+  document.getElementById("demoBtn").disabled = true;
+  document.getElementById("demoBtn").textContent = "⏳ Demo en curso...";
+  document.getElementById("chatMessages").innerHTML = "";
+
+  for (const step of demoScript) {
+    if (step.type === "msg") {
+      addMessage(step.who, step.text);
+      await sleep(step.who==='ysa' ? 2200 : 1400);
+    } else if (step.type === "data") {
+      if (currentTab !== step.tab) switchTab(step.tab);
+      await sleep(300);
+      setCellValue(step.tab, step.row, step.col, step.val, step.fmt);
+      await sleep(200);
+    } else if (step.type === "progress") {
+      setProgress(step.doc, step.pct);
+      await sleep(100);
+    }
+  }
+  document.getElementById("demoBtn").textContent = "✅ Demo completo";
+  demoRunning = false;
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ============ INIT ============
+renderSheet("pl");
+renderQuiz();
 </script>
 </body>
 </html>
