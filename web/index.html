@@ -134,23 +134,52 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
 ::-webkit-scrollbar{width:6px;height:6px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:#333;border-radius:3px;}
+
+/* Demo Timer */
+.demo-timer{display:none;background:var(--surface);border-bottom:1px solid var(--border);padding:6px 20px;align-items:center;gap:12px;font-size:12px;color:var(--text-muted);font-family:'Roboto Mono',monospace;}
+.demo-timer.active{display:flex;}
+.demo-timer-bar{flex:1;height:4px;background:#2A2A3E;border-radius:2px;overflow:hidden;}
+.demo-timer-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--yellow));border-radius:2px;width:0%;transition:width 0.3s;}
+.demo-timer-text{min-width:80px;text-align:right;}
+
+/* Confetti */
+.confetti-piece{position:fixed;width:10px;height:10px;top:-10px;z-index:9999;animation:confetti-fall 3s ease-in forwards;}
+@keyframes confetti-fall{0%{transform:translateY(0) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(720deg);opacity:0;}}
+
+/* Badge unlock glow */
+.badge-item.unlocked{background:rgba(131,110,249,0.15);border:1px solid var(--purple);animation:badge-glow 1s ease;}
+@keyframes badge-glow{0%{box-shadow:0 0 20px var(--purple-glow);}100%{box-shadow:none;}}
+
+/* Staking notification */
+.stake-notification{position:fixed;bottom:20px;right:20px;background:var(--surface);border:1px solid var(--purple);border-radius:12px;padding:16px 24px;z-index:9998;font-size:14px;animation:slide-up 0.5s ease;box-shadow:0 4px 24px rgba(0,0,0,0.5);}
+.stake-notification .stake-amount{font-size:24px;font-weight:800;color:var(--yellow);font-family:'Roboto Mono',monospace;}
+@keyframes slide-up{from{transform:translateY(100px);opacity:0;}to{transform:translateY(0);opacity:1;}}
 </style>
 </head>
 <body>
 
+<!-- DEMO TIMER -->
+<div class="demo-timer" id="demoTimer">
+  <span>🎬 DEMO</span>
+  <div class="demo-timer-bar"><div class="demo-timer-fill" id="demoTimerFill"></div></div>
+  <div class="demo-timer-text" id="demoTimerText">0:00 / 1:30</div>
+</div>
+
 <!-- TOP BAR -->
 <div class="topbar">
   <div class="topbar-left">
+    <div style="font-size:32px;line-height:1;">🦅</div>
     <div class="logo">YSA</div>
-    <span class="logo-sub">Mentora Financiera</span>
+    <span class="logo-sub">Financial Mentor</span>
   </div>
   <div class="topbar-center">
-    <button class="demo-btn" id="demoBtn" onclick="startDemo()">▶ Ver Demo</button>
-    <button class="connect-btn" id="connectBtn" onclick="connectWallet()">🦊 Conectar Wallet</button>
+    <button class="demo-btn" id="demoBtn" onclick="startDemo()">▶ Watch Demo</button>
+    <button class="connect-btn" id="connectBtn" onclick="connectWallet()">🦊 Connect Wallet</button>
   </div>
   <div class="topbar-right">
-    <span class="cycle-badge" id="cycleBadge">Sin iniciar</span>
+    <span class="cycle-badge" id="cycleBadge">Not started</span>
     <span id="monBalance"></span>
+    <span style="display:flex;align-items:center;gap:4px;font-weight:600;color:#836EF9;font-size:13px;"><img src="https://monad.xyz/favicon.ico" alt="Monad" style="width:18px;height:18px;border-radius:50%;"> Monad</span>
   </div>
 </div>
 
@@ -159,11 +188,11 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
 
   <!-- LEFT: CHAT -->
   <div class="panel-chat">
-    <div class="panel-title">💬 Chat con Ysa</div>
+    <div class="panel-title">💬 Chat with Ysa</div>
     <div class="chat-messages" id="chatMessages"></div>
     <div class="chat-input">
-      <input type="text" id="chatInput" placeholder="Escribe tu respuesta..." onkeydown="if(event.key==='Enter')sendChat()">
-      <button onclick="sendChat()">Enviar</button>
+      <input type="text" id="chatInput" placeholder="Type your answer..." onkeydown="if(event.key==='Enter')sendChat()">
+      <button onclick="sendChat()">Send</button>
     </div>
   </div>
 
@@ -171,8 +200,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
   <div class="panel-excel">
     <div class="excel-tabs">
       <div class="excel-tab active" data-tab="pl" onclick="switchTab('pl')">📊 Estado de Resultados</div>
-      <div class="excel-tab" data-tab="cf" onclick="switchTab('cf')">💰 Flujo de Caja</div>
-      <div class="excel-tab" data-tab="bs" onclick="switchTab('bs')">📋 Balance General</div>
+      <div class="excel-tab" data-tab="cf" onclick="switchTab('cf')">💰 Cash Flow</div>
+      <div class="excel-tab" data-tab="bs" onclick="switchTab('bs')">📋 Balance Sheet</div>
     </div>
     <div class="excel-container" id="excelContainer"></div>
   </div>
@@ -180,34 +209,34 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
   <!-- RIGHT: SIDEBAR -->
   <div class="panel-sidebar">
     <div class="sidebar-section">
-      <h3>📄 Progreso de Documentos</h3>
+      <h3>📄 Document Progress</h3>
       <div class="progress-item">
         <div class="progress-label"><span>Estado de Resultados</span><span id="plPct">0%</span></div>
         <div class="progress-bar"><div class="progress-fill" id="plBar" style="width:0%"></div></div>
       </div>
       <div class="progress-item">
-        <div class="progress-label"><span>Flujo de Caja</span><span id="cfPct">0%</span></div>
+        <div class="progress-label"><span>Cash Flow</span><span id="cfPct">0%</span></div>
         <div class="progress-bar"><div class="progress-fill" id="cfBar" style="width:0%"></div></div>
       </div>
       <div class="progress-item">
-        <div class="progress-label"><span>Balance General</span><span id="bsPct">0%</span></div>
+        <div class="progress-label"><span>Balance Sheet</span><span id="bsPct">0%</span></div>
         <div class="progress-bar"><div class="progress-fill" id="bsBar" style="width:0%"></div></div>
       </div>
     </div>
 
     <div class="sidebar-section">
-      <h3>🏆 Nivel & Badges</h3>
+      <h3>🏆 Level & Badges</h3>
       <div class="badge-list" id="badgeList">
-        <div class="badge-item current" data-level="1"><span class="badge-icon">📋</span><div><div>Nivel 1: Organizada</div><div class="badge-level">Registro básico</div></div></div>
-        <div class="badge-item locked" data-level="2"><span class="badge-icon">🔒</span><div><div>Nivel 2: Disciplinada</div><div class="badge-level">Ciclo completado</div></div></div>
-        <div class="badge-item locked" data-level="3"><span class="badge-icon">🔒</span><div><div>Nivel 3: Capital Ready</div><div class="badge-level">Proyecciones listas</div></div></div>
-        <div class="badge-item locked" data-level="4"><span class="badge-icon">🔒</span><div><div>Nivel 4: Investor Grade</div><div class="badge-level">Documentos completos</div></div></div>
+        <div class="badge-item current" data-level="1"><span class="badge-icon">📋</span><div><div>Level 1: Organized</div><div class="badge-level">Basic records</div></div></div>
+        <div class="badge-item locked" data-level="2"><span class="badge-icon">🔒</span><div><div>Level 2: Disciplined</div><div class="badge-level">Cycle completed</div></div></div>
+        <div class="badge-item locked" data-level="3"><span class="badge-icon">🔒</span><div><div>Level 3: Capital Ready</div><div class="badge-level">Projections ready</div></div></div>
+        <div class="badge-item locked" data-level="4"><span class="badge-icon">🔒</span><div><div>Level 4: Investor Grade</div><div class="badge-level">Documents complete</div></div></div>
       </div>
     </div>
 
     <div class="sidebar-section quiz-section">
-      <h3>🧠 Quiz Diario</h3>
-      <div class="quiz-score" id="quizScore">0/3 completadas hoy</div>
+      <h3>🧠 Daily Quiz</h3>
+      <div class="quiz-score" id="quizScore">0/3 completed today</div>
       <div id="quizContainer"></div>
     </div>
   </div>
@@ -249,7 +278,7 @@ let provider, signer, userAddress;
 
 // ============ WALLET ============
 async function connectWallet() {
-  if (!window.ethereum) return alert("Instala MetaMask");
+  if (!window.ethereum) return alert("Install MetaMask");
   try {
     await window.ethereum.request({ method:"eth_requestAccounts" });
     try {
@@ -277,23 +306,23 @@ const plData = {
   headers: ["","Mes 1","Mes 2","Mes 3","Mes 4","Mes 5","Mes 6","Mes 7","Mes 8","Mes 9","Mes 10","Mes 11","Mes 12"],
   rows: [
     {type:"section",label:"INGRESOS"},
-    {id:"revenue",label:"Ventas",values:["","","","","","","","","","","",""],fmt:"$"},
-    {id:"other_rev",label:"Otros ingresos",values:["","","","","","","","","","","",""],fmt:"$",sub:true},
-    {id:"total_rev",label:"Total Ingresos",values:["","","","","","","","","","","",""],fmt:"$",total:true},
+    {id:"revenue",label:"Revenue",values:["","","","","","","","","","","",""],fmt:"$"},
+    {id:"other_rev",label:"Other income",values:["","","","","","","","","","","",""],fmt:"$",sub:true},
+    {id:"total_rev",label:"Total Revenue",values:["","","","","","","","","","","",""],fmt:"$",total:true},
     {type:"section",label:"COSTO DE VENTAS"},
     {id:"cogs",label:"COGS",values:["","","","","","","","","","","",""],fmt:"$"},
-    {id:"gross_profit",label:"Utilidad Bruta",values:["","","","","","","","","","","",""],fmt:"$",total:true},
-    {id:"gross_margin",label:"Margen Bruto %",values:["","","","","","","","","","","",""],fmt:"%"},
+    {id:"gross_profit",label:"Gross Profit",values:["","","","","","","","","","","",""],fmt:"$",total:true},
+    {id:"gross_margin",label:"Gross Margin %",values:["","","","","","","","","","","",""],fmt:"%"},
     {type:"section",label:"GASTOS OPERATIVOS"},
-    {id:"rent",label:"Renta",values:["","","","","","","","","","","",""],fmt:"$",sub:true},
-    {id:"salaries",label:"Nómina",values:["","","","","","","","","","","",""],fmt:"$",sub:true},
+    {id:"rent",label:"Rent",values:["","","","","","","","","","","",""],fmt:"$",sub:true},
+    {id:"salaries",label:"Payroll",values:["","","","","","","","","","","",""],fmt:"$",sub:true},
     {id:"marketing",label:"Marketing",values:["","","","","","","","","","","",""],fmt:"$",sub:true},
-    {id:"utilities",label:"Servicios",values:["","","","","","","","","","","",""],fmt:"$",sub:true},
-    {id:"other_exp",label:"Otros gastos",values:["","","","","","","","","","","",""],fmt:"$",sub:true},
-    {id:"total_opex",label:"Total Gastos Op.",values:["","","","","","","","","","","",""],fmt:"$",total:true},
+    {id:"utilities",label:"Utilities",values:["","","","","","","","","","","",""],fmt:"$",sub:true},
+    {id:"other_exp",label:"Other expenses",values:["","","","","","","","","","","",""],fmt:"$",sub:true},
+    {id:"total_opex",label:"Total OpEx",values:["","","","","","","","","","","",""],fmt:"$",total:true},
     {type:"section",label:"RESULTADO"},
     {id:"ebitda",label:"EBITDA",values:["","","","","","","","","","","",""],fmt:"$",total:true},
-    {id:"net_margin",label:"Margen Neto %",values:["","","","","","","","","","","",""],fmt:"%"},
+    {id:"net_margin",label:"Net Margin %",values:["","","","","","","","","","","",""],fmt:"%"},
   ]
 };
 
@@ -302,15 +331,15 @@ const cfData = {
   rows: [
     {type:"section",label:"ENTRADAS DE EFECTIVO"},
     {id:"cf_sales",label:"Cobros por ventas",values:["","","","","","","","","","","",""],fmt:"$"},
-    {id:"cf_other",label:"Otros ingresos",values:["","","","","","","","","","","",""],fmt:"$"},
+    {id:"cf_other",label:"Other income",values:["","","","","","","","","","","",""],fmt:"$"},
     {id:"cf_total_in",label:"Total Entradas",values:["","","","","","","","","","","",""],fmt:"$",total:true},
     {type:"section",label:"SALIDAS DE EFECTIVO"},
     {id:"cf_cogs",label:"Pago proveedores",values:["","","","","","","","","","","",""],fmt:"$"},
-    {id:"cf_opex",label:"Gastos operativos",values:["","","","","","","","","","","",""],fmt:"$"},
+    {id:"cf_opex",label:"Operating expenses",values:["","","","","","","","","","","",""],fmt:"$"},
     {id:"cf_total_out",label:"Total Salidas",values:["","","","","","","","","","","",""],fmt:"$",total:true},
     {type:"section",label:"FLUJO NETO"},
-    {id:"cf_net",label:"Flujo Neto Mensual",values:["","","","","","","","","","","",""],fmt:"$",total:true},
-    {id:"cf_cumulative",label:"Flujo Acumulado",values:["","","","","","","","","","","",""],fmt:"$",total:true},
+    {id:"cf_net",label:"Net Monthly Cash Flow",values:["","","","","","","","","","","",""],fmt:"$",total:true},
+    {id:"cf_cumulative",label:"Cumulative Cash Flow",values:["","","","","","","","","","","",""],fmt:"$",total:true},
   ]
 };
 
@@ -318,17 +347,17 @@ const bsData = {
   headers: ["","Mes 1","Mes 6","Mes 12"],
   rows: [
     {type:"section",label:"ACTIVOS"},
-    {id:"bs_cash",label:"Efectivo",values:["","",""],fmt:"$"},
-    {id:"bs_inventory",label:"Inventario",values:["","",""],fmt:"$"},
-    {id:"bs_ar",label:"Cuentas por cobrar",values:["","",""],fmt:"$"},
-    {id:"bs_equipment",label:"Equipo",values:["","",""],fmt:"$"},
-    {id:"bs_total_a",label:"Total Activos",values:["","",""],fmt:"$",total:true},
+    {id:"bs_cash",label:"Cash",values:["","",""],fmt:"$"},
+    {id:"bs_inventory",label:"Inventory",values:["","",""],fmt:"$"},
+    {id:"bs_ar",label:"Accounts receivable",values:["","",""],fmt:"$"},
+    {id:"bs_equipment",label:"Equipment",values:["","",""],fmt:"$"},
+    {id:"bs_total_a",label:"Total Assets",values:["","",""],fmt:"$",total:true},
     {type:"section",label:"PASIVOS"},
-    {id:"bs_ap",label:"Cuentas por pagar",values:["","",""],fmt:"$"},
-    {id:"bs_loans",label:"Préstamos",values:["","",""],fmt:"$"},
-    {id:"bs_total_l",label:"Total Pasivos",values:["","",""],fmt:"$",total:true},
+    {id:"bs_ap",label:"Accounts payable",values:["","",""],fmt:"$"},
+    {id:"bs_loans",label:"Loans",values:["","",""],fmt:"$"},
+    {id:"bs_total_l",label:"Total Liabilities",values:["","",""],fmt:"$",total:true},
     {type:"section",label:"CAPITAL"},
-    {id:"bs_equity",label:"Capital contable",values:["","",""],fmt:"$",total:true},
+    {id:"bs_equity",label:"Equity",values:["","",""],fmt:"$",total:true},
   ]
 };
 
@@ -420,15 +449,15 @@ function sendChat() {
 
 // ============ QUIZ ============
 const allQuizzes = [
-  {q:"¿Qué indica un margen bruto del 32%?",opts:["Que por cada $100 de venta, $32 son ganancia bruta","Que el negocio pierde 32%","Que los costos son 32% del precio"],correct:0},
-  {q:"¿Cuál es la diferencia entre flujo de caja y estado de resultados?",opts:["El flujo mide efectivo real; el P&L incluye devengados","Son lo mismo pero con diferente formato","El flujo solo mide ingresos"],correct:0},
-  {q:"Si tu COGS sube 10% y no ajustas precios, ¿qué pasa?",opts:["Tu margen bruto baja","Tu ingreso sube","No pasa nada si vendes más"],correct:0},
-  {q:"¿Qué es el EBITDA?",opts:["Utilidad antes de intereses, impuestos, depreciación y amortización","El total de gastos operativos","La utilidad neta después de impuestos"],correct:0},
-  {q:"¿Por qué es importante el punto de equilibrio?",opts:["Indica cuánto necesitas vender para cubrir costos","Es el precio máximo que puedes cobrar","Define tu margen de ganancia ideal"],correct:0},
-  {q:"¿Qué pasa si tu flujo de caja es negativo pero tienes utilidad?",opts:["Puedes quedarte sin efectivo para operar","Imposible, siempre son iguales","Significa que tu negocio es rentable"],correct:0},
-  {q:"Un margen bruto de 32% en alimentos es:",opts:["Aceptable pero ajustado para escalar","Excelente, no necesitas mejorar","Muy bajo, deberías cerrar"],correct:0},
-  {q:"¿Qué son las cuentas por cobrar?",opts:["Dinero que te deben tus clientes","Dinero que debes a proveedores","Efectivo en banco"],correct:0},
-  {q:"Si tu renta es fija y vendes más, ¿qué pasa con tu margen neto?",opts:["Mejora porque diluyes costos fijos","Empeora por más volumen","No cambia"],correct:0},
+  {q:"What does a 32% gross margin indicate?",opts:["For every $100 in sales, $32 is gross profit","The business loses 32%","Costs are 32% of the price"],correct:0},
+  {q:"What's the difference between cash flow and P&L?",opts:["Cash flow measures actual cash; P&L includes accruals","They're the same in different format","Cash flow only measures income"],correct:0},
+  {q:"If your COGS rises 10% and you don't adjust prices, what happens?",opts:["Your gross margin drops","Your revenue goes up","Nothing if you sell more"],correct:0},
+  {q:"What is EBITDA?",opts:["Earnings before interest, taxes, depreciation & amortization","Total operating expenses","Net profit after taxes"],correct:0},
+  {q:"Why is break-even point important?",opts:["It tells you how much you need to sell to cover costs","It's the maximum price you can charge","It defines your ideal profit margin"],correct:0},
+  {q:"What if your cash flow is negative but you have profit?",opts:["You can run out of cash to operate","Impossible, they're always equal","It means your business is profitable"],correct:0},
+  {q:"A 32% gross margin in food is:",opts:["Acceptable but tight for scaling","Excellent, no improvement needed","Very low, you should close"],correct:0},
+  {q:"What are accounts receivable?",opts:["Money your customers owe you","Money you owe to suppliers","Cash in the bank"],correct:0},
+  {q:"If rent is fixed and you sell more, what happens to net margin?",opts:["It improves because you dilute fixed costs","It gets worse with more volume","It doesn't change"],correct:0},
 ];
 
 let quizSet = 0;
@@ -438,7 +467,7 @@ function renderQuiz() {
   const container = document.getElementById("quizContainer");
   const start = quizSet * 3;
   const qs = allQuizzes.slice(start, start+3);
-  if (qs.length === 0) { container.innerHTML = '<p style="font-size:13px;color:#27ae60;">🎉 ¡Todas completadas!</p>'; return; }
+  if (qs.length === 0) { container.innerHTML = '<p style="font-size:13px;color:#27ae60;">🎉 All completed!</p>'; return; }
   container.innerHTML = qs.map((q,i) => {
     const qi = start+i;
     return `<div class="quiz-q" id="qq${qi}">
@@ -460,28 +489,28 @@ function answerQuiz(qi, oi) {
     else if (i===oi && oi!==q.correct) o.classList.add('wrong');
   });
   if (oi===q.correct) quizCorrect++;
-  document.getElementById("quizScore").textContent = `${quizCorrect}/3 completadas hoy`;
+  document.getElementById("quizScore").textContent = `${quizCorrect}/3 completed today`;
   if (quizCorrect === 3) {
-    setTimeout(() => { quizSet++; quizCorrect=0; document.getElementById("quizScore").textContent="0/3 completadas hoy"; renderQuiz(); }, 1500);
+    setTimeout(() => { quizSet++; quizCorrect=0; document.getElementById("quizScore").textContent="0/3 completed today"; renderQuiz(); }, 1500);
   }
 }
 
 // ============ DEMO AUTO-PLAY ============
 const demoScript = [
-  {type:"msg",who:"ysa",text:"Hola Daniela. Vamos directo. ¿Cuánto facturas al mes en Hummus Máshu?"},
-  {type:"msg",who:"daniela",text:"Entre 80 y 100 mil pesos"},
-  {type:"msg",who:"ysa",text:"Entre 80 y 100 no es un número. ¿Cuánto <b>exactamente</b> el último mes?"},
-  {type:"msg",who:"daniela",text:"El último mes fueron $95,400"},
+  {type:"msg",who:"ysa",text:"Hi Daniela. Let's get straight to it. How much do you invoice per month at Hummus Máshu?"},
+  {type:"msg",who:"daniela",text:"Between 80 and 100 thousand pesos"},
+  {type:"msg",who:"ysa",text:"Between 80 and 100 is not a number. How much <b>exactly</b> last month?"},
+  {type:"msg",who:"daniela",text:"Last month it was $95,400"},
   {type:"data",tab:"pl",row:"revenue",col:0,val:95400,fmt:"$"},
   {type:"progress",doc:"pl",pct:8},
-  {type:"msg",who:"ysa",text:"Bien. ¿Y cuánto te costó producir eso? Dame el COGS completo."},
-  {type:"msg",who:"daniela",text:"Unos $64,800 en materias primas y producción"},
+  {type:"msg",who:"ysa",text:"Good. And how much did it cost to produce that? Give me the full COGS."},
+  {type:"msg",who:"daniela",text:"About $64,800 in raw materials and production"},
   {type:"data",tab:"pl",row:"cogs",col:0,val:64800,fmt:"$"},
   {type:"data",tab:"pl",row:"gross_profit",col:0,val:30600,fmt:"$"},
   {type:"data",tab:"pl",row:"gross_margin",col:0,val:32.08,fmt:"%"},
   {type:"progress",doc:"pl",pct:15},
-  {type:"msg",who:"ysa",text:"Margen bruto: 32%. No está mal para alimentos. Pero no es suficiente para escalar. Necesitamos desglosar tus gastos operativos."},
-  {type:"msg",who:"daniela",text:"Ok, la renta son $4,500, nómina $3,200, marketing $800, servicios $700, y otros $500"},
+  {type:"msg",who:"ysa",text:"Gross margin: 32%. Not bad for food. But not enough to scale. We need to break down your operating expenses."},
+  {type:"msg",who:"daniela",text:"Ok, rent is $4,500, payroll $3,200, marketing $800, utilities $700, and other $500"},
   {type:"data",tab:"pl",row:"rent",col:0,val:4500,fmt:"$"},
   {type:"data",tab:"pl",row:"salaries",col:0,val:3200,fmt:"$"},
   {type:"data",tab:"pl",row:"marketing",col:0,val:800,fmt:"$"},
@@ -489,11 +518,11 @@ const demoScript = [
   {type:"data",tab:"pl",row:"other_exp",col:0,val:500,fmt:"$"},
   {type:"data",tab:"pl",row:"total_opex",col:0,val:9700,fmt:"$"},
   {type:"progress",doc:"pl",pct:35},
-  {type:"msg",who:"ysa",text:"Gastos operativos: $9,700. Tu EBITDA es $20,900. Margen neto de ~22%. Ahora dime: ¿esto es consistente mes a mes?"},
+  {type:"msg",who:"ysa",text:"Operating expenses: $9,700. Your EBITDA is $20,900. Net margin ~22%. Now tell me: is this consistent month to month?"},
   {type:"data",tab:"pl",row:"ebitda",col:0,val:20900,fmt:"$"},
   {type:"data",tab:"pl",row:"net_margin",col:0,val:21.90,fmt:"%"},
   {type:"data",tab:"pl",row:"total_rev",col:0,val:95400,fmt:"$"},
-  {type:"msg",who:"daniela",text:"Más o menos. En enero fueron $85,200 y febrero $88,000. Ha ido creciendo."},
+  {type:"msg",who:"daniela",text:"More or less. January was $85,200 and February $88,000. It's been growing."},
   // Fill months 2-6 revenue
   {type:"data",tab:"pl",row:"revenue",col:1,val:88000,fmt:"$"},
   {type:"data",tab:"pl",row:"revenue",col:2,val:90500,fmt:"$"},
@@ -501,7 +530,7 @@ const demoScript = [
   {type:"data",tab:"pl",row:"revenue",col:4,val:93800,fmt:"$"},
   {type:"data",tab:"pl",row:"revenue",col:5,val:95400,fmt:"$"},
   {type:"progress",doc:"pl",pct:50},
-  {type:"msg",who:"ysa",text:"Crecimiento del 3-4% mensual. Modesto pero sólido. Vamos a proyectar los próximos 6 meses manteniendo esa tendencia."},
+  {type:"msg",who:"ysa",text:"3-4% monthly growth. Modest but solid. Let's project the next 6 months keeping that trend."},
   // Months 7-12 revenue projection
   {type:"data",tab:"pl",row:"revenue",col:6,val:97500,fmt:"$"},
   {type:"data",tab:"pl",row:"revenue",col:7,val:99800,fmt:"$"},
@@ -510,7 +539,7 @@ const demoScript = [
   {type:"data",tab:"pl",row:"revenue",col:10,val:105000,fmt:"$"},
   {type:"data",tab:"pl",row:"revenue",col:11,val:107000,fmt:"$"},
   {type:"progress",doc:"pl",pct:70},
-  {type:"msg",who:"ysa",text:"Ahora el COGS para cada mes. Si mantienes 68%, estos son tus costos proyectados."},
+  {type:"msg",who:"ysa",text:"Now COGS for each month. If you maintain 68%, these are your projected costs."},
   {type:"data",tab:"pl",row:"cogs",col:1,val:59840,fmt:"$"},
   {type:"data",tab:"pl",row:"cogs",col:2,val:61540,fmt:"$"},
   {type:"data",tab:"pl",row:"cogs",col:3,val:62628,fmt:"$"},
@@ -523,8 +552,8 @@ const demoScript = [
   {type:"data",tab:"pl",row:"cogs",col:10,val:71400,fmt:"$"},
   {type:"data",tab:"pl",row:"cogs",col:11,val:72760,fmt:"$"},
   {type:"progress",doc:"pl",pct:85},
-  {type:"msg",who:"ysa",text:"Estado de resultados casi completo. Vamos al flujo de caja. ¿Cuánto efectivo tienes hoy en el banco?"},
-  {type:"msg",who:"daniela",text:"Tenemos $32,000 en el banco"},
+  {type:"msg",who:"ysa",text:"P&L almost complete. Let's move to cash flow. How much cash do you have in the bank today?"},
+  {type:"msg",who:"daniela",text:"We have $32,000 in the bank"},
   {type:"data",tab:"cf",row:"cf_sales",col:0,val:95400,fmt:"$"},
   {type:"data",tab:"cf",row:"cf_cogs",col:0,val:64800,fmt:"$"},
   {type:"data",tab:"cf",row:"cf_opex",col:0,val:9700,fmt:"$"},
@@ -534,7 +563,7 @@ const demoScript = [
   {type:"data",tab:"cf",row:"cf_cumulative",col:0,val:52900,fmt:"$"},
   {type:"progress",doc:"cf",pct:25},
   {type:"progress",doc:"pl",pct:95},
-  {type:"msg",who:"ysa",text:"Flujo positivo desde el mes 1. Eso es buena señal. Necesitamos proyectar 12 meses y registrar tu balance. Vamos bien, Daniela. Tu negocio tiene fundamentos sólidos."},
+  {type:"msg",who:"ysa",text:"Positive cash flow from month 1. That's a good sign. We need to project 12 months and record your balance sheet. Looking good, Daniela. Your business has solid fundamentals."},
   {type:"data",tab:"bs",row:"bs_cash",col:0,val:32000,fmt:"$"},
   {type:"data",tab:"bs",row:"bs_inventory",col:0,val:8500,fmt:"$"},
   {type:"data",tab:"bs",row:"bs_equipment",col:0,val:45000,fmt:"$"},
@@ -544,16 +573,95 @@ const demoScript = [
   {type:"data",tab:"bs",row:"bs_equity",col:0,val:73500,fmt:"$"},
   {type:"progress",doc:"bs",pct:30},
   {type:"progress",doc:"pl",pct:100},
-  {type:"msg",who:"ysa",text:"Estado de resultados: ✅ completo. Siguiente paso: completar flujo de caja y balance. Estás en camino al Nivel 2. No aflojes."},
+  {type:"msg",who:"ysa",text:"P&L: ✅ complete. Next step: finish cash flow and balance sheet. You're on track for Level 2. Don't slack off."},
+  // === STAKING PHASE ===
+  {type:"stake",action:"show",text:"💎 Staking 0.01 MON to start 7-day challenge..."},
+  {type:"msg",who:"ysa",text:"Now let's make this real. Stake 0.01 MON to commit to completing your financials in 7 days. Skin in the game, Daniela."},
+  {type:"msg",who:"daniela",text:"Done. Let's do this."},
+  {type:"stake",action:"confirmed",text:"✅ 0.01 MON staked — 7 day challenge active"},
+  // === COMPLETE CASH FLOW ===
+  {type:"msg",who:"ysa",text:"Good. Cash flow projections for months 2-12 based on your growth rate..."},
+  {type:"progress",doc:"cf",pct:60},
+  {type:"progress",doc:"cf",pct:85},
+  {type:"progress",doc:"cf",pct:100},
+  {type:"msg",who:"ysa",text:"Cash flow statement: ✅ complete. Two down, one to go."},
+  // === COMPLETE BALANCE SHEET ===
+  {type:"msg",who:"ysa",text:"Balance sheet — assets, liabilities, equity. Let's close this out."},
+  {type:"progress",doc:"bs",pct:50},
+  {type:"progress",doc:"bs",pct:80},
+  {type:"progress",doc:"bs",pct:100},
+  // === BADGE UNLOCK ===
+  {type:"badge",level:2},
+  {type:"confetti"},
+  {type:"msg",who:"ysa",text:"All 3 documents complete. 🏆 Badge unlocked: Level 2 — Disciplined. Stake returned. You earned it, Daniela. Now let's keep these updated."},
 ];
 
 let demoRunning = false;
+let demoStartTime = 0;
+const DEMO_DURATION = 90; // 1:30
+
+function updateDemoTimer() {
+  if (!demoRunning) return;
+  const elapsed = (Date.now() - demoStartTime) / 1000;
+  const pct = Math.min(100, (elapsed / DEMO_DURATION) * 100);
+  const remaining = Math.max(0, DEMO_DURATION - elapsed);
+  const mins = Math.floor(remaining / 60);
+  const secs = Math.floor(remaining % 60);
+  document.getElementById("demoTimerFill").style.width = pct + "%";
+  document.getElementById("demoTimerText").textContent = `${mins}:${secs.toString().padStart(2,'0')} remaining`;
+  if (demoRunning) requestAnimationFrame(updateDemoTimer);
+}
+
+function fireConfetti() {
+  const colors = ['#836EF9','#F5C518','#4CC98A','#E84855','#fff'];
+  for (let i = 0; i < 60; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.background = colors[Math.floor(Math.random()*colors.length)];
+    el.style.borderRadius = Math.random()>0.5?'50%':'2px';
+    el.style.width = (6+Math.random()*8)+'px';
+    el.style.height = (6+Math.random()*8)+'px';
+    el.style.animationDuration = (2+Math.random()*2)+'s';
+    el.style.animationDelay = (Math.random()*0.5)+'s';
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(), 4000);
+  }
+}
+
+function showStakeNotification(text) {
+  const el = document.createElement('div');
+  el.className = 'stake-notification';
+  el.innerHTML = text;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(), 3500);
+}
+
+function unlockBadge(level) {
+  const badges = document.querySelectorAll('.badge-item');
+  badges.forEach(b => {
+    const l = parseInt(b.dataset.level);
+    if (l <= level) {
+      b.classList.remove('locked');
+      b.classList.add('unlocked','current');
+      const icon = b.querySelector('.badge-icon');
+      if (l===1) icon.textContent='📋';
+      if (l===2) icon.textContent='🏆';
+      if (l===3) icon.textContent='💎';
+      if (l===4) icon.textContent='👑';
+    }
+  });
+}
+
 async function startDemo() {
   if (demoRunning) return;
   demoRunning = true;
+  demoStartTime = Date.now();
   document.getElementById("demoBtn").disabled = true;
-  document.getElementById("demoBtn").textContent = "⏳ Demo en curso...";
+  document.getElementById("demoBtn").textContent = "⏳ Demo running...";
+  document.getElementById("demoTimer").classList.add("active");
   document.getElementById("chatMessages").innerHTML = "";
+  updateDemoTimer();
 
   for (const step of demoScript) {
     if (step.type === "msg") {
@@ -567,9 +675,24 @@ async function startDemo() {
     } else if (step.type === "progress") {
       setProgress(step.doc, step.pct);
       await sleep(100);
+    } else if (step.type === "stake") {
+      showStakeNotification(step.action==='show'
+        ? '<div>💎 Staking...</div><div class="stake-amount">0.01 MON</div><div style="font-size:12px;color:#888;margin-top:4px;">7-day discipline challenge</div>'
+        : '<div>✅ Stake confirmed</div><div class="stake-amount">0.01 MON</div><div style="font-size:12px;color:#4CC98A;margin-top:4px;">Challenge active — 7 days</div>');
+      document.getElementById("cycleBadge").textContent = step.action==='confirmed' ? "Day 1/7 ⏳" : "Staking...";
+      if (step.action==='confirmed') document.getElementById("cycleBadge").classList.add("active");
+      await sleep(2000);
+    } else if (step.type === "badge") {
+      unlockBadge(step.level);
+      await sleep(800);
+    } else if (step.type === "confetti") {
+      fireConfetti();
+      await sleep(1500);
     }
   }
-  document.getElementById("demoBtn").textContent = "✅ Demo completo";
+  document.getElementById("demoBtn").textContent = "✅ Demo complete";
+  document.getElementById("demoTimerFill").style.width = "100%";
+  document.getElementById("demoTimerText").textContent = "Complete!";
   demoRunning = false;
 }
 
@@ -578,6 +701,8 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 // ============ INIT ============
 renderSheet("pl");
 renderQuiz();
+// Auto-start demo after 1.5s
+setTimeout(() => startDemo(), 1500);
 </script>
 </body>
 </html>
