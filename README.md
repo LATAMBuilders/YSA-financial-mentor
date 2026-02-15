@@ -1,90 +1,149 @@
-# YSA — Mentora Financiera 🧠💰
+# 🦅 YSA — Financial Discipline Infrastructure for LATAM Founders
 
-**Tu disciplina financiera, verificada onchain.**
-
-YSA is an AI financial mentor for LATAM founders that combines behavioral accountability with blockchain verification. Stake real value, complete financial challenges, earn soulbound reputation badges, and unlock grant funding — all onchain.
-
-## Problem
-
-LATAM founders struggle with financial discipline. Traditional mentorship is expensive, inconsistent, and unverifiable. Investors have no way to assess a founder's financial rigor before writing checks.
-
-## Solution
-
-YSA creates a **discipline-to-capital pipeline**:
-
-1. **Stake** → Founder commits MON to a 7-day discipline cycle
-2. **Challenge** → Complete 3 financial challenges guided by Ysa (AI CFO mentor)
-3. **Badge** → Earn a soulbound NFT proving financial discipline level
-4. **Grant** → Apply to grant pools that require verified badges
-
-```
-┌─────────────┐     ┌──────────────┐     ┌───────────┐     ┌────────────┐
-│  Stake MON  │────▶│  3 Challenges │────▶│  Badge NFT │────▶│ Grant Pool │
-│  (7 days)   │     │  (AI-guided)  │     │ (Soulbound)│     │  (Funding) │
-└─────────────┘     └──────────────┘     └───────────┘     └────────────┘
-       │                                       │
-       │            ┌──────────┐               │
-       └───abandon──▶│  Slashed  │              │
-                    │  (-50%)   │              │
-                    └──────────┘              │
-                                              ▼
-                                    Levels: Organized → Disciplined
-                                         → CapitalReady → InvestorGrade
-```
-
-## Smart Contracts
-
-| Contract | Description |
-|----------|-------------|
-| `YSADiscipline` | Stake-based 7-day discipline cycles with challenge tracking |
-| `YSABadge` | Soulbound ERC-721 with 4 reputation levels |
-| `YSAGrantPool` | Grant pools requiring minimum badge level to apply |
-
-### Contract Addresses (Monad Testnet)
-
-| Contract | Address |
-|----------|---------|
-| YSABadge | TBD |
-| YSADiscipline | TBD |
-| YSAGrantPool | TBD |
-
-## Run Locally
-
-### Smart Contracts
-
-```bash
-# Install Foundry
-curl -L https://foundry.paradigm.xyz | bash
-foundryup
-
-# Build & Test
-cd ysa-financial-mentor
-forge build
-forge test -vv
-```
-
-### Web App
-
-Just open `web/index.html` in your browser. No build step needed.
-
-For contract interaction, connect MetaMask to Monad Testnet (Chain ID: 10143).
-
-## Tech Stack
-
-- **Smart Contracts:** Solidity 0.8.24, Foundry
-- **Frontend:** Vanilla JS, ethers.js v6
-- **Network:** Monad Testnet
-- **AI Mentor:** Simulated in demo (production: LLM-powered)
-
-## Team
-
-- **danielam** (LATAMBuilders) — Founder, Product
-- **Aibus Dumbleclaw** — AI Agent, Engineering
-
-## License
-
-MIT
+> **YSA is an AI financial mentor that turns financial discipline into onchain reputation — and reputation into access to capital.**
 
 ---
 
-*Built for the Moltiverse Hackathon on Monad* 🟣
+## 💀 The Problem
+
+**80% of LATAM startups fail** not because of lack of talent, but weak financial planning.
+
+Vision builds startups. **Financial discipline keeps them alive.**
+
+Most founders can pitch their dream in 60 seconds but can't explain their unit economics in 60 minutes. Investors know this. That's why capital doesn't flow.
+
+## 🦅 The Solution
+
+YSA is a **demanding AI financial mentor** — think ex-Deloitte CFO who worked in LATAM for 20 years, not a friendly chatbot. She guides founders through building **3 core financial documents** while training real financial literacy through daily quizzes.
+
+But discipline has **economic consequences**:
+
+1. **🔵 Stake to Start** — Founder stakes MON to begin a 7-day financial discipline cycle
+2. **🟣 Earn Reputation Onchain** — Complete the cycle → recover stake + earn verifiable badge. Abandon → lose stake.
+3. **🟢 Unlock Capital** — Badges = access to grant pools. Investors verify founder maturity onchain.
+
+> *"If you can't commit 0.1 MON to your own financial education, why would anyone commit $100K to your startup?"*
+
+---
+
+## 🏗️ Architecture
+
+```
+┌─────────────┐     ┌──────────────────┐     ┌────────────────────────┐
+│   Founder   │────▶│  Stake MON       │────▶│  YSA Discipline Cycle  │
+│             │     │  (Smart Contract) │     │  (7 days)              │
+└─────────────┘     └──────────────────┘     └───────────┬────────────┘
+                                                         │
+                                          ┌──────────────┴──────────────┐
+                                          │                             │
+                                    ✅ Complete                    ❌ Abandon
+                                          │                             │
+                              ┌───────────┴──────────┐      ┌──────────┴──────────┐
+                              │ 📊 3 Financial Docs  │      │ 💸 Stake Slashed    │
+                              │ 🧠 Quiz Score ≥ 80%  │      │ → Funds reward pool │
+                              │ 🏅 Badge NFT Minted  │      └─────────────────────┘
+                              └───────────┬──────────┘
+                                          │
+                              ┌───────────┴──────────┐
+                              │ 🏦 Grant Pool Access  │
+                              │ Investors verify      │
+                              │ onchain reputation    │
+                              └──────────────────────┘
+```
+
+### What YSA Builds With You
+
+| Document | What It Proves |
+|----------|---------------|
+| 📊 **Income Statement (P&L)** | You understand your revenue, costs, and margins |
+| 💰 **Cash Flow Statement** | You know where your money actually goes |
+| 📋 **Balance Sheet** | You can see your financial position clearly |
+
+---
+
+## 📜 Smart Contracts (Monad Testnet)
+
+| Contract | Address | Description |
+|----------|---------|-------------|
+| `YSADiscipline` | `TBD` | Stake/release/slash cycle management |
+| `YSABadge` | `TBD` | Soulbound NFT with 4 reputation levels |
+| `YSAGrantPool` | `TBD` | Badge-gated grant distribution |
+
+### 🏅 Reputation Levels
+
+| Level | Title | Requirements |
+|-------|-------|-------------|
+| 1 | **Organized** | First cycle complete |
+| 2 | **Disciplined** | 3+ cycles, consistent updates |
+| 3 | **Capital Ready** | Full financial model validated |
+| 4 | **Investor Grade** | Track record of financial discipline |
+
+---
+
+## 💰 Economic Model
+
+| Revenue Stream | Description |
+|---------------|-------------|
+| **Staking fees** | Small fee on cycle start |
+| **Slash pool** | Abandoned stakes fund completion rewards |
+| **Grant pool fees** | Funds/DAOs pay for verified founder pipeline |
+| **Premium badges** | Deep financial audits and advanced mentoring |
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| **AI Agent** | YSA mentor with real financial data context |
+| **Blockchain** | Monad Testnet (high throughput for frequent txs) |
+| **Contracts** | Solidity 0.8.24, Foundry |
+| **Frontend** | Vanilla JS + ethers.js |
+| **Data** | Real business data from Hummus Máshu (CDMX 🇲🇽) |
+
+---
+
+## 🎬 Demo
+
+- 🔗 [Live App — TBD](#)
+- 📹 [2-min Video — TBD](#)
+
+---
+
+## 👥 Team
+
+- **danielam** (LATAMBuilders) — Founder, product design, financial model
+- **Aibus Dumbleclaw** — AI agent, smart contracts, web development
+
+---
+
+## 🏆 Built For
+
+**Moltiverse Hackathon** by Nadfun & Monad
+**Track:** Agent
+
+---
+
+## 🚀 Run Locally
+
+```bash
+# Clone
+git clone https://github.com/your-repo/ysa-financial-mentor.git
+cd ysa-financial-mentor
+
+# Build & test contracts
+cd contracts
+forge build
+forge test
+
+# Run frontend
+open web/index.html
+# or
+python3 -m http.server 8080 -d web/
+```
+
+---
+
+<p align="center">
+  <b>Built on Monad</b> 🟣 | Financial discipline is the new credit score.
+</p>
