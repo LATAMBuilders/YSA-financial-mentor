@@ -692,10 +692,16 @@ const demoScript = [
   {type:"msg",who:"daniela",text:"$95,400"},
   {type:"data",tab:"pl",row:"revenue",col:0,val:95400,fmt:"$"},
   {type:"progress",doc:"pl",pct:10},
-  // === FAST P&L BUILD (data fills rapidly) ===
+
+  // === P&L BUILD with conversation ===
+  {type:"msg",who:"ysa",text:"Cost of product? Raw materials, production, packaging — everything."},
+  {type:"msg",who:"daniela",text:"$64,800"},
   {type:"data",tab:"pl",row:"cogs",col:0,val:64800,fmt:"$"},
   {type:"data",tab:"pl",row:"gross_profit",col:0,val:30600,fmt:"$"},
   {type:"data",tab:"pl",row:"gross_margin",col:0,val:32.08,fmt:"%"},
+  {type:"progress",doc:"pl",pct:25},
+  {type:"msg",who:"ysa",text:"Monthly expenses? Rent, payroll, marketing, utilities."},
+  {type:"msg",who:"daniela",text:"Rent $4,500 · Payroll $3,200 · Marketing $800 · Utilities $700 · Other $500"},
   {type:"data",tab:"pl",row:"rent",col:0,val:4500,fmt:"$"},
   {type:"data",tab:"pl",row:"salaries",col:0,val:3200,fmt:"$"},
   {type:"data",tab:"pl",row:"marketing",col:0,val:800,fmt:"$"},
@@ -706,15 +712,18 @@ const demoScript = [
   {type:"data",tab:"pl",row:"net_margin",col:0,val:21.90,fmt:"%"},
   {type:"data",tab:"pl",row:"total_rev",col:0,val:95400,fmt:"$"},
   {type:"progress",doc:"pl",pct:60},
+  {type:"msg",who:"ysa",text:"Last 6 months revenue?"},
+  {type:"msg",who:"daniela",text:"$85K → $88K → $90.5K → $92K → $93.8K → $95.4K"},
   {type:"data",tab:"pl",row:"revenue",col:1,val:88000,fmt:"$"},
   {type:"data",tab:"pl",row:"revenue",col:2,val:90500,fmt:"$"},
   {type:"data",tab:"pl",row:"revenue",col:3,val:92100,fmt:"$"},
   {type:"data",tab:"pl",row:"revenue",col:4,val:93800,fmt:"$"},
   {type:"data",tab:"pl",row:"revenue",col:5,val:95400,fmt:"$"},
   {type:"progress",doc:"pl",pct:100},
-  {type:"msg",who:"ysa",text:"P&L ✅. Cash flow and balance sheet — keep going."},
+  {type:"msg",who:"ysa",text:"P&L ✅. Cash flow next — how much cash in the bank?"},
 
-  // === FAST CASH FLOW ===
+  // === CASH FLOW with conversation ===
+  {type:"msg",who:"daniela",text:"$32,000"},
   {type:"data",tab:"cf",row:"cf_sales",col:0,val:95400,fmt:"$"},
   {type:"data",tab:"cf",row:"cf_cogs",col:0,val:64800,fmt:"$"},
   {type:"data",tab:"cf",row:"cf_opex",col:0,val:9700,fmt:"$"},
@@ -723,8 +732,10 @@ const demoScript = [
   {type:"data",tab:"cf",row:"cf_net",col:0,val:20900,fmt:"$"},
   {type:"data",tab:"cf",row:"cf_cumulative",col:0,val:52900,fmt:"$"},
   {type:"progress",doc:"cf",pct:100},
+  {type:"msg",who:"ysa",text:"Cash flow ✅. Last one — assets, liabilities?"},
 
-  // === FAST BALANCE SHEET ===
+  // === BALANCE SHEET with conversation ===
+  {type:"msg",who:"daniela",text:"$45K equipment, $8.5K inventory, $12K payable"},
   {type:"data",tab:"bs",row:"bs_cash",col:0,val:32000,fmt:"$"},
   {type:"data",tab:"bs",row:"bs_inventory",col:0,val:8500,fmt:"$"},
   {type:"data",tab:"bs",row:"bs_equipment",col:0,val:45000,fmt:"$"},
@@ -732,7 +743,6 @@ const demoScript = [
   {type:"data",tab:"bs",row:"bs_ap",col:0,val:12000,fmt:"$"},
   {type:"data",tab:"bs",row:"bs_total_l",col:0,val:12000,fmt:"$"},
   {type:"data",tab:"bs",row:"bs_equity",col:0,val:73500,fmt:"$"},
-  {type:"progress",doc:"bs",pct:50},
   {type:"progress",doc:"bs",pct:100},
 
   // === ACT 5: YSA FINANCIAL SUMMARY (special color) ===
@@ -762,6 +772,8 @@ const demoScript = [
     "→ Result: Financial discipline confirmed. Due diligence: PASSED.",
   ]},
   {type:"msg",who:"ysa",text:"Any DAO, investor, or protocol can query your badge onchain before deploying capital. No PDFs. No trust-me-bro. Just verifiable proof."},
+  {type:"msg",who:"ysa",text:"Your documents are yours. Download them anytime."},
+  {type:"download"},
   {type:"msg",who:"ysa",text:"This is just the beginning. Know your numbers, or your business will eat you alive. I'll be here. Don't get comfortable."},
 ];
 
@@ -894,9 +906,11 @@ async function startDemo() {
       }
       addMessage(step.who, step.text);
       // Scale delay by message length for voiceover pacing
-      const baseDelay = step.who==='ysa' ? 2500 : 1600;
-      const extraPerChar = step.who==='ysa' ? 18 : 10;
-      const msgDelay = Math.min(baseDelay + step.text.length * extraPerChar, 12000);
+      // Very short msgs (emoji, numbers) get fast delay
+      const isShort = step.text.length < 10;
+      const baseDelay = isShort ? 800 : (step.who==='ysa' ? 2500 : 1600);
+      const extraPerChar = isShort ? 0 : (step.who==='ysa' ? 18 : 10);
+      const msgDelay = Math.min(baseDelay + step.text.length * extraPerChar, 10000);
       await demoSleep(msgDelay);
     } else if (step.type === "data") {
       if (currentTab !== step.tab) {
@@ -1032,6 +1046,18 @@ async function startDemo() {
     } else if (step.type === "badge") {
       unlockBadge(step.level);
       await demoSleep(800);
+    } else if (step.type === "download") {
+      // Show cursor clicking the Export All button
+      showCursor();
+      const exportBtn = document.querySelector('[onclick="downloadAllCSV()"]');
+      if (exportBtn) {
+        await moveCursorTo(exportBtn);
+        await cursorClickAnim();
+        exportBtn.style.boxShadow = '0 0 15px rgba(131,110,249,0.5)';
+        await demoSleep(1500);
+        exportBtn.style.boxShadow = '';
+      }
+      hideCursor();
     } else if (step.type === "confetti") {
       fireConfetti();
       await demoSleep(1500);
