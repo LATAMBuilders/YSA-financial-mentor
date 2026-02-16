@@ -47,7 +47,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
 .main{flex:1;display:flex;overflow:hidden;}
 
 /* LEFT PANEL - CHAT */
-.panel-chat{width:25%;min-width:240px;display:flex;flex-direction:column;border-right:1px solid var(--border);background:var(--surface);}
+.panel-chat{width:25%;min-width:240px;max-width:25%;flex-shrink:0;flex-grow:0;display:flex;flex-direction:column;border-right:1px solid var(--border);background:var(--surface);}
 .panel-title{padding:12px 16px;font-weight:700;font-size:14px;border-bottom:1px solid var(--border);background:rgba(131,110,249,0.05);color:var(--text);}
 .chat-messages{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;}
 .msg{max-width:88%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.5;animation:msgIn .3s ease;display:flex;flex-direction:column;}
@@ -57,7 +57,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
 .msg.ysa .author{color:var(--purple);}
 .msg.daniela .author{color:var(--yellow);}
 .ysa-avatar{display:inline-flex;align-items:center;gap:4px;}
-.ysa-avatar::before{content:'🦅';display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;font-size:12px;background:#0D0D0D;border-radius:50%;border:1px solid var(--purple);flex-shrink:0;}
+.ysa-avatar::before{content:'🐦‍⬛';display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;font-size:12px;background:#0D0D0D;border-radius:50%;border:1px solid var(--purple);flex-shrink:0;}
 @keyframes msgIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 .chat-input{padding:10px;border-top:1px solid var(--border);display:flex;gap:6px;}
 .chat-input input{flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:inherit;outline:none;background:var(--bg);color:var(--text);}
@@ -65,7 +65,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
 .chat-input button{background:var(--purple);color:#fff;border:none;padding:8px 14px;border-radius:6px;font-weight:600;cursor:pointer;font-size:13px;font-family:'Roboto Mono',monospace;}
 
 /* CENTER PANEL - SPREADSHEET */
-.panel-excel{flex:1;display:flex;flex-direction:column;border-right:1px solid var(--border);background:var(--bg);}
+.panel-excel{flex:1 1 50%;display:flex;flex-direction:column;border-right:1px solid var(--border);background:var(--bg);overflow:hidden;}
 .excel-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--surface);}
 .excel-tab{padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;color:var(--text-muted);transition:all .15s;}
 .excel-tab:hover{color:var(--text);}
@@ -84,7 +84,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
 .row-nums{color:var(--text-muted);font-size:11px;background:var(--surface) !important;text-align:center;width:30px;}
 
 /* RIGHT PANEL - SIDEBAR */
-.panel-sidebar{width:25%;min-width:220px;display:flex;flex-direction:column;background:var(--surface);overflow-y:auto;}
+.panel-sidebar{width:25%;min-width:220px;max-width:25%;flex-shrink:0;flex-grow:0;display:flex;flex-direction:column;background:var(--surface);overflow-y:auto;}
 .sidebar-section{padding:16px;border-bottom:1px solid var(--border);}
 .sidebar-section h3{font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px;}
 
@@ -135,12 +135,17 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:#333;border-radius:3px;}
 
-/* Demo Timer */
-.demo-timer{display:none;background:var(--surface);border-bottom:1px solid var(--border);padding:6px 20px;align-items:center;gap:12px;font-size:12px;color:var(--text-muted);font-family:'Roboto Mono',monospace;}
+/* Demo Controls */
+.demo-timer{display:none;background:var(--surface);border-bottom:1px solid var(--border);padding:6px 20px;align-items:center;gap:10px;font-size:12px;color:var(--text-muted);font-family:'Roboto Mono',monospace;}
 .demo-timer.active{display:flex;}
-.demo-timer-bar{flex:1;height:4px;background:#2A2A3E;border-radius:2px;overflow:hidden;}
-.demo-timer-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--yellow));border-radius:2px;width:0%;transition:width 0.3s;}
-.demo-timer-text{min-width:80px;text-align:right;}
+.demo-controls{display:flex;align-items:center;gap:6px;}
+.demo-ctrl-btn{background:none;border:1px solid var(--border);color:var(--text);border-radius:6px;padding:4px 10px;font-size:14px;cursor:pointer;font-family:'Roboto Mono',monospace;transition:all .15s;}
+.demo-ctrl-btn:hover{background:var(--purple);border-color:var(--purple);color:#fff;}
+.demo-ctrl-btn.active-btn{background:var(--purple);border-color:var(--purple);color:#fff;}
+.demo-timer-bar{flex:1;height:6px;background:#2A2A3E;border-radius:3px;overflow:hidden;cursor:pointer;position:relative;}
+.demo-timer-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--yellow));border-radius:3px;width:0%;transition:width 0.15s;}
+.demo-timer-text{min-width:100px;text-align:right;}
+.demo-step-label{color:var(--purple);font-weight:600;min-width:60px;}
 
 /* Confetti */
 .confetti-piece{position:fixed;width:10px;height:10px;top:-10px;z-index:9999;animation:confetti-fall 3s ease-in forwards;}
@@ -157,25 +162,66 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
 @keyframes term-appear{from{opacity:0;transform:translateX(-10px);}to{opacity:1;transform:translateX(0);}}
 .onchain-terminal .term-line.result{color:var(--yellow);font-weight:600;}
 
-/* Staking notification */
+/* Staking notification (demo - bottom right) */
 .stake-notification{position:fixed;bottom:20px;right:20px;background:var(--surface);border:1px solid var(--purple);border-radius:12px;padding:16px 24px;z-index:9998;font-size:14px;animation:slide-up 0.5s ease;box-shadow:0 4px 24px rgba(0,0,0,0.5);}
 .stake-notification .stake-amount{font-size:24px;font-weight:800;color:var(--yellow);font-family:'Roboto Mono',monospace;}
 @keyframes slide-up{from{transform:translateY(100px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+
+/* Stake overlay (real app - center) */
+.stake-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:9999;display:flex;align-items:center;justify-content:center;animation:fade-in 0.3s ease;}
+.stake-overlay-content{text-align:center;animation:scale-in 0.5s ease;}
+.stake-overlay .raven{font-size:100px;animation:raven-fly 1s ease;display:block;margin-bottom:20px;filter:drop-shadow(0 0 30px var(--purple-glow));}
+@keyframes raven-fly{0%{transform:translateY(60px) scale(0.3);opacity:0;}60%{transform:translateY(-10px) scale(1.1);opacity:1;}100%{transform:translateY(0) scale(1);opacity:1;}}
+.stake-overlay .speech{background:linear-gradient(135deg,#1a0a30,#0f0f2e);border:2px solid var(--purple);border-radius:20px;padding:32px 48px;display:inline-block;position:relative;max-width:500px;box-shadow:0 0 60px var(--purple-glow),0 0 120px rgba(131,110,249,0.2);animation:speech-pulse 2s ease-in-out infinite;}
+@keyframes speech-pulse{0%,100%{box-shadow:0 0 60px var(--purple-glow),0 0 120px rgba(131,110,249,0.2);}50%{box-shadow:0 0 80px var(--purple-glow),0 0 160px rgba(131,110,249,0.3);}}
+.stake-overlay .speech h2{font-family:'Inter',sans-serif;font-size:28px;font-weight:900;color:#fff;margin-bottom:6px;text-transform:uppercase;letter-spacing:2px;text-shadow:0 0 20px var(--purple-glow);}
+.stake-overlay .speech .stake-amount-overlay{font-size:36px;font-weight:900;color:var(--yellow);font-family:'Roboto Mono',monospace;margin:12px 0;text-shadow:0 0 20px var(--glow);animation:amount-glow 1.5s ease-in-out infinite;}
+@keyframes amount-glow{0%,100%{text-shadow:0 0 20px var(--glow);}50%{text-shadow:0 0 40px var(--glow),0 0 60px rgba(245,197,24,0.4);}}
+.stake-overlay .speech p{color:#bbb;font-size:15px;line-height:1.5;}
+.stake-overlay .speech .tx-link{display:block;margin-top:14px;color:var(--purple);font-size:12px;font-family:'Roboto Mono',monospace;opacity:0.8;}
+.stake-overlay .speech .commitment-tag{display:inline-block;margin-top:8px;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:700;font-family:'Roboto Mono',monospace;background:rgba(76,201,138,0.15);color:var(--success);border:1px solid rgba(76,201,138,0.3);letter-spacing:1px;}
+@keyframes fade-in{from{opacity:0;}to{opacity:1;}}
+@keyframes scale-in{from{transform:scale(0.8);opacity:0;}to{transform:scale(1);opacity:1;}}
+
+/* Quiz spotlight */
+.quiz-spotlight{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:90;pointer-events:none;animation:fade-in 0.5s ease;}
+.quiz-spotlight-banner{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:91;background:linear-gradient(135deg,#1a0a30,#0f0f2e);border:2px solid var(--yellow);border-radius:16px;padding:20px 40px;text-align:center;pointer-events:none;animation:scale-in 0.5s ease;box-shadow:0 0 60px var(--glow);}
+.quiz-spotlight-banner h3{font-size:22px;color:var(--yellow);font-weight:800;margin-bottom:6px;}
+.quiz-spotlight-banner p{color:var(--text-muted);font-size:14px;}
+.quiz-spotlight-banner .arrow-right{font-size:40px;animation:arrow-point 1s ease-in-out infinite;display:block;margin-top:8px;}
+@keyframes arrow-point{0%,100%{transform:translateX(0);}50%{transform:translateX(15px);}}
+
+/* Fake cursor */
+.fake-cursor{position:fixed;z-index:9990;pointer-events:none;transition:left 0.6s cubic-bezier(.4,0,.2,1),top 0.6s cubic-bezier(.4,0,.2,1);filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5));}
+.fake-cursor svg{width:24px;height:24px;}
+.fake-cursor .cursor-click{position:absolute;top:0;left:8px;width:20px;height:20px;border-radius:50%;background:rgba(131,110,249,0.5);transform:scale(0);pointer-events:none;}
+.fake-cursor .cursor-click.pop{animation:cursor-pop 0.4s ease forwards;}
+@keyframes cursor-pop{0%{transform:scale(0);opacity:1;}100%{transform:scale(2.5);opacity:0;}}
+
+/* Financial summary special */
+.summary-msg{background:linear-gradient(135deg,#1a0a30 0%,#0a1a2e 50%,#0a2a1a 100%) !important;border:2px solid var(--purple) !important;border-radius:16px !important;padding:20px !important;box-shadow:0 0 40px var(--purple-glow),0 0 80px rgba(131,110,249,0.15);animation:summary-glow 2s ease-in-out infinite;max-width:95% !important;}
+@keyframes summary-glow{0%,100%{box-shadow:0 0 40px var(--purple-glow),0 0 80px rgba(131,110,249,0.15);}50%{box-shadow:0 0 60px var(--purple-glow),0 0 100px rgba(131,110,249,0.25);}}
 </style>
 </head>
 <body>
 
-<!-- DEMO TIMER -->
+<!-- DEMO CONTROLS -->
 <div class="demo-timer" id="demoTimer">
   <span>🎬 DEMO</span>
-  <div class="demo-timer-bar"><div class="demo-timer-fill" id="demoTimerFill"></div></div>
-  <div class="demo-timer-text" id="demoTimerText">0:00 / 1:30</div>
+  <div class="demo-controls">
+    <button class="demo-ctrl-btn" id="demoPrevBtn" onclick="demoStepBack()" title="Restart demo">⏮</button>
+    <button class="demo-ctrl-btn active-btn" id="demoPauseBtn" onclick="demoTogglePause()" title="Pause/Play">⏸</button>
+    <button class="demo-ctrl-btn" id="demoNextBtn" onclick="demoStepForward()" title="Next step">⏭</button>
+  </div>
+  <div class="demo-step-label" id="demoStepLabel">0/0</div>
+  <div class="demo-timer-bar" onclick="demoSeek(event)"><div class="demo-timer-fill" id="demoTimerFill"></div></div>
+  <div class="demo-timer-text" id="demoTimerText">Step 0</div>
 </div>
 
 <!-- TOP BAR -->
 <div class="topbar">
   <div class="topbar-left">
-    <div style="font-size:32px;line-height:1;">🦅</div>
+    <div style="font-size:32px;line-height:1;">🐦‍⬛</div>
     <div class="logo">YSA</div>
     <span class="logo-sub">Financial Mentor</span>
   </div>
@@ -184,7 +230,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
     <button class="connect-btn" id="connectBtn" onclick="connectWallet()">🦊 Connect Wallet</button>
   </div>
   <div class="topbar-right">
-    <span class="cycle-badge" id="cycleBadge">Not started</span>
+    <span class="cycle-badge" id="cycleBadge" style="display:none;">Not started</span>
     <span id="monBalance"></span>
     <span style="display:flex;align-items:center;gap:4px;font-weight:600;color:#836EF9;font-size:13px;"><img src="https://monad.xyz/favicon.ico" alt="Monad" style="width:18px;height:18px;border-radius:50%;"> Monad</span>
   </div>
@@ -201,12 +247,17 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
       <input type="text" id="chatInput" placeholder="Type your answer..." onkeydown="if(event.key==='Enter')sendChat()">
       <button onclick="sendChat()">Send</button>
     </div>
+    <div id="actionPanel" style="padding:8px 12px;border-top:1px solid var(--border);">
+      <button id="connectBtnBottom" onclick="connectWallet()" style="width:100%;padding:14px;background:#836EF9;color:#fff;border:none;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Roboto Mono',monospace;display:block;">🦊 Connect Wallet to Start</button>
+      <button id="stakeBtn" onclick="realStake()" style="width:100%;padding:14px;background:#836EF9;color:#fff;border:none;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Roboto Mono',monospace;display:none;">💎 Deposit MON — Start 7-Day Challenge</button>
+      <div style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:4px;">Monad Testnet · Commitment deposit</div>
+    </div>
   </div>
 
   <!-- CENTER: EXCEL -->
   <div class="panel-excel">
     <div class="excel-tabs">
-      <div class="excel-tab active" data-tab="pl" onclick="switchTab('pl')">📊 Estado de Resultados</div>
+      <div class="excel-tab active" data-tab="pl" onclick="switchTab('pl')">📊 P&L Statement</div>
       <div class="excel-tab" data-tab="cf" onclick="switchTab('cf')">💰 Cash Flow</div>
       <div class="excel-tab" data-tab="bs" onclick="switchTab('bs')">📋 Balance Sheet</div>
     </div>
@@ -218,7 +269,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
     <div class="sidebar-section">
       <h3>📄 Document Progress</h3>
       <div class="progress-item">
-        <div class="progress-label"><span>Estado de Resultados</span><span id="plPct">0%</span></div>
+        <div class="progress-label"><span>P&L Statement</span><span id="plPct">0%</span></div>
         <div class="progress-bar"><div class="progress-fill" id="plBar" style="width:0%"></div></div>
       </div>
       <div class="progress-item">
@@ -241,6 +292,12 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
       </div>
     </div>
 
+    <div class="sidebar-section">
+      <h3>🔗 Onchain Status</h3>
+      <button id="queryBtn" onclick="queryOnchain()" style="width:100%;padding:10px;background:#1a1a2e;border:1px solid var(--purple);color:var(--purple);border-radius:8px;font-weight:600;font-size:13px;cursor:pointer;font-family:'Roboto Mono',monospace;margin-bottom:8px;">🔍 Query Contracts</button>
+      <div id="onchainResults" style="font-family:'Roboto Mono',monospace;font-size:11px;line-height:1.8;color:var(--text-muted);"></div>
+    </div>
+
     <div class="sidebar-section quiz-section">
       <h3>🧠 Daily Quiz</h3>
       <div class="quiz-score" id="quizScore">0/3 completed today</div>
@@ -250,17 +307,23 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
 
 </div>
 
+<!-- FAKE CURSOR -->
+<div class="fake-cursor" id="fakeCursor" style="display:none;left:-50px;top:-50px;">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M5 3l14 8-6 2-3 6z" fill="#fff" stroke="#000" stroke-width="1.5"/></svg>
+  <div class="cursor-click" id="cursorClick"></div>
+</div>
+
 <div class="footer"><span class="monad-badge">🟣 Built on Monad</span><span>YSA Financial Mentor v2.0</span></div>
 
 <script>
 // ============ CONTRACT CONFIG ============
 const CONTRACTS = {
-  discipline: "0x0000000000000000000000000000000000000000",
-  badge:      "0x0000000000000000000000000000000000000000",
-  grantPool:  "0x0000000000000000000000000000000000000000"
+  discipline: "0x87ebf67244052c6d136f12fdfc9845b9b106e2dd",
+  badge:      "0x11276bbe88f4a39d24ad389f08949f7f550c2531",
+  grantPool:  "0xcbe59846fc43291a7d1828e77c3319ee43ad0e32"
 };
 const MONAD = {
-  chainId: "0x27A7",
+  chainId: "0x279F",
   chainName: "Monad Testnet",
   rpcUrls: ["https://testnet-rpc.monad.xyz"],
   nativeCurrency: { name:"MON", symbol:"MON", decimals:18 },
@@ -282,89 +345,109 @@ const POOL_ABI = [
 ];
 
 let provider, signer, userAddress;
+let hasStaked = false;
 
 // ============ WALLET ============
 async function connectWallet() {
   if (!window.ethereum) return alert("Install MetaMask");
+  const btn = document.getElementById("connectBtn");
+  btn.textContent = "Connecting...";
   try {
     await window.ethereum.request({ method:"eth_requestAccounts" });
+    // Try to switch, if fails try to add, then wait and retry
     try {
       await window.ethereum.request({ method:"wallet_switchEthereumChain", params:[{chainId:MONAD.chainId}] });
-    } catch(e) {
-      if (e.code===4902) await window.ethereum.request({ method:"wallet_addEthereumChain", params:[MONAD] });
+    } catch(switchErr) {
+      try {
+        await window.ethereum.request({ method:"wallet_addEthereumChain", params:[MONAD] });
+      } catch(addErr) { console.warn("Add chain:", addErr); }
+      // Wait for network switch to settle
+      await new Promise(r => setTimeout(r, 1500));
+      try {
+        await window.ethereum.request({ method:"wallet_switchEthereumChain", params:[{chainId:MONAD.chainId}] });
+      } catch(e2) { console.warn("Switch retry:", e2); }
     }
+    // Wait a bit for MetaMask to settle after network change
+    await new Promise(r => setTimeout(r, 1000));
     provider = new ethers.BrowserProvider(window.ethereum);
     signer = await provider.getSigner();
     userAddress = await signer.getAddress();
-    const btn = document.getElementById("connectBtn");
     btn.textContent = userAddress.slice(0,6)+"..."+userAddress.slice(-4);
     btn.classList.add("connected");
-    const bal = await provider.getBalance(userAddress);
-    document.getElementById("monBalance").textContent = parseFloat(ethers.formatEther(bal)).toFixed(2)+" MON";
-    document.getElementById("cycleBadge").textContent = "Activo";
-    document.getElementById("cycleBadge").classList.add("active");
-  } catch(e) { console.error(e); }
+    try {
+      const bal = await provider.getBalance(userAddress);
+      document.getElementById("monBalance").textContent = parseFloat(ethers.formatEther(bal)).toFixed(2)+" MON";
+    } catch(balErr) { document.getElementById("monBalance").textContent = "Connected"; }
+    document.getElementById("connectBtnBottom").style.display = "none";
+    document.getElementById("stakeBtn").style.display = "block";
+    addMessage("ysa", "Wallet connected. No deposit, no mentorship. Show commitment. 👇");
+    // Badge shown after staking, not on connect
+  } catch(e) {
+    console.error("Connect failed:", e);
+    btn.textContent = "🦊 Connect Wallet";
+    addMessage("ysa", "Connection failed. Make sure MetaMask is unlocked and try again.");
+  }
 }
 
 // ============ SPREADSHEET DATA ============
-const months = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
 const plData = {
   headers: ["","Mes 1","Mes 2","Mes 3","Mes 4","Mes 5","Mes 6","Mes 7","Mes 8","Mes 9","Mes 10","Mes 11","Mes 12"],
   rows: [
-    {type:"section",label:"INGRESOS"},
+    {type:"section",label:"REVENUE (Sales)"},
     {id:"revenue",label:"Revenue",values:["","","","","","","","","","","",""],fmt:"$"},
     {id:"other_rev",label:"Other income",values:["","","","","","","","","","","",""],fmt:"$",sub:true},
     {id:"total_rev",label:"Total Revenue",values:["","","","","","","","","","","",""],fmt:"$",total:true},
-    {type:"section",label:"COSTO DE VENTAS"},
-    {id:"cogs",label:"COGS",values:["","","","","","","","","","","",""],fmt:"$"},
-    {id:"gross_profit",label:"Gross Profit",values:["","","","","","","","","","","",""],fmt:"$",total:true},
-    {id:"gross_margin",label:"Gross Margin %",values:["","","","","","","","","","","",""],fmt:"%"},
-    {type:"section",label:"GASTOS OPERATIVOS"},
+    {type:"section",label:"COST OF PRODUCT"},
+    {id:"cogs",label:"What it costs to make",values:["","","","","","","","","","","",""],fmt:"$"},
+    {id:"gross_profit",label:"What you keep (Gross Profit)",values:["","","","","","","","","","","",""],fmt:"$",total:true},
+    {id:"gross_margin",label:"% you keep per sale",values:["","","","","","","","","","","",""],fmt:"%"},
+    {type:"section",label:"MONTHLY EXPENSES (Fixed)"},
     {id:"rent",label:"Rent",values:["","","","","","","","","","","",""],fmt:"$",sub:true},
     {id:"salaries",label:"Payroll",values:["","","","","","","","","","","",""],fmt:"$",sub:true},
     {id:"marketing",label:"Marketing",values:["","","","","","","","","","","",""],fmt:"$",sub:true},
     {id:"utilities",label:"Utilities",values:["","","","","","","","","","","",""],fmt:"$",sub:true},
     {id:"other_exp",label:"Other expenses",values:["","","","","","","","","","","",""],fmt:"$",sub:true},
-    {id:"total_opex",label:"Total OpEx",values:["","","","","","","","","","","",""],fmt:"$",total:true},
-    {type:"section",label:"RESULTADO"},
-    {id:"ebitda",label:"EBITDA",values:["","","","","","","","","","","",""],fmt:"$",total:true},
-    {id:"net_margin",label:"Net Margin %",values:["","","","","","","","","","","",""],fmt:"%"},
+    {id:"total_opex",label:"Total Expenses",values:["","","","","","","","","","","",""],fmt:"$",total:true},
+    {type:"section",label:"BOTTOM LINE"},
+    {id:"ebitda",label:"💰 Profit (what's left)",values:["","","","","","","","","","","",""],fmt:"$",total:true},
+    {id:"net_margin",label:"% profit on every $100",values:["","","","","","","","","","","",""],fmt:"%"},
   ]
 };
 
 const cfData = {
   headers: ["","Mes 1","Mes 2","Mes 3","Mes 4","Mes 5","Mes 6","Mes 7","Mes 8","Mes 9","Mes 10","Mes 11","Mes 12"],
   rows: [
-    {type:"section",label:"ENTRADAS DE EFECTIVO"},
-    {id:"cf_sales",label:"Cobros por ventas",values:["","","","","","","","","","","",""],fmt:"$"},
+    {type:"section",label:"MONEY COMING IN"},
+    {id:"cf_sales",label:"Sales collected",values:["","","","","","","","","","","",""],fmt:"$"},
     {id:"cf_other",label:"Other income",values:["","","","","","","","","","","",""],fmt:"$"},
-    {id:"cf_total_in",label:"Total Entradas",values:["","","","","","","","","","","",""],fmt:"$",total:true},
-    {type:"section",label:"SALIDAS DE EFECTIVO"},
-    {id:"cf_cogs",label:"Pago proveedores",values:["","","","","","","","","","","",""],fmt:"$"},
-    {id:"cf_opex",label:"Operating expenses",values:["","","","","","","","","","","",""],fmt:"$"},
-    {id:"cf_total_out",label:"Total Salidas",values:["","","","","","","","","","","",""],fmt:"$",total:true},
-    {type:"section",label:"FLUJO NETO"},
-    {id:"cf_net",label:"Net Monthly Cash Flow",values:["","","","","","","","","","","",""],fmt:"$",total:true},
-    {id:"cf_cumulative",label:"Cumulative Cash Flow",values:["","","","","","","","","","","",""],fmt:"$",total:true},
+    {id:"cf_total_in",label:"Total In",values:["","","","","","","","","","","",""],fmt:"$",total:true},
+    {type:"section",label:"MONEY GOING OUT"},
+    {id:"cf_cogs",label:"Suppliers & materials",values:["","","","","","","","","","","",""],fmt:"$"},
+    {id:"cf_opex",label:"Rent, payroll, bills",values:["","","","","","","","","","","",""],fmt:"$"},
+    {id:"cf_total_out",label:"Total Out",values:["","","","","","","","","","","",""],fmt:"$",total:true},
+    {type:"section",label:"WHAT'S LEFT"},
+    {id:"cf_net",label:"Monthly surplus/deficit",values:["","","","","","","","","","","",""],fmt:"$",total:true},
+    {id:"cf_cumulative",label:"Running total in bank",values:["","","","","","","","","","","",""],fmt:"$",total:true},
   ]
 };
 
 const bsData = {
   headers: ["","Mes 1","Mes 6","Mes 12"],
   rows: [
-    {type:"section",label:"ACTIVOS"},
-    {id:"bs_cash",label:"Cash",values:["","",""],fmt:"$"},
-    {id:"bs_inventory",label:"Inventory",values:["","",""],fmt:"$"},
-    {id:"bs_ar",label:"Accounts receivable",values:["","",""],fmt:"$"},
-    {id:"bs_equipment",label:"Equipment",values:["","",""],fmt:"$"},
-    {id:"bs_total_a",label:"Total Assets",values:["","",""],fmt:"$",total:true},
-    {type:"section",label:"PASIVOS"},
-    {id:"bs_ap",label:"Accounts payable",values:["","",""],fmt:"$"},
-    {id:"bs_loans",label:"Loans",values:["","",""],fmt:"$"},
-    {id:"bs_total_l",label:"Total Liabilities",values:["","",""],fmt:"$",total:true},
-    {type:"section",label:"CAPITAL"},
-    {id:"bs_equity",label:"Equity",values:["","",""],fmt:"$",total:true},
+    {type:"section",label:"WHAT YOU OWN"},
+    {id:"bs_cash",label:"Cash in bank",values:["","",""],fmt:"$"},
+    {id:"bs_inventory",label:"Product / inventory",values:["","",""],fmt:"$"},
+    {id:"bs_ar",label:"Money owed to you",values:["","",""],fmt:"$"},
+    {id:"bs_equipment",label:"Equipment & tools",values:["","",""],fmt:"$"},
+    {id:"bs_total_a",label:"Total you own",values:["","",""],fmt:"$",total:true},
+    {type:"section",label:"WHAT YOU OWE"},
+    {id:"bs_ap",label:"Bills to pay",values:["","",""],fmt:"$"},
+    {id:"bs_loans",label:"Loans / debt",values:["","",""],fmt:"$"},
+    {id:"bs_total_l",label:"Total you owe",values:["","",""],fmt:"$",total:true},
+    {type:"section",label:"YOUR NET WORTH"},
+    {id:"bs_equity",label:"💰 Business value (own - owe)",values:["","",""],fmt:"$",total:true},
   ]
 };
 
@@ -450,21 +533,95 @@ function sendChat() {
   const input = document.getElementById("chatInput");
   const text = input.value.trim();
   if (!text) return;
-  addMessage("daniela", text);
+  addMessage("user", text);
   input.value = "";
+  // Before deposit — only answer info questions
+  if (!hasStaked) {
+    setTimeout(() => {
+      const lower = text.toLowerCase();
+      let reply;
+      if (lower.match(/who.*are|what.*are|quien|qué eres|what.*ysa|who.*created|quien.*creo|about/)) {
+        reply = "I'm YSA — your AI financial mentor. Built by danielam for the Moltiverse Hackathon on Monad. I help founders build their 3 core financial documents: P&L Statement, Cash Flow, and Balance Sheet. I use your real business data, not templates. Think of me as a demanding ex-CFO who wants you to succeed.";
+      } else if (lower.match(/how.*start|como.*empez|what.*do|get started|comenzar|how.*work|como.*funcion/)) {
+        reply = "Here's how it works: 1) Connect your wallet using the button below. 2) Deposit MON as your commitment to the 7-day challenge. 3) I'll ask you questions about your business — revenue, costs, expenses — and build your financial documents in real time. 4) Complete all 3 documents + pass the financial literacy quiz. 5) Get your deposit back + earn a soulbound badge on Monad. If you don't complete it in 7 days, you lose your deposit.";
+      } else if (lower.match(/what.*for|para.*que|purpose|why|por.*que/)) {
+        reply = "One of the top reasons startups fail is poor financial management. Not because founders aren't smart — because nobody teaches them the fundamentals. I exist to fix that. In 7 days, you'll know your margins, your runway, your break-even point, and exactly what your business needs to survive and grow.";
+      } else if (lower.match(/7.*day|seven.*day|challenge|reto|desafio|dias/)) {
+        reply = "The 7-day challenge gives you up to 7 days to complete everything — some founders finish in 5 hours, others take the full week. You work at your pace. YSA guides you through building your P&L, Cash Flow, and Balance Sheet using your real numbers. Some answers you'll have immediately, others you'll need to go find — that's part of the learning. Once all 3 documents are complete + you pass the financial quiz, you get your deposit back + a soulbound badge. If 7 days pass and you haven't finished, your deposit gets slashed.";
+      } else if (lower.match(/badge|nft|reputation|onchain|blockchain|monad|contract|smart/)) {
+        reply = "YSA runs on two smart contracts on Monad: YSADiscipline.sol manages your commitment deposit — stake, complete, or get slashed. YSABadge.sol mints soulbound NFTs (non-transferable) with 4 levels: Apprentice → Disciplined → Capital Ready → Investor Grade. Any DAO, lending protocol, or investor can query your badge onchain to verify your financial maturity before deploying capital. No PDFs, no trust-me-bro — just verifiable proof.";
+      } else if (lower.match(/cost|price|how much|cuanto|cuánto|expensive|free/)) {
+        reply = "The commitment deposit is ~$10 in MON. A financial advisor would charge you $500+ for the same work. Complete the challenge and you get your deposit back. The real cost is your time and honesty — 7 days of answering real questions about your real numbers.";
+      } else if (lower.match(/what.*learn|que.*aprend|benefit|value|gain/)) {
+        reply = "After 7 days you'll have: 1) A complete P&L statement — know your real margins. 2) A cash flow projection — know your runway. 3) A balance sheet — know your net worth. 4) A financial analysis — profitability, break-even point, growth sustainability, and specific actions to take this month. 5) A soulbound badge proving your financial discipline to any investor or DAO. You'll go from 'I think we're doing ok' to 'I know exactly where we stand.'";
+      } else if (lower.match(/investor|dao|capital|funding|fund|invest/)) {
+        reply = "Here's the power move: your soulbound badge is queryable onchain. Any DAO or investor can call badge.levelOf(yourAddress) to verify your financial discipline before deploying capital. Monad itself could use YSA to verify founder maturity before granting ecosystem funds. Your badge is your financial reputation — earned, not bought.";
+      } else if (lower.match(/quit|fail|lose|slash|perderd|perder/)) {
+        reply = "If you don't complete the 3 documents and the quiz within 7 days, your commitment deposit gets slashed. That's the point — it's real accountability. But if you show up and do the work, you get everything back plus a badge that proves it.";
+      } else if (lower.match(/document|doc|p&l|cash.*flow|balance|financial.*state/)) {
+        reply = "The 3 core documents every founder needs: 1) P&L Statement (Profit & Loss) — shows if you're actually making money. Revenue minus costs minus expenses. 2) Cash Flow — shows if you have enough cash to operate. Profitable companies can still run out of cash. 3) Balance Sheet — shows what you own vs what you owe. Your business net worth. Together, these tell the complete financial story of your business.";
+      } else {
+        const blocks = [
+          "I'll be great once you show me you're serious about getting your financial docs in order. Deposit MON below and let's get to work. 👇",
+          "I don't do small talk. You want to know your numbers or not? Deposit MON and commit to 7 days. Then we work.",
+          "I've seen too many founders fail because they didn't know their margins. Don't be one of them. Commit to the challenge — deposit MON below. 👇",
+          "The only question that matters right now: are you ready to commit 7 days to getting your finances straight? Deposit MON and let's find out."
+        ];
+        reply = blocks[Math.floor(Math.random()*blocks.length)];
+      }
+      addMessage("ysa", reply);
+    }, 800);
+    return;
+  }
+  // YSA auto-response
+  setTimeout(() => {
+    const lower = text.toLowerCase();
+    let reply;
+    if (lower.match(/hola|hello|hi|hey/)) {
+      reply = "Skip the pleasantries. How much did you invoice last month? Exact number.";
+    } else if (lower.match(/\$?\d[\d,]*\.?\d*/)) {
+      const num = text.replace(/[^0-9.]/g,'');
+      if (parseFloat(num) > 0) {
+        reply = `$${parseFloat(num).toLocaleString()}. Noted. What are your monthly operating expenses? Break them down: rent, payroll, marketing, utilities.`;
+      }
+    } else if (lower.match(/revenue|income|sales|factur/)) {
+      reply = "Don't tell me categories. Give me the number. How much, last month, in your bank account from sales?";
+    } else if (lower.match(/cost|expense|gasto|rent|payroll|marketing/)) {
+      reply = "List every expense with exact amounts. I need: rent, payroll, marketing, utilities, and anything else. No rounding.";
+    } else if (lower.match(/profit|margin|ganancia|utilidad/)) {
+      reply = "We'll calculate that together once I have your real numbers. Revenue first, then costs. Don't skip ahead.";
+    } else if (lower.match(/help|ayuda|how|como/)) {
+      reply = "I ask questions. You answer with real numbers from your business. I build your financial documents. No vague answers accepted.";
+    } else if (lower.match(/yes|si|sí|ok|sure|dale|vamos/)) {
+      reply = "Good. Then let's get to work. What's your business? And how much did you invoice last month?";
+    } else if (lower.match(/no|can't|don't know|no sé/)) {
+      reply = "That's the problem. You should know every number in your business. Let's start simple: how much cash do you have in the bank right now?";
+    } else {
+      const responses = [
+        "I need numbers, not words. How much did you make last month?",
+        "Be specific. Vague answers mean vague finances. Give me exact amounts.",
+        "Let's focus. Revenue, costs, or expenses — what do you want to work on first?",
+        "I'm not a chatbot. I'm your financial mentor. Give me data and I'll give you clarity.",
+        "Every number matters. What's your biggest expense right now?"
+      ];
+      reply = responses[Math.floor(Math.random()*responses.length)];
+    }
+    addMessage("ysa", reply);
+  }, 1200);
 }
+
 
 // ============ QUIZ ============
 const allQuizzes = [
-  {q:"What does a 32% gross margin indicate?",opts:["For every $100 in sales, $32 is gross profit","The business loses 32%","Costs are 32% of the price"],correct:0},
-  {q:"What's the difference between cash flow and P&L?",opts:["Cash flow measures actual cash; P&L includes accruals","They're the same in different format","Cash flow only measures income"],correct:0},
-  {q:"If your COGS rises 10% and you don't adjust prices, what happens?",opts:["Your gross margin drops","Your revenue goes up","Nothing if you sell more"],correct:0},
-  {q:"What is EBITDA?",opts:["Earnings before interest, taxes, depreciation & amortization","Total operating expenses","Net profit after taxes"],correct:0},
-  {q:"Why is break-even point important?",opts:["It tells you how much you need to sell to cover costs","It's the maximum price you can charge","It defines your ideal profit margin"],correct:0},
-  {q:"What if your cash flow is negative but you have profit?",opts:["You can run out of cash to operate","Impossible, they're always equal","It means your business is profitable"],correct:0},
-  {q:"A 32% gross margin in food is:",opts:["Acceptable but tight for scaling","Excellent, no improvement needed","Very low, you should close"],correct:0},
-  {q:"What are accounts receivable?",opts:["Money your customers owe you","Money you owe to suppliers","Cash in the bank"],correct:0},
-  {q:"If rent is fixed and you sell more, what happens to net margin?",opts:["It improves because you dilute fixed costs","It gets worse with more volume","It doesn't change"],correct:0},
+  {q:"If you keep $32 for every $100 you sell, what does that mean?",opts:["32% of your sales become profit before expenses","You're losing 32% of revenue","Your product costs 32%"],correct:0},
+  {q:"Can a business be profitable on paper but still run out of cash?",opts:["Yes — profit ≠ cash in the bank","No, profit means you always have cash","Only if you have debt"],correct:0},
+  {q:"Your supplier raises prices 10% but you keep your prices the same. What happens?",opts:["Your profit per sale shrinks","Your revenue goes up","Nothing changes if you sell more"],correct:0},
+  {q:"What's the simplest way to know if your business makes money?",opts:["Revenue minus ALL costs = what's left","Just look at how much you sell","Check if your bank account grows"],correct:0},
+  {q:"Why should you know your break-even point?",opts:["It tells you the minimum you need to sell to not lose money","It's the maximum price you can charge","It defines your ideal profit"],correct:0},
+  {q:"Your business shows profit this month, but your bank account is empty. Why?",opts:["Customers haven't paid yet, or you paid suppliers early","That's impossible","Your accountant made an error"],correct:0},
+  {q:"Keeping 32 cents of every dollar in a food business is:",opts:["Decent — but you need to watch expenses closely","Amazing, no changes needed","Terrible, you should close"],correct:0},
+  {q:"A customer bought from you but hasn't paid yet. What is that?",opts:["Money owed to you (a receivable)","A loss you need to write off","Revenue you can't count"],correct:0},
+  {q:"Your rent is $4,500/mo. If you double your sales, what happens to rent?",opts:["It stays the same — so each sale gets cheaper","It doubles too","It depends on your landlord"],correct:0},
 ];
 
 let quizSet = 0;
@@ -504,22 +661,23 @@ function answerQuiz(qi, oi) {
 
 // ============ DEMO AUTO-PLAY ============
 const demoScript = [
-  // === ACT 1: INTRO + STAKING ===
+  // === ACT 1: INTRO + WALLET + DEPOSIT ===
   {type:"msg",who:"ysa",text:"It's about time you got your finances in order. Ready for the challenge?"},
-  {type:"msg",who:"daniela",text:"YES."},
-  {type:"msg",who:"ysa",text:"Good. Then prove it. Stake your MON. Skin in the game or don't waste my time."},
+  {type:"msg",who:"daniela",text:"How do I start?"},
+  {type:"msg",who:"ysa",text:"Connect your wallet and deposit MON. That's your commitment to 7 days of financial discipline. A financial advisor charges $500 for this — you're getting it for ~$10. No deposit, no mentorship."},
   {type:"wallet",action:"connect"},
-  {type:"stake",action:"show",text:"💎 Staking 450 MON..."},
-  {type:"stake",action:"confirmed",text:"✅ 450 MON staked — 7-day challenge active"},
-  {type:"msg",who:"ysa",text:"Prove to me you take your business seriously. 450 MON (~$10). A financial advisor charges $500 for this. Complete the 7-day challenge → stake back. Quit → you lose it. Your call."},
+  {type:"msg",who:"daniela",text:"Wallet connected. Let's do this."},
+  {type:"deposit_btn"},
+  {type:"raven_overlay"},
+  {type:"msg",who:"ysa",text:"Skin in the game. I respect that. Now let's get to work. How much did you invoice last month? Exact number. No approximations."},
 
   // === ACT 2: P&L BUILD ===
   {type:"msg",who:"ysa",text:"How much did you invoice last month? Exact number."},
   {type:"msg",who:"daniela",text:"$95,400"},
   {type:"data",tab:"pl",row:"revenue",col:0,val:95400,fmt:"$"},
   {type:"progress",doc:"pl",pct:10},
-  {type:"msg",who:"ysa",text:"COGS?"},
-  {type:"msg",who:"daniela",text:"$64,800 in raw materials and production"},
+  {type:"msg",who:"ysa",text:"How much does it cost you to make what you sell? Materials, production, everything."},
+  {type:"msg",who:"daniela",text:"$64,800 — raw ingredients, packaging, production costs"},
   {type:"data",tab:"pl",row:"cogs",col:0,val:64800,fmt:"$"},
   {type:"data",tab:"pl",row:"gross_profit",col:0,val:30600,fmt:"$"},
   {type:"data",tab:"pl",row:"gross_margin",col:0,val:32.08,fmt:"%"},
@@ -587,7 +745,7 @@ const demoScript = [
   {type:"summary",text:"<b>📊 YSA FINANCIAL ANALYSIS</b><br><br>✅ You <b>are profitable</b>. Net margin: 22%.<br>📅 You have <b>3.3 months of runway</b> based on your current burn rate.<br>📍 Your break-even point is <b>$71,300/mo</b> in revenue.<br>⏱️ At current performance, you'll recover initial investment in <b>6 months</b>.<br>🏆 <b>68%</b> of your revenue comes from your core product line.<br>💰 Fixed costs: <b>$4,500/mo</b> · Variable costs: <b>$70,200/mo</b>.<br>📈 Your current <b>3-4% monthly growth is sustainable</b>.<br>⚡ This month: <b>increase marketing spend by 15%</b> — your CAC can absorb it."},
 
   // === ACT 6: QUIZ ===
-  {type:"msg",who:"ysa",text:"Understood? Complete your quiz to finish the challenge and get your stake + rewards back."},
+  {type:"msg",who:"ysa",text:"Understood? Complete the quiz to finish the challenge and get your deposit back."},
   {type:"quiz"},
 
   // === ACT 7: COMPLETION ===
@@ -614,19 +772,66 @@ const demoScript = [
 ];
 
 let demoRunning = false;
-let demoStartTime = 0;
-const DEMO_DURATION = 120; // 2:00
+let demoPaused = false;
+let demoStepIndex = 0;
+let demoResolve = null; // for pause/resume
 
-function updateDemoTimer() {
-  if (!demoRunning) return;
-  const elapsed = (Date.now() - demoStartTime) / 1000;
-  const pct = Math.min(100, (elapsed / DEMO_DURATION) * 100);
-  const remaining = Math.max(0, DEMO_DURATION - elapsed);
-  const mins = Math.floor(remaining / 60);
-  const secs = Math.floor(remaining % 60);
+function updateDemoProgress() {
+  const total = demoScript.length;
+  const pct = total > 0 ? (demoStepIndex / total) * 100 : 0;
   document.getElementById("demoTimerFill").style.width = pct + "%";
-  document.getElementById("demoTimerText").textContent = `${mins}:${secs.toString().padStart(2,'0')} remaining`;
-  if (demoRunning) requestAnimationFrame(updateDemoTimer);
+  document.getElementById("demoStepLabel").textContent = `${demoStepIndex}/${total}`;
+  document.getElementById("demoTimerText").textContent = `Step ${demoStepIndex}`;
+}
+
+function demoTogglePause() {
+  const btn = document.getElementById("demoPauseBtn");
+  if (demoPaused) {
+    demoPaused = false;
+    btn.textContent = "⏸";
+    btn.title = "Pause";
+    if (demoResolve) { demoResolve(); demoResolve = null; }
+  } else {
+    demoPaused = true;
+    btn.textContent = "▶";
+    btn.title = "Play";
+  }
+}
+
+let demoSleepTimer = null;
+
+function demoStepForward() {
+  // Skip current sleep immediately
+  if (demoResolve) { demoResolve(); demoResolve = null; }
+  if (demoSleepTimer) { clearTimeout(demoSleepTimer); demoSleepTimer = null; }
+}
+
+function demoStepBack() {
+  // Restart demo from beginning (stateful — can't truly rewind)
+  if (demoRunning) {
+    demoRunning = false;
+    if (demoResolve) { demoResolve(); demoResolve = null; }
+    if (demoSleepTimer) { clearTimeout(demoSleepTimer); demoSleepTimer = null; }
+    setTimeout(() => location.reload(), 100);
+  }
+}
+
+function demoSleep(ms) {
+  return new Promise(resolve => {
+    if (demoPaused) {
+      demoResolve = resolve;
+    } else {
+      demoSleepTimer = setTimeout(() => {
+        demoSleepTimer = null;
+        if (demoPaused) {
+          demoResolve = resolve;
+        } else {
+          resolve();
+        }
+      }, ms);
+      demoResolve = resolve; // also store so forward can skip
+    }
+  });
 }
 
 function fireConfetti() {
@@ -673,31 +878,85 @@ function unlockBadge(level) {
 async function startDemo() {
   if (demoRunning) return;
   demoRunning = true;
-  demoStartTime = Date.now();
+  demoPaused = false;
+  demoStepIndex = 0;
   document.getElementById("demoBtn").disabled = true;
   document.getElementById("demoBtn").textContent = "⏳ Demo running...";
   document.getElementById("demoTimer").classList.add("active");
   document.getElementById("chatMessages").innerHTML = "";
-  updateDemoTimer();
+  document.getElementById("demoPauseBtn").textContent = "⏸";
+  updateDemoProgress();
 
-  for (const step of demoScript) {
+  for (demoStepIndex = 0; demoStepIndex < demoScript.length; demoStepIndex++) {
+    const step = demoScript[demoStepIndex];
+    updateDemoProgress();
     if (step.type === "msg") {
+      if (step.who === 'daniela') {
+        showCursor();
+        const chatInput = document.getElementById('chatInput');
+        await moveCursorTo(chatInput);
+        await cursorClickAnim();
+        hideCursor();
+      }
       addMessage(step.who, step.text);
-      await sleep(step.who==='ysa' ? 2200 : 1400);
+      await demoSleep(step.who==='ysa' ? 2200 : 1400);
     } else if (step.type === "data") {
-      if (currentTab !== step.tab) switchTab(step.tab);
-      await sleep(300);
+      if (currentTab !== step.tab) {
+        showCursor();
+        const tabEl = document.querySelector(`.excel-tab[data-tab="${step.tab}"]`);
+        if (tabEl) { await moveCursorTo(tabEl); await cursorClickAnim(); }
+        switchTab(step.tab);
+        await demoSleep(400);
+        hideCursor();
+      }
+      await demoSleep(300);
       setCellValue(step.tab, step.row, step.col, step.val, step.fmt);
-      await sleep(200);
+      await demoSleep(200);
     } else if (step.type === "progress") {
       setProgress(step.doc, step.pct);
-      await sleep(100);
+      await demoSleep(100);
     } else if (step.type === "wallet") {
-      const btn = document.getElementById("connectBtn");
-      btn.textContent = "0xdEC6...370e";
-      btn.classList.add("connected");
+      showCursor();
+      const connectBtn = document.getElementById("connectBtn");
+      await moveCursorTo(connectBtn);
+      await cursorClickAnim();
+      connectBtn.textContent = "0xdEC6...370e";
+      connectBtn.classList.add("connected");
       document.getElementById("monBalance").textContent = "12,500 MON";
-      await sleep(1000);
+      document.getElementById("connectBtnBottom").style.display = "none";
+      document.getElementById("stakeBtn").style.display = "block";
+      await demoSleep(1000);
+    } else if (step.type === "deposit_btn") {
+      const stakeBtn = document.getElementById("stakeBtn");
+      await moveCursorTo(stakeBtn);
+      await cursorClickAnim();
+      stakeBtn.textContent = "⏳ Confirming...";
+      await demoSleep(1500);
+      stakeBtn.style.display = "none";
+      document.getElementById("actionPanel").style.display = "none";
+      hideCursor();
+      await demoSleep(500);
+    } else if (step.type === "raven_overlay") {
+      // Show raven overlay like real app
+      const overlay = document.createElement('div');
+      overlay.className = 'stake-overlay';
+      overlay.innerHTML = `<div class="stake-overlay-content">
+        <span class="raven">🐦‍⬛</span>
+        <div class="speech">
+          <h2>NOW I BELIEVE YOU.</h2>
+          <div class="stake-amount-overlay">450 MON DEPOSITED</div>
+          <p>Commitment confirmed. 7-day financial discipline challenge starts now.</p>
+          <div class="commitment-tag">✅ SKIN IN THE GAME</div>
+          <a class="tx-link" href="https://testnet.monadexplorer.com" target="_blank">0x7a3f8b...c92d1e ↗</a>
+        </div>
+      </div>`;
+      document.body.appendChild(overlay);
+      document.getElementById("cycleBadge").textContent = "Day 1/7 ⏳";
+      document.getElementById("cycleBadge").classList.add("active");
+      document.getElementById("cycleBadge").style.display = "inline-block";
+      await demoSleep(5000);
+      overlay.remove();
+      await demoSleep(500);
     } else if (step.type === "stake") {
       if (step.action==='show') {
         showStakeNotification('<div>💎 Staking...</div><div class="stake-amount">450 MON</div><div style="font-size:12px;color:#888;margin-top:4px;">7-day discipline challenge</div>');
@@ -710,14 +969,15 @@ async function startDemo() {
         showStakeNotification('<div>🎉 Challenge Complete!</div><div class="stake-amount">450 MON returned</div><div style="font-size:12px;color:#4CC98A;margin-top:4px;">Stake returned — challenge complete</div>');
         document.getElementById("cycleBadge").textContent = "✅ Complete";
       }
-      await sleep(2000);
+      await demoSleep(2000);
     } else if (step.type === "summary") {
       const msgDiv = document.createElement('div');
-      msgDiv.className = 'chat-msg ysa';
-      msgDiv.innerHTML = `<div class="msg-name">🦅 YSA</div><div class="msg-bubble" style="background:linear-gradient(135deg,#1a0a30,#0f1a2e);border:1px solid var(--purple);color:#e8e8f0;font-size:13px;line-height:1.7;">${step.text}</div>`;
+      msgDiv.className = 'msg ysa summary-msg';
+      msgDiv.innerHTML = `<div class="author"><span class="ysa-avatar">YSA</span></div>${step.text}`;
+      msgDiv.style.cssText = 'font-size:13px;line-height:1.8;color:#e8e8f0;max-width:95%;';
       document.getElementById("chatMessages").appendChild(msgDiv);
       msgDiv.scrollIntoView({behavior:'smooth'});
-      await sleep(4000);
+      await demoSleep(5000);
     } else if (step.type === "terminal") {
       const termDiv = document.createElement('div');
       termDiv.className = 'onchain-terminal';
@@ -732,31 +992,58 @@ async function startDemo() {
         line.textContent = step.lines[i] || '\u00A0';
         termDiv.appendChild(line);
         termDiv.scrollIntoView({behavior:'smooth'});
-        await sleep(step.lines[i] === '' ? 200 : 500);
+        await demoSleep(step.lines[i] === '' ? 200 : 500);
       }
-      await sleep(2000);
+      await demoSleep(2000);
     } else if (step.type === "quiz") {
-      // Auto-answer quiz correctly
-      const quizContainer = document.getElementById("quizContainer");
-      const opts = quizContainer.querySelectorAll('.q-opt');
+      // Spotlight overlay + banner pointing to quiz
+      const spotlight = document.createElement('div');
+      spotlight.className = 'quiz-spotlight';
+      document.body.appendChild(spotlight);
+      const banner = document.createElement('div');
+      banner.className = 'quiz-spotlight-banner';
+      banner.innerHTML = '<h3>🧠 FINANCIAL QUIZ</h3><p>Answer 3 questions to prove you learned</p><span class="arrow-right">→</span>';
+      document.body.appendChild(banner);
+      // Scroll sidebar to quiz
+      const quizSection = document.querySelector('.quiz-section');
+      const sidebar = document.querySelector('.panel-sidebar');
+      if (quizSection && sidebar) {
+        sidebar.scrollTo({top: quizSection.offsetTop - 60, behavior:'smooth'});
+        quizSection.style.boxShadow = '0 0 40px var(--purple-glow), inset 0 0 20px rgba(131,110,249,0.15)';
+        quizSection.style.zIndex = '95';
+        quizSection.style.position = 'relative';
+      }
+      await demoSleep(2500);
+      spotlight.remove();
+      banner.remove();
+      // Auto-answer quiz with cursor
+      showCursor();
       for (let i=0; i<3; i++) {
         const qq = document.getElementById('qq'+i);
         if (qq) {
           const qopts = qq.querySelectorAll('.q-opt');
+          await moveCursorTo(qopts[0]);
+          await cursorClickAnim();
           qopts[0].click();
-          await sleep(800);
+          await demoSleep(800);
         }
       }
-      await sleep(1000);
+      hideCursor();
+      if (quizSection) { quizSection.style.boxShadow = ''; quizSection.style.zIndex = ''; quizSection.style.position = ''; }
+      await demoSleep(1000);
     } else if (step.type === "badge") {
       unlockBadge(step.level);
-      await sleep(800);
+      await demoSleep(800);
     } else if (step.type === "confetti") {
       fireConfetti();
-      await sleep(1500);
+      await demoSleep(1500);
     }
   }
-  document.getElementById("demoBtn").textContent = "✅ Demo complete";
+  demoStepIndex = demoScript.length;
+  updateDemoProgress();
+  document.getElementById("demoBtn").textContent = "🔄 Replay Demo";
+  document.getElementById("demoBtn").disabled = false;
+  document.getElementById("demoBtn").onclick = () => { demoRunning = false; location.reload(); };
   document.getElementById("demoTimerFill").style.width = "100%";
   document.getElementById("demoTimerText").textContent = "Complete!";
   demoRunning = false;
@@ -764,9 +1051,149 @@ async function startDemo() {
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
+// ============ FAKE CURSOR ============
+const fakeCursor = document.getElementById('fakeCursor');
+const cursorClick = document.getElementById('cursorClick');
+
+function showCursor() { fakeCursor.style.display = 'block'; }
+function hideCursor() { fakeCursor.style.display = 'none'; }
+
+function moveCursorTo(el, offsetX, offsetY) {
+  return new Promise(resolve => {
+    const rect = el.getBoundingClientRect();
+    const x = rect.left + (offsetX || rect.width * 0.4);
+    const y = rect.top + (offsetY || rect.height * 0.5);
+    fakeCursor.style.left = x + 'px';
+    fakeCursor.style.top = y + 'px';
+    setTimeout(resolve, 650);
+  });
+}
+
+function moveCursorToPos(x, y) {
+  return new Promise(resolve => {
+    fakeCursor.style.left = x + 'px';
+    fakeCursor.style.top = y + 'px';
+    setTimeout(resolve, 650);
+  });
+}
+
+function cursorClickAnim() {
+  return new Promise(resolve => {
+    cursorClick.classList.remove('pop');
+    void cursorClick.offsetWidth;
+    cursorClick.classList.add('pop');
+    setTimeout(resolve, 400);
+  });
+}
+
 // ============ INIT ============
 renderSheet("pl");
 renderQuiz();
+// ============ ONCHAIN QUERY ============
+async function queryOnchain() {
+  const btn = document.getElementById("queryBtn");
+  const results = document.getElementById("onchainResults");
+  btn.disabled = true;
+  btn.textContent = "⏳ Querying...";
+  results.innerHTML = '<div style="color:var(--purple);">▸ Connecting to Monad Testnet...</div>';
+  
+  try {
+    const rpc = new ethers.JsonRpcProvider("https://testnet-rpc.monad.xyz");
+    const addr = userAddress || "0x0000000000000000000000000000000000000000";
+    const addrShort = addr.slice(0,6)+"..."+addr.slice(-4);
+    
+    let html = '<div style="color:var(--purple);margin-bottom:6px;">▸ MONAD TESTNET — LIVE QUERY</div>';
+    
+    // Query Badge
+    const badge = new ethers.Contract(CONTRACTS.badge, [
+      "function levelOf(address) view returns (uint8)",
+      "function balanceOf(address) view returns (uint256)"
+    ], rpc);
+    
+    const level = await badge.levelOf(addr);
+    const hasBadge = await badge.balanceOf(addr);
+    const levelNames = ["None","Apprentice","Disciplined","Capital Ready","Investor Grade"];
+    html += `<div>badge.levelOf(${addrShort})</div>`;
+    html += `<div style="color:${level > 0 ? '#4CC98A' : 'var(--text-muted)'};">→ Level ${level}: ${levelNames[level] || "Unknown"}</div>`;
+    html += `<div>badge.balanceOf(${addrShort})</div>`;
+    html += `<div style="color:var(--text-muted);">→ ${hasBadge} badge(s)</div>`;
+    
+    // Query Discipline
+    const discipline = new ethers.Contract(CONTRACTS.discipline, [
+      "function getCycleInfo(address) view returns (uint256,uint8,bool,bool,uint256)",
+      "function completedCycles(address) view returns (uint256)"
+    ], rpc);
+    
+    const cycle = await discipline.getCycleInfo(addr);
+    const completed = await discipline.completedCycles(addr);
+    const isActive = cycle[2];
+    const stakeAmt = ethers.formatEther(cycle[4]);
+    
+    html += `<div style="margin-top:6px;">discipline.getCycleInfo(${addrShort})</div>`;
+    if (isActive) {
+      const startDate = new Date(Number(cycle[0]) * 1000).toLocaleDateString();
+      html += `<div style="color:#4CC98A;">→ Active since ${startDate}</div>`;
+      html += `<div style="color:var(--yellow);">→ Staked: ${stakeAmt} MON</div>`;
+      html += `<div>→ Challenges: ${cycle[1]}/3</div>`;
+    } else {
+      html += `<div style="color:var(--text-muted);">→ No active cycle</div>`;
+    }
+    html += `<div>discipline.completedCycles(${addrShort})</div>`;
+    html += `<div style="color:var(--text-muted);">→ ${completed} completed</div>`;
+    
+    html += `<div style="margin-top:8px;font-size:10px;color:var(--purple);">Live data from Monad Testnet (chain 10143)</div>`;
+    
+    results.innerHTML = html;
+  } catch(e) {
+    console.error(e);
+    results.innerHTML = `<div style="color:var(--error);">Query failed: ${e.message?.slice(0,60)}</div>`;
+  }
+  btn.disabled = false;
+  btn.textContent = "🔍 Query Contracts";
+}
+
+// ============ REAL STAKING ============
+async function realStake() {
+  if (!signer) { alert("Connect wallet first"); return; }
+  const btn = document.getElementById("stakeBtn");
+  btn.disabled = true;
+  btn.textContent = "⏳ Sending transaction...";
+  try {
+    const discipline = new ethers.Contract(CONTRACTS.discipline, DISCIPLINE_ABI, signer);
+    const tx = await discipline.stake({ value: ethers.parseEther("0.01") });
+    addMessage("ysa", '⏳ Transaction sent... <a href="https://testnet.monadexplorer.com/tx/' + tx.hash + '" target="_blank" style="color:var(--purple);">' + tx.hash.slice(0,18) + '…</a>');
+    await tx.wait();
+    // Show centered overlay with raven
+    const overlay = document.createElement('div');
+    overlay.className = 'stake-overlay';
+    overlay.innerHTML = `<div class="stake-overlay-content">
+      <span class="raven">🐦‍⬛</span>
+      <div class="speech">
+        <h2>NOW I BELIEVE YOU.</h2>
+        <div class="stake-amount-overlay">MON DEPOSITED</div>
+        <p>Commitment confirmed. 7-day financial discipline challenge starts now.</p>
+        <div class="commitment-tag">✅ SKIN IN THE GAME</div>
+        <a class="tx-link" href="https://testnet.monadexplorer.com/tx/${tx.hash}" target="_blank">${tx.hash.slice(0,22)}… ↗</a>
+      </div>
+    </div>`;
+    document.body.appendChild(overlay);
+    overlay.addEventListener('click', () => overlay.remove());
+    setTimeout(() => overlay.remove(), 5000);
+
+    document.getElementById("cycleBadge").textContent = "Day 1/7 ⏳";
+    document.getElementById("cycleBadge").classList.add("active");
+    document.getElementById("cycleBadge").style.display = "inline-block";
+    document.getElementById("actionPanel").style.display = "none";
+    hasStaked = true;
+    addMessage("ysa", "Skin in the game. I respect that. Now let's get to work. How much did you invoice last month? Exact number. No approximations.");
+  } catch(e) {
+    const msg = e.reason || e.message || "Transaction failed";
+    addMessage("ysa", "Transaction failed: " + msg);
+    btn.disabled = false;
+    btn.textContent = "💎 Deposit MON — Start 7-Day Challenge";
+  }
+}
+
 // Auto-start demo after 1.5s
 setTimeout(() => startDemo(), 1500);
 </script>
