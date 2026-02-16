@@ -130,7 +130,7 @@ YSA isn't just a chatbot — it's a **financial intelligence agent** with four c
 
 - 🔗 **[Live App](https://ysa-mentor.pages.dev)** — Connect wallet, deposit MON, start your cycle
 - 🎭 **[Auto-Play Demo](https://ysa-mentor.pages.dev/demo/)** — Watch the full experience in 2 minutes
-- 📹 Video — Coming soon
+- 📹 **[Video Demo](https://ysa-mentor.pages.dev/demo/)** — Screen recording of the full experience
 
 ---
 

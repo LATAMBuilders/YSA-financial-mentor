@@ -322,9 +322,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
 <script>
 // ============ CONTRACT CONFIG ============
 const CONTRACTS = {
-  discipline: "0x61004c05e3b6DED63d1Fa91e177Bcf3d8027D7bb",
-  badge:      "0x4D6509594072F73283FE3c572547711Dfa420768",
-  grantPool:  "0x32D5426166D5Cc8ef71e06ac41969F489405CDdE"
+  discipline: "0x87ebf67244052c6d136f12fdfc9845b9b106e2dd",
+  badge:      "0x11276bbe88f4a39d24ad389f08949f7f550c2531"
 };
 const MONAD = {
   chainId: "0x279F",
@@ -669,7 +668,7 @@ function answerQuiz(qi, oi) {
 const demoScript = [
   // === ACT 1: INTRO — WHY DO YOU EXIST? ===
   {type:"msg",who:"daniela",text:"Why do you exist?"},
-  {type:"msg",who:"ysa",text:"One of the top reasons startups fail is poor financial management. Even good founders with great ideas and solid products go under because they don't know their numbers. They can tell their story by heart, but can't tell you their margins, their cash flow, or their runway."},
+  {type:"msg",who:"ysa",text:"One of the top reasons startups fail is poor financial management. Even good founders with great ideas and solid products go under because they don't know their numbers. They can tell their story by heart, but can't tell you their margins, their cash flow, or their runway.",delay:3000},
   {type:"msg",who:"daniela",text:"😰"},
   {type:"msg",who:"ysa",text:"Let me tell you more. Costs can eat you alive. No projections will keep you stuck. And it gets worse when you need funding — because no investor will trust you with their money if you can't prove you understand yours. I exist to fix that."},
   {type:"msg",who:"daniela",text:"Ok... what would we do?"},
@@ -909,7 +908,7 @@ async function startDemo() {
       const isShort = step.text.length < 10;
       const baseDelay = isShort ? 600 : (step.who==='ysa' ? 2000 : 1200);
       const extraPerChar = isShort ? 0 : (step.who==='ysa' ? 14 : 8);
-      const msgDelay = Math.min(baseDelay + step.text.length * extraPerChar, 8000);
+      const msgDelay = step.delay != null ? step.delay : Math.min(baseDelay + step.text.length * extraPerChar, 8000);
       await demoSleep(msgDelay);
     } else if (step.type === "data") {
       if (currentTab !== step.tab) {
