@@ -260,6 +260,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
       <div class="excel-tab active" data-tab="pl" onclick="switchTab('pl')">📊 P&L Statement</div>
       <div class="excel-tab" data-tab="cf" onclick="switchTab('cf')">💰 Cash Flow</div>
       <div class="excel-tab" data-tab="bs" onclick="switchTab('bs')">📋 Balance Sheet</div>
+      <div style="margin-left:auto;display:flex;gap:6px;align-items:center;">
+        <button onclick="downloadCurrentCSV()" style="background:none;border:1px solid var(--border);color:var(--text-muted);padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'Roboto Mono',monospace;transition:all .15s;" onmouseover="this.style.borderColor='var(--purple)';this.style.color='var(--purple)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">📥 CSV</button>
+        <button onclick="downloadAllCSV()" style="background:var(--purple);border:none;color:#fff;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'Roboto Mono',monospace;font-weight:600;transition:all .15s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">📦 Export All</button>
+      </div>
     </div>
     <div class="excel-container" id="excelContainer"></div>
   </div>
