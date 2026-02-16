@@ -65,9 +65,9 @@ But discipline has **economic consequences**:
 
 | Contract | Address | Description |
 |----------|---------|-------------|
-| `YSADiscipline` | `0x87ebf67244052c6d136f12fdfc9845b9b106e2dd` | Stake/release/slash cycle management |
-| `YSABadge` | `0x11276bbe88f4a39d24ad389f08949f7f550c2531` | Soulbound NFT with 4 reputation levels |
-| `YSAGrantPool` | `0xcbe59846fc43291a7d1828e77c3319ee43ad0e32` | Badge-gated grant distribution |
+| `YSADiscipline` | [`0x87ebf67244052c6d136f12fdfc9845b9b106e2dd`](https://testnet.monadexplorer.com/address/0x87ebf67244052c6d136f12fdfc9845b9b106e2dd) | Stake/release/slash cycle management |
+| `YSABadge` | [`0x11276bbe88f4a39d24ad389f08949f7f550c2531`](https://testnet.monadexplorer.com/address/0x11276bbe88f4a39d24ad389f08949f7f550c2531) | Soulbound NFT with 4 reputation levels |
+| `YSAGrantPool` | [`0xcbe59846fc43291a7d1828e77c3319ee43ad0e32`](https://testnet.monadexplorer.com/address/0xcbe59846fc43291a7d1828e77c3319ee43ad0e32) | Badge-gated grant distribution |
 
 ### 🏅 Reputation Levels
 

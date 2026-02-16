@@ -57,7 +57,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
 .msg.ysa .author{color:var(--purple);}
 .msg.daniela .author{color:var(--yellow);}
 .ysa-avatar{display:inline-flex;align-items:center;gap:4px;}
-.ysa-avatar::before{content:'🐦‍⬛';display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;font-size:12px;background:#0D0D0D;border-radius:50%;border:1px solid var(--purple);flex-shrink:0;}
+.ysa-avatar::before{content:'🦅';display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;font-size:12px;background:#0D0D0D;border-radius:50%;border:1px solid var(--purple);flex-shrink:0;}
 @keyframes msgIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 .chat-input{padding:10px;border-top:1px solid var(--border);display:flex;gap:6px;}
 .chat-input input{flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:inherit;outline:none;background:var(--bg);color:var(--text);}
@@ -157,22 +157,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
 @keyframes term-appear{from{opacity:0;transform:translateX(-10px);}to{opacity:1;transform:translateX(0);}}
 .onchain-terminal .term-line.result{color:var(--yellow);font-weight:600;}
 
-/* Staking notification (demo - bottom right) */
+/* Staking notification */
 .stake-notification{position:fixed;bottom:20px;right:20px;background:var(--surface);border:1px solid var(--purple);border-radius:12px;padding:16px 24px;z-index:9998;font-size:14px;animation:slide-up 0.5s ease;box-shadow:0 4px 24px rgba(0,0,0,0.5);}
 .stake-notification .stake-amount{font-size:24px;font-weight:800;color:var(--yellow);font-family:'Roboto Mono',monospace;}
 @keyframes slide-up{from{transform:translateY(100px);opacity:0;}to{transform:translateY(0);opacity:1;}}
-
-/* Stake overlay (real app - center) */
-.stake-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:9999;display:flex;align-items:center;justify-content:center;animation:fade-in 0.3s ease;}
-.stake-overlay-content{text-align:center;animation:scale-in 0.5s ease;}
-.stake-overlay .raven{font-size:80px;animation:raven-fly 1s ease;display:block;margin-bottom:16px;}
-@keyframes raven-fly{0%{transform:translateY(60px) scale(0.3);opacity:0;}60%{transform:translateY(-10px) scale(1.1);opacity:1;}100%{transform:translateY(0) scale(1);opacity:1;}}
-.stake-overlay .speech{background:var(--surface);border:2px solid var(--purple);border-radius:16px;padding:24px 36px;display:inline-block;position:relative;max-width:400px;box-shadow:0 0 40px var(--purple-glow);}
-.stake-overlay .speech h2{font-family:'Inter',sans-serif;font-size:22px;font-weight:800;color:var(--purple);margin-bottom:8px;}
-.stake-overlay .speech p{color:var(--text-muted);font-size:14px;}
-.stake-overlay .speech .tx-link{display:block;margin-top:12px;color:var(--purple);font-size:12px;font-family:'Roboto Mono',monospace;}
-@keyframes fade-in{from{opacity:0;}to{opacity:1;}}
-@keyframes scale-in{from{transform:scale(0.8);opacity:0;}to{transform:scale(1);opacity:1;}}
 </style>
 </head>
 <body>
@@ -187,7 +175,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
 <!-- TOP BAR -->
 <div class="topbar">
   <div class="topbar-left">
-    <div style="font-size:32px;line-height:1;">🐦‍⬛</div>
+    <div style="font-size:32px;line-height:1;">🦅</div>
     <div class="logo">YSA</div>
     <span class="logo-sub">Financial Mentor</span>
   </div>
@@ -196,7 +184,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
     <button class="connect-btn" id="connectBtn" onclick="connectWallet()">🦊 Connect Wallet</button>
   </div>
   <div class="topbar-right">
-    <span class="cycle-badge" id="cycleBadge" style="display:none;">Not started</span>
+    <span class="cycle-badge" id="cycleBadge">Not started</span>
     <span id="monBalance"></span>
     <span style="display:flex;align-items:center;gap:4px;font-weight:600;color:#836EF9;font-size:13px;"><img src="https://monad.xyz/favicon.ico" alt="Monad" style="width:18px;height:18px;border-radius:50%;"> Monad</span>
   </div>
@@ -213,17 +201,12 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
       <input type="text" id="chatInput" placeholder="Type your answer..." onkeydown="if(event.key==='Enter')sendChat()">
       <button onclick="sendChat()">Send</button>
     </div>
-    <div id="actionPanel" style="padding:8px 12px;border-top:1px solid var(--border);">
-      <button id="connectBtnBottom" onclick="connectWallet()" style="width:100%;padding:14px;background:#836EF9;color:#fff;border:none;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Roboto Mono',monospace;display:block;">🦊 Connect Wallet to Start</button>
-      <button id="stakeBtn" onclick="realStake()" style="width:100%;padding:14px;background:#836EF9;color:#fff;border:none;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Roboto Mono',monospace;display:none;">💎 Deposit MON — Start 7-Day Challenge</button>
-      <div style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:4px;">Monad Testnet · Commitment deposit</div>
-    </div>
   </div>
 
   <!-- CENTER: EXCEL -->
   <div class="panel-excel">
     <div class="excel-tabs">
-      <div class="excel-tab active" data-tab="pl" onclick="switchTab('pl')">📊 P&L Statement</div>
+      <div class="excel-tab active" data-tab="pl" onclick="switchTab('pl')">📊 Estado de Resultados</div>
       <div class="excel-tab" data-tab="cf" onclick="switchTab('cf')">💰 Cash Flow</div>
       <div class="excel-tab" data-tab="bs" onclick="switchTab('bs')">📋 Balance Sheet</div>
     </div>
@@ -235,7 +218,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
     <div class="sidebar-section">
       <h3>📄 Document Progress</h3>
       <div class="progress-item">
-        <div class="progress-label"><span>P&L Statement</span><span id="plPct">0%</span></div>
+        <div class="progress-label"><span>Estado de Resultados</span><span id="plPct">0%</span></div>
         <div class="progress-bar"><div class="progress-fill" id="plBar" style="width:0%"></div></div>
       </div>
       <div class="progress-item">
@@ -272,12 +255,12 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
 <script>
 // ============ CONTRACT CONFIG ============
 const CONTRACTS = {
-  discipline: "0x87ebf67244052c6d136f12fdfc9845b9b106e2dd",
-  badge:      "0x11276bbe88f4a39d24ad389f08949f7f550c2531",
-  grantPool:  "0xcbe59846fc43291a7d1828e77c3319ee43ad0e32"
+  discipline: "0x0000000000000000000000000000000000000000",
+  badge:      "0x0000000000000000000000000000000000000000",
+  grantPool:  "0x0000000000000000000000000000000000000000"
 };
 const MONAD = {
-  chainId: "0x279F",
+  chainId: "0x27A7",
   chainName: "Monad Testnet",
   rpcUrls: ["https://testnet-rpc.monad.xyz"],
   nativeCurrency: { name:"MON", symbol:"MON", decimals:18 },
@@ -299,52 +282,32 @@ const POOL_ABI = [
 ];
 
 let provider, signer, userAddress;
-let hasStaked = false;
 
 // ============ WALLET ============
 async function connectWallet() {
   if (!window.ethereum) return alert("Install MetaMask");
-  const btn = document.getElementById("connectBtn");
-  btn.textContent = "Connecting...";
   try {
     await window.ethereum.request({ method:"eth_requestAccounts" });
-    // Try to switch, if fails try to add, then wait and retry
     try {
       await window.ethereum.request({ method:"wallet_switchEthereumChain", params:[{chainId:MONAD.chainId}] });
-    } catch(switchErr) {
-      try {
-        await window.ethereum.request({ method:"wallet_addEthereumChain", params:[MONAD] });
-      } catch(addErr) { console.warn("Add chain:", addErr); }
-      // Wait for network switch to settle
-      await new Promise(r => setTimeout(r, 1500));
-      try {
-        await window.ethereum.request({ method:"wallet_switchEthereumChain", params:[{chainId:MONAD.chainId}] });
-      } catch(e2) { console.warn("Switch retry:", e2); }
+    } catch(e) {
+      if (e.code===4902) await window.ethereum.request({ method:"wallet_addEthereumChain", params:[MONAD] });
     }
-    // Wait a bit for MetaMask to settle after network change
-    await new Promise(r => setTimeout(r, 1000));
     provider = new ethers.BrowserProvider(window.ethereum);
     signer = await provider.getSigner();
     userAddress = await signer.getAddress();
+    const btn = document.getElementById("connectBtn");
     btn.textContent = userAddress.slice(0,6)+"..."+userAddress.slice(-4);
     btn.classList.add("connected");
-    try {
-      const bal = await provider.getBalance(userAddress);
-      document.getElementById("monBalance").textContent = parseFloat(ethers.formatEther(bal)).toFixed(2)+" MON";
-    } catch(balErr) { document.getElementById("monBalance").textContent = "Connected"; }
-    document.getElementById("connectBtnBottom").style.display = "none";
-    document.getElementById("stakeBtn").style.display = "block";
-    addMessage("ysa", "Wallet connected. No deposit, no mentorship. Show commitment. 👇");
-    // Badge shown after staking, not on connect
-  } catch(e) {
-    console.error("Connect failed:", e);
-    btn.textContent = "🦊 Connect Wallet";
-    addMessage("ysa", "Connection failed. Make sure MetaMask is unlocked and try again.");
-  }
+    const bal = await provider.getBalance(userAddress);
+    document.getElementById("monBalance").textContent = parseFloat(ethers.formatEther(bal)).toFixed(2)+" MON";
+    document.getElementById("cycleBadge").textContent = "Activo";
+    document.getElementById("cycleBadge").classList.add("active");
+  } catch(e) { console.error(e); }
 }
 
 // ============ SPREADSHEET DATA ============
-const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const months = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
 
 const plData = {
   headers: ["","Mes 1","Mes 2","Mes 3","Mes 4","Mes 5","Mes 6","Mes 7","Mes 8","Mes 9","Mes 10","Mes 11","Mes 12"],
@@ -487,83 +450,9 @@ function sendChat() {
   const input = document.getElementById("chatInput");
   const text = input.value.trim();
   if (!text) return;
-  addMessage("user", text);
+  addMessage("daniela", text);
   input.value = "";
-  // Before deposit — only answer info questions
-  if (!hasStaked) {
-    setTimeout(() => {
-      const lower = text.toLowerCase();
-      let reply;
-      if (lower.match(/who.*are|what.*are|quien|qué eres|what.*ysa|who.*created|quien.*creo|about/)) {
-        reply = "I'm YSA — your AI financial mentor. Built by danielam for the Moltiverse Hackathon on Monad. I help founders build their 3 core financial documents: P&L Statement, Cash Flow, and Balance Sheet. I use your real business data, not templates. Think of me as a demanding ex-CFO who wants you to succeed.";
-      } else if (lower.match(/how.*start|como.*empez|what.*do|get started|comenzar|how.*work|como.*funcion/)) {
-        reply = "Here's how it works: 1) Connect your wallet using the button below. 2) Deposit MON as your commitment to the 7-day challenge. 3) I'll ask you questions about your business — revenue, costs, expenses — and build your financial documents in real time. 4) Complete all 3 documents + pass the financial literacy quiz. 5) Get your deposit back + earn a soulbound badge on Monad. If you don't complete it in 7 days, you lose your deposit.";
-      } else if (lower.match(/what.*for|para.*que|purpose|why|por.*que/)) {
-        reply = "One of the top reasons startups fail is poor financial management. Not because founders aren't smart — because nobody teaches them the fundamentals. I exist to fix that. In 7 days, you'll know your margins, your runway, your break-even point, and exactly what your business needs to survive and grow.";
-      } else if (lower.match(/7.*day|seven.*day|challenge|reto|desafio|dias/)) {
-        reply = "The 7-day challenge gives you up to 7 days to complete everything — some founders finish in 5 hours, others take the full week. You work at your pace. YSA guides you through building your P&L, Cash Flow, and Balance Sheet using your real numbers. Some answers you'll have immediately, others you'll need to go find — that's part of the learning. Once all 3 documents are complete + you pass the financial quiz, you get your deposit back + a soulbound badge. If 7 days pass and you haven't finished, your deposit gets slashed.";
-      } else if (lower.match(/badge|nft|reputation|onchain|blockchain|monad|contract|smart/)) {
-        reply = "YSA runs on two smart contracts on Monad: YSADiscipline.sol manages your commitment deposit — stake, complete, or get slashed. YSABadge.sol mints soulbound NFTs (non-transferable) with 4 levels: Apprentice → Disciplined → Capital Ready → Investor Grade. Any DAO, lending protocol, or investor can query your badge onchain to verify your financial maturity before deploying capital. No PDFs, no trust-me-bro — just verifiable proof.";
-      } else if (lower.match(/cost|price|how much|cuanto|cuánto|expensive|free/)) {
-        reply = "The commitment deposit is ~$10 in MON. A financial advisor would charge you $500+ for the same work. Complete the challenge and you get your deposit back. The real cost is your time and honesty — 7 days of answering real questions about your real numbers.";
-      } else if (lower.match(/what.*learn|que.*aprend|benefit|value|gain/)) {
-        reply = "After 7 days you'll have: 1) A complete P&L statement — know your real margins. 2) A cash flow projection — know your runway. 3) A balance sheet — know your net worth. 4) A financial analysis — profitability, break-even point, growth sustainability, and specific actions to take this month. 5) A soulbound badge proving your financial discipline to any investor or DAO. You'll go from 'I think we're doing ok' to 'I know exactly where we stand.'";
-      } else if (lower.match(/investor|dao|capital|funding|fund|invest/)) {
-        reply = "Here's the power move: your soulbound badge is queryable onchain. Any DAO or investor can call badge.levelOf(yourAddress) to verify your financial discipline before deploying capital. Monad itself could use YSA to verify founder maturity before granting ecosystem funds. Your badge is your financial reputation — earned, not bought.";
-      } else if (lower.match(/quit|fail|lose|slash|perderd|perder/)) {
-        reply = "If you don't complete the 3 documents and the quiz within 7 days, your commitment deposit gets slashed. That's the point — it's real accountability. But if you show up and do the work, you get everything back plus a badge that proves it.";
-      } else if (lower.match(/document|doc|p&l|cash.*flow|balance|financial.*state/)) {
-        reply = "The 3 core documents every founder needs: 1) P&L Statement (Profit & Loss) — shows if you're actually making money. Revenue minus costs minus expenses. 2) Cash Flow — shows if you have enough cash to operate. Profitable companies can still run out of cash. 3) Balance Sheet — shows what you own vs what you owe. Your business net worth. Together, these tell the complete financial story of your business.";
-      } else {
-        const blocks = [
-          "I'll be great once you show me you're serious about getting your financial docs in order. Deposit MON below and let's get to work. 👇",
-          "I don't do small talk. You want to know your numbers or not? Deposit MON and commit to 7 days. Then we work.",
-          "I've seen too many founders fail because they didn't know their margins. Don't be one of them. Commit to the challenge — deposit MON below. 👇",
-          "The only question that matters right now: are you ready to commit 7 days to getting your finances straight? Deposit MON and let's find out."
-        ];
-        reply = blocks[Math.floor(Math.random()*blocks.length)];
-      }
-      addMessage("ysa", reply);
-    }, 800);
-    return;
-  }
-  // YSA auto-response
-  setTimeout(() => {
-    const lower = text.toLowerCase();
-    let reply;
-    if (lower.match(/hola|hello|hi|hey/)) {
-      reply = "Skip the pleasantries. How much did you invoice last month? Exact number.";
-    } else if (lower.match(/\$?\d[\d,]*\.?\d*/)) {
-      const num = text.replace(/[^0-9.]/g,'');
-      if (parseFloat(num) > 0) {
-        reply = `$${parseFloat(num).toLocaleString()}. Noted. What are your monthly operating expenses? Break them down: rent, payroll, marketing, utilities.`;
-      }
-    } else if (lower.match(/revenue|income|sales|factur/)) {
-      reply = "Don't tell me categories. Give me the number. How much, last month, in your bank account from sales?";
-    } else if (lower.match(/cost|expense|gasto|rent|payroll|marketing/)) {
-      reply = "List every expense with exact amounts. I need: rent, payroll, marketing, utilities, and anything else. No rounding.";
-    } else if (lower.match(/profit|margin|ganancia|utilidad/)) {
-      reply = "We'll calculate that together once I have your real numbers. Revenue first, then costs. Don't skip ahead.";
-    } else if (lower.match(/help|ayuda|how|como/)) {
-      reply = "I ask questions. You answer with real numbers from your business. I build your financial documents. No vague answers accepted.";
-    } else if (lower.match(/yes|si|sí|ok|sure|dale|vamos/)) {
-      reply = "Good. Then let's get to work. What's your business? And how much did you invoice last month?";
-    } else if (lower.match(/no|can't|don't know|no sé/)) {
-      reply = "That's the problem. You should know every number in your business. Let's start simple: how much cash do you have in the bank right now?";
-    } else {
-      const responses = [
-        "I need numbers, not words. How much did you make last month?",
-        "Be specific. Vague answers mean vague finances. Give me exact amounts.",
-        "Let's focus. Revenue, costs, or expenses — what do you want to work on first?",
-        "I'm not a chatbot. I'm your financial mentor. Give me data and I'll give you clarity.",
-        "Every number matters. What's your biggest expense right now?"
-      ];
-      reply = responses[Math.floor(Math.random()*responses.length)];
-    }
-    addMessage("ysa", reply);
-  }, 1200);
 }
-
 
 // ============ QUIZ ============
 const allQuizzes = [
@@ -825,7 +714,7 @@ async function startDemo() {
     } else if (step.type === "summary") {
       const msgDiv = document.createElement('div');
       msgDiv.className = 'chat-msg ysa';
-      msgDiv.innerHTML = `<div class="msg-name">🐦‍⬛ YSA</div><div class="msg-bubble" style="background:linear-gradient(135deg,#1a0a30,#0f1a2e);border:1px solid var(--purple);color:#e8e8f0;font-size:13px;line-height:1.7;">${step.text}</div>`;
+      msgDiv.innerHTML = `<div class="msg-name">🦅 YSA</div><div class="msg-bubble" style="background:linear-gradient(135deg,#1a0a30,#0f1a2e);border:1px solid var(--purple);color:#e8e8f0;font-size:13px;line-height:1.7;">${step.text}</div>`;
       document.getElementById("chatMessages").appendChild(msgDiv);
       msgDiv.scrollIntoView({behavior:'smooth'});
       await sleep(4000);
@@ -878,47 +767,8 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 // ============ INIT ============
 renderSheet("pl");
 renderQuiz();
-// ============ REAL STAKING ============
-async function realStake() {
-  if (!signer) { alert("Connect wallet first"); return; }
-  const btn = document.getElementById("stakeBtn");
-  btn.disabled = true;
-  btn.textContent = "⏳ Sending transaction...";
-  try {
-    const discipline = new ethers.Contract(CONTRACTS.discipline, DISCIPLINE_ABI, signer);
-    const tx = await discipline.stake({ value: ethers.parseEther("0.01") });
-    addMessage("ysa", '⏳ Transaction sent... <a href="https://testnet.monadexplorer.com/tx/' + tx.hash + '" target="_blank" style="color:var(--purple);">' + tx.hash.slice(0,18) + '…</a>');
-    await tx.wait();
-    // Show centered overlay with raven
-    const overlay = document.createElement('div');
-    overlay.className = 'stake-overlay';
-    overlay.innerHTML = `<div class="stake-overlay-content">
-      <span class="raven">🐦‍⬛</span>
-      <div class="speech">
-        <h2>NOW I BELIEVE YOU.</h2>
-        <p>Commitment confirmed. Let's get your finances in order.</p>
-        <a class="tx-link" href="https://testnet.monadexplorer.com/tx/${tx.hash}" target="_blank">${tx.hash.slice(0,22)}… ↗</a>
-      </div>
-    </div>`;
-    document.body.appendChild(overlay);
-    overlay.addEventListener('click', () => overlay.remove());
-    setTimeout(() => overlay.remove(), 5000);
-
-    document.getElementById("cycleBadge").textContent = "Day 1/7 ⏳";
-    document.getElementById("cycleBadge").classList.add("active");
-    document.getElementById("cycleBadge").style.display = "inline-block";
-    document.getElementById("actionPanel").style.display = "none";
-    hasStaked = true;
-    addMessage("ysa", "Skin in the game. I respect that. Now let's get to work. How much did you invoice last month? Exact number. No approximations.");
-  } catch(e) {
-    const msg = e.reason || e.message || "Transaction failed";
-    addMessage("ysa", "Transaction failed: " + msg);
-    btn.disabled = false;
-    btn.textContent = "💎 Deposit MON — Start 7-Day Challenge";
-  }
-}
-
-// No auto-start — this is the real app
+// Auto-start demo after 1.5s
+setTimeout(() => startDemo(), 1500);
 </script>
 </body>
 </html>
