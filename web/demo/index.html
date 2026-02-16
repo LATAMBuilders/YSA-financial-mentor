@@ -541,7 +541,7 @@ function sendChat() {
       const lower = text.toLowerCase();
       let reply;
       if (lower.match(/why.*exist|por.*que.*exist|para.*que.*exist|razon.*de.*ser/)) {
-        reply = "The top reason startups fail isn't bad ideas — it's poor financial management. Founders can pitch their vision in 60 seconds but can't explain their unit economics in 60 minutes. Investors know this. That's why capital doesn't flow. I exist to fix that. I help founders build real financial confidence, real skills, and real credibility — onchain, verifiable, no BS. The better your financial discipline, the higher your chances of survival. That's it. That's why I'm here.";
+        reply = "One of the top reasons startups fail isn't bad ideas — it's poor financial management. Founders can pitch their vision in 60 seconds but can't explain their unit economics in 60 minutes. Investors know this. That's why capital doesn't flow. I exist to fix that. I help founders build real financial confidence, real skills, and real credibility — onchain, verifiable, no BS. The better your financial discipline, the higher your chances of survival. That's it. That's why I'm here.";
       } else if (lower.match(/who.*are|what.*are|quien|qué eres|what.*ysa|who.*created|quien.*creo|about/)) {
         reply = "I'm YSA — your AI financial mentor. Built by danielam for the Moltiverse Hackathon on Monad. I help founders build their 3 core financial documents: P&L Statement, Cash Flow, and Balance Sheet. I use your real business data, not templates. Think of me as a demanding ex-CFO who wants you to succeed.";
       } else if (lower.match(/how.*start|como.*empez|what.*do|get started|comenzar|how.*work|como.*funcion/)) {
@@ -665,7 +665,7 @@ function answerQuiz(qi, oi) {
 const demoScript = [
   // === ACT 1: INTRO — WHY DO YOU EXIST? ===
   {type:"msg",who:"daniela",text:"Why do you exist?"},
-  {type:"msg",who:"ysa",text:"The top reason startups fail isn't bad ideas — it's poor financial management. Founders can pitch their vision in 60 seconds but can't explain their unit economics in 60 minutes. Investors know this. That's why capital doesn't flow. I exist to fix that."},
+  {type:"msg",who:"ysa",text:"One of the top reasons startups fail isn't bad ideas — it's poor financial management. Founders can pitch their vision in 60 seconds but can't explain their unit economics in 60 minutes. Investors know this. That's why capital doesn't flow. I exist to fix that."},
   {type:"msg",who:"daniela",text:"Sounds good. What would we do?"},
   {type:"msg",who:"ysa",text:"A 7-day challenge. I ask you hard questions about your business, you answer with real numbers. Together we build your 3 core financial documents: P&L, Cash Flow, and Balance Sheet. After that, I become your ongoing financial advisor — tracking your progress, testing your knowledge, and building your onchain reputation."},
   {type:"msg",who:"daniela",text:"I want in!"},
@@ -906,7 +906,11 @@ async function startDemo() {
         hideCursor();
       }
       addMessage(step.who, step.text);
-      await demoSleep(step.who==='ysa' ? 2200 : 1400);
+      // Scale delay by message length for voiceover pacing
+      const baseDelay = step.who==='ysa' ? 2500 : 1600;
+      const extraPerChar = step.who==='ysa' ? 18 : 10;
+      const msgDelay = Math.min(baseDelay + step.text.length * extraPerChar, 12000);
+      await demoSleep(msgDelay);
     } else if (step.type === "data") {
       if (currentTab !== step.tab) {
         showCursor();
@@ -961,7 +965,7 @@ async function startDemo() {
       document.getElementById("cycleBadge").textContent = "Day 1/7 ⏳";
       document.getElementById("cycleBadge").classList.add("active");
       document.getElementById("cycleBadge").style.display = "inline-block";
-      await demoSleep(5000);
+      await demoSleep(4000);
       overlay.remove();
       await demoSleep(500);
     } else if (step.type === "stake") {
