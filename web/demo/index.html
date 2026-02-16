@@ -908,9 +908,9 @@ async function startDemo() {
       // Scale delay by message length for voiceover pacing
       // Very short msgs (emoji, numbers) get fast delay
       const isShort = step.text.length < 10;
-      const baseDelay = isShort ? 800 : (step.who==='ysa' ? 2500 : 1600);
-      const extraPerChar = isShort ? 0 : (step.who==='ysa' ? 18 : 10);
-      const msgDelay = Math.min(baseDelay + step.text.length * extraPerChar, 10000);
+      const baseDelay = isShort ? 600 : (step.who==='ysa' ? 2000 : 1200);
+      const extraPerChar = isShort ? 0 : (step.who==='ysa' ? 14 : 8);
+      const msgDelay = Math.min(baseDelay + step.text.length * extraPerChar, 8000);
       await demoSleep(msgDelay);
     } else if (step.type === "data") {
       if (currentTab !== step.tab) {
