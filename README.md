@@ -95,7 +95,7 @@ But discipline has **economic consequences**:
 
 | Layer | Technology |
 |-------|-----------|
-| **AI Agent** | YSA mentor with real financial data context |
+| **AI Agent** | YSA mentor — keyword-driven with structured financial knowledge |
 | **Blockchain** | Monad Testnet (high throughput for frequent txs) |
 | **Contracts** | Solidity 0.8.24, Foundry |
 | **Frontend** | Vanilla JS + ethers.js |
@@ -103,10 +103,36 @@ But discipline has **economic consequences**:
 
 ---
 
+## 🤖 Agent Capabilities
+
+YSA isn't just a chatbot — it's a **financial intelligence agent** with four core capabilities:
+
+| Capability | Description |
+|-----------|-------------|
+| 🔄 **Accountability Engine** | Tracks founder progress across 7-day cycles. No excuses accepted. |
+| 🔗 **Onchain Reputation Oracle** | Any protocol can query `badge.levelOf(address)` and `discipline.completedCycles(address)` to verify founder maturity |
+| 📊 **Autonomous Financial Analysis** | Guides founders through P&L, Cash Flow, and Balance Sheet construction with real business data |
+| 🎯 **Adaptive Mentorship** | Pre-deposit: answers info questions only. Post-deposit: full financial mentorship unlocked |
+
+### 📅 7-Day Achievement Roadmap
+
+| Day | Focus | Deliverable |
+|-----|-------|------------|
+| 1 | Revenue & Costs | Income Statement (P&L) draft |
+| 2 | Cash Flow Mapping | Where money actually goes |
+| 3 | Balance Sheet | Assets, liabilities, equity snapshot |
+| 4 | Unit Economics | Cost per unit, margins, break-even |
+| 5 | Financial Projections | 3-month forecast |
+| 6 | Risk Analysis | What could go wrong + mitigation |
+| 7 | Final Review + Quiz | Score ≥ 80% → Badge minted onchain |
+
+---
+
 ## 🎬 Demo
 
-- 🔗 [Live App](https://ysa-mentor.pages.dev)
-- 📹 2-min Video — Coming soon
+- 🔗 **[Live App](https://ysa-mentor.pages.dev)** — Connect wallet, deposit MON, start your cycle
+- 🎭 **[Auto-Play Demo](https://ysa-mentor.pages.dev/demo/)** — Watch the full experience in 2 minutes
+- 📹 Video — Coming soon
 
 ---
 
@@ -124,12 +150,21 @@ But discipline has **economic consequences**:
 
 ---
 
+## 🦅 Why Monad?
+
+- **High throughput** — Daily check-ins and quiz submissions need fast, cheap transactions
+- **EVM compatible** — Standard Solidity, no learning curve for builders
+- **Growing ecosystem** — YSA badges become composable reputation across Monad DeFi/grants
+- **Native MON staking** — Simple commitment deposit, no token overhead
+
+---
+
 ## 🚀 Run Locally
 
 ```bash
 # Clone
-git clone https://github.com/your-repo/ysa-financial-mentor.git
-cd ysa-financial-mentor
+git clone https://github.com/LATAMBuilders/YSA-financial-mentor.git
+cd YSA-financial-mentor
 
 # Build & test contracts
 cd contracts
