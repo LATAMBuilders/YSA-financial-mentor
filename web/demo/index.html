@@ -260,6 +260,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
       <div class="excel-tab active" data-tab="pl" onclick="switchTab('pl')">📊 P&L Statement</div>
       <div class="excel-tab" data-tab="cf" onclick="switchTab('cf')">💰 Cash Flow</div>
       <div class="excel-tab" data-tab="bs" onclick="switchTab('bs')">📋 Balance Sheet</div>
+      <div style="margin-left:auto;display:flex;gap:6px;align-items:center;">
+        <button onclick="downloadCurrentCSV()" style="background:none;border:1px solid var(--border);color:var(--text-muted);padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'Roboto Mono',monospace;transition:all .15s;" onmouseover="this.style.borderColor='var(--purple)';this.style.color='var(--purple)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">📥 Download CSV</button>
+        <button onclick="downloadAllCSV()" style="background:var(--purple);border:none;color:#fff;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'Roboto Mono',monospace;font-weight:600;transition:all .15s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">📦 Download All</button>
+      </div>
     </div>
     <div class="excel-container" id="excelContainer"></div>
   </div>
@@ -1100,6 +1104,57 @@ function cursorClickAnim() {
     cursorClick.classList.add('pop');
     setTimeout(resolve, 400);
   });
+}
+
+// ============ DOWNLOAD CSV ============
+function sheetToCSV(tabKey) {
+  const data = tabSheets[tabKey];
+  const lines = [];
+  lines.push(data.headers.join(','));
+  data.rows.forEach(row => {
+    if (row.type === 'section') {
+      lines.push(row.label);
+    } else {
+      const vals = ['"' + row.label + '"'];
+      row.values.forEach(v => {
+        if (typeof v === 'number') vals.push(v);
+        else vals.push(v ? '"'+v+'"' : '');
+      });
+      lines.push(vals.join(','));
+    }
+  });
+  return lines.join('\n');
+}
+
+function downloadCSV(content, filename) {
+  const blob = new Blob([content], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function downloadCurrentCSV() {
+  const names = {pl:'PnL_Statement', cf:'Cash_Flow', bs:'Balance_Sheet'};
+  const csv = sheetToCSV(currentTab);
+  downloadCSV(csv, `YSA_${names[currentTab]}.csv`);
+}
+
+function downloadAllCSV() {
+  const allSheets = [
+    {key:'pl', name:'PnL_Statement'},
+    {key:'cf', name:'Cash_Flow'},
+    {key:'bs', name:'Balance_Sheet'}
+  ];
+  // Combine all sheets into one CSV with separators
+  let combined = '';
+  allSheets.forEach(s => {
+    combined += `=== ${s.name.replace('_',' ')} ===\n`;
+    combined += sheetToCSV(s.key) + '\n\n';
+  });
+  downloadCSV(combined, 'YSA_Financial_Documents.csv');
 }
 
 // ============ INIT ============
