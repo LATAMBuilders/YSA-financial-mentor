@@ -322,9 +322,9 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);heigh
 <script>
 // ============ CONTRACT CONFIG ============
 const CONTRACTS = {
-  discipline: "0x87ebf67244052c6d136f12fdfc9845b9b106e2dd",
-  badge:      "0x11276bbe88f4a39d24ad389f08949f7f550c2531",
-  grantPool:  "0xcbe59846fc43291a7d1828e77c3319ee43ad0e32"
+  discipline: "0x61004c05e3b6DED63d1Fa91e177Bcf3d8027D7bb",
+  badge:      "0x4D6509594072F73283FE3c572547711Dfa420768",
+  grantPool:  "0x32D5426166D5Cc8ef71e06ac41969F489405CDdE"
 };
 const MONAD = {
   chainId: "0x279F",
@@ -692,14 +692,10 @@ const demoScript = [
   {type:"msg",who:"daniela",text:"$95,400"},
   {type:"data",tab:"pl",row:"revenue",col:0,val:95400,fmt:"$"},
   {type:"progress",doc:"pl",pct:10},
-  {type:"msg",who:"ysa",text:"How much does it cost you to make what you sell? Materials, production, everything."},
-  {type:"msg",who:"daniela",text:"$64,800 — raw ingredients, packaging, production costs"},
+  // === FAST P&L BUILD (data fills rapidly) ===
   {type:"data",tab:"pl",row:"cogs",col:0,val:64800,fmt:"$"},
   {type:"data",tab:"pl",row:"gross_profit",col:0,val:30600,fmt:"$"},
   {type:"data",tab:"pl",row:"gross_margin",col:0,val:32.08,fmt:"%"},
-  {type:"progress",doc:"pl",pct:25},
-  {type:"msg",who:"ysa",text:"32% gross margin. Not bad for food. Operating expenses — rent, payroll, marketing, utilities?"},
-  {type:"msg",who:"daniela",text:"Rent $4,500, payroll $3,200, marketing $800, utilities $700, other $500"},
   {type:"data",tab:"pl",row:"rent",col:0,val:4500,fmt:"$"},
   {type:"data",tab:"pl",row:"salaries",col:0,val:3200,fmt:"$"},
   {type:"data",tab:"pl",row:"marketing",col:0,val:800,fmt:"$"},
@@ -709,32 +705,16 @@ const demoScript = [
   {type:"data",tab:"pl",row:"ebitda",col:0,val:20900,fmt:"$"},
   {type:"data",tab:"pl",row:"net_margin",col:0,val:21.90,fmt:"%"},
   {type:"data",tab:"pl",row:"total_rev",col:0,val:95400,fmt:"$"},
-  {type:"progress",doc:"pl",pct:50},
-  {type:"msg",who:"ysa",text:"Revenue trend for the last 6 months?"},
-  {type:"msg",who:"daniela",text:"$85,200 → $88,000 → $90,500 → $92,100 → $93,800 → $95,400"},
+  {type:"progress",doc:"pl",pct:60},
   {type:"data",tab:"pl",row:"revenue",col:1,val:88000,fmt:"$"},
   {type:"data",tab:"pl",row:"revenue",col:2,val:90500,fmt:"$"},
   {type:"data",tab:"pl",row:"revenue",col:3,val:92100,fmt:"$"},
   {type:"data",tab:"pl",row:"revenue",col:4,val:93800,fmt:"$"},
   {type:"data",tab:"pl",row:"revenue",col:5,val:95400,fmt:"$"},
-  {type:"data",tab:"pl",row:"cogs",col:1,val:59840,fmt:"$"},
-  {type:"data",tab:"pl",row:"cogs",col:2,val:61540,fmt:"$"},
-  {type:"data",tab:"pl",row:"cogs",col:3,val:62628,fmt:"$"},
-  {type:"data",tab:"pl",row:"cogs",col:4,val:63784,fmt:"$"},
-  {type:"data",tab:"pl",row:"cogs",col:5,val:64872,fmt:"$"},
-  {type:"progress",doc:"pl",pct:80},
-  // Projections
-  {type:"data",tab:"pl",row:"revenue",col:6,val:97500,fmt:"$"},
-  {type:"data",tab:"pl",row:"revenue",col:7,val:99800,fmt:"$"},
-  {type:"data",tab:"pl",row:"revenue",col:8,val:101500,fmt:"$"},
-  {type:"data",tab:"pl",row:"revenue",col:9,val:103200,fmt:"$"},
-  {type:"data",tab:"pl",row:"revenue",col:10,val:105000,fmt:"$"},
-  {type:"data",tab:"pl",row:"revenue",col:11,val:107000,fmt:"$"},
   {type:"progress",doc:"pl",pct:100},
+  {type:"msg",who:"ysa",text:"P&L ✅. Cash flow and balance sheet — keep going."},
 
-  // === ACT 3: CASH FLOW ===
-  {type:"msg",who:"ysa",text:"P&L ✅ done. Cash flow next. How much cash in the bank?"},
-  {type:"msg",who:"daniela",text:"$32,000"},
+  // === FAST CASH FLOW ===
   {type:"data",tab:"cf",row:"cf_sales",col:0,val:95400,fmt:"$"},
   {type:"data",tab:"cf",row:"cf_cogs",col:0,val:64800,fmt:"$"},
   {type:"data",tab:"cf",row:"cf_opex",col:0,val:9700,fmt:"$"},
@@ -742,11 +722,9 @@ const demoScript = [
   {type:"data",tab:"cf",row:"cf_total_out",col:0,val:74500,fmt:"$"},
   {type:"data",tab:"cf",row:"cf_net",col:0,val:20900,fmt:"$"},
   {type:"data",tab:"cf",row:"cf_cumulative",col:0,val:52900,fmt:"$"},
-  {type:"progress",doc:"cf",pct:50},
   {type:"progress",doc:"cf",pct:100},
 
-  // === ACT 4: BALANCE SHEET ===
-  {type:"msg",who:"ysa",text:"Cash flow ✅. Balance sheet — last one. Assets, liabilities, equity."},
+  // === FAST BALANCE SHEET ===
   {type:"data",tab:"bs",row:"bs_cash",col:0,val:32000,fmt:"$"},
   {type:"data",tab:"bs",row:"bs_inventory",col:0,val:8500,fmt:"$"},
   {type:"data",tab:"bs",row:"bs_equipment",col:0,val:45000,fmt:"$"},
