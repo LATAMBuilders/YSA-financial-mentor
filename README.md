@@ -20,7 +20,7 @@ But discipline has **economic consequences**:
 
 1. **🔵 Stake to Start** — Founder stakes MON to begin a 7-day financial discipline cycle
 2. **🟣 Earn Reputation Onchain** — Complete the cycle → recover stake + earn verifiable badge. Abandon → lose stake.
-3. **🟢 Unlock Capital** — Badges = access to grant pools. Investors verify founder maturity onchain.
+3. **🟢 Build Reputation** — Badges = verifiable onchain proof of financial discipline. Investors can check before investing.
 
 > *"If you can't commit 0.1 MON to your own financial education, why would anyone commit $100K to your startup?"*
 
@@ -45,9 +45,9 @@ But discipline has **economic consequences**:
                               └───────────┬──────────┘
                                           │
                               ┌───────────┴──────────┐
-                              │ 🏦 Grant Pool Access  │
+                              │ 🔍 Onchain Reputation │
                               │ Investors verify      │
-                              │ onchain reputation    │
+                              │ founder discipline    │
                               └──────────────────────┘
 ```
 
@@ -67,8 +67,6 @@ But discipline has **economic consequences**:
 |----------|---------|-------------|
 | `YSADiscipline` | [`0x87ebf67244052c6d136f12fdfc9845b9b106e2dd`](https://testnet.monadexplorer.com/address/0x87ebf67244052c6d136f12fdfc9845b9b106e2dd) | Stake/release/slash cycle management |
 | `YSABadge` | [`0x11276bbe88f4a39d24ad389f08949f7f550c2531`](https://testnet.monadexplorer.com/address/0x11276bbe88f4a39d24ad389f08949f7f550c2531) | Soulbound NFT with 4 reputation levels |
-| `YSAGrantPool` | [`0xcbe59846fc43291a7d1828e77c3319ee43ad0e32`](https://testnet.monadexplorer.com/address/0xcbe59846fc43291a7d1828e77c3319ee43ad0e32) | Badge-gated grant distribution |
-
 ### 🏅 Reputation Levels
 
 | Level | Title | Requirements |
@@ -86,7 +84,7 @@ But discipline has **economic consequences**:
 |---------------|-------------|
 | **Staking fees** | Small fee on cycle start |
 | **Slash pool** | Abandoned stakes fund completion rewards |
-| **Grant pool fees** | Funds/DAOs pay for verified founder pipeline |
+| **Reputation verification** | Protocols/DAOs pay to query verified founder pipeline |
 | **Premium badges** | Deep financial audits and advanced mentoring |
 
 ---
