@@ -663,10 +663,15 @@ function answerQuiz(qi, oi) {
 
 // ============ DEMO AUTO-PLAY ============
 const demoScript = [
-  // === ACT 1: INTRO + WALLET + DEPOSIT ===
-  {type:"msg",who:"ysa",text:"It's about time you got your finances in order. Ready for the challenge?"},
-  {type:"msg",who:"daniela",text:"How do I start?"},
-  {type:"msg",who:"ysa",text:"Connect your wallet and deposit MON. That's your commitment to 7 days of financial discipline. A financial advisor charges $500 for this — you're getting it for ~$10. No deposit, no mentorship."},
+  // === ACT 1: INTRO — WHY DO YOU EXIST? ===
+  {type:"msg",who:"daniela",text:"Why do you exist?"},
+  {type:"msg",who:"ysa",text:"The #1 reason startups fail isn't bad ideas — it's poor financial management. Founders can pitch their vision in 60 seconds but can't explain their unit economics in 60 minutes. Investors know this. That's why capital doesn't flow. I exist to fix that."},
+  {type:"msg",who:"daniela",text:"Sounds good. What would we do?"},
+  {type:"msg",who:"ysa",text:"A 7-day challenge. I ask you hard questions about your business, you answer with real numbers. Together we build your 3 core financial documents: P&L, Cash Flow, and Balance Sheet. After that, I become your ongoing financial advisor — tracking your progress, testing your knowledge, and building your onchain reputation."},
+  {type:"msg",who:"daniela",text:"I want in!"},
+  {type:"msg",who:"ysa",text:"Words aren't enough. I need to see you put skin in the game. Connect your wallet and deposit MON. That's your commitment. No deposit, no mentorship."},
+
+  // === ACT 2: WALLET + DEPOSIT ===
   {type:"wallet",action:"connect"},
   {type:"msg",who:"daniela",text:"Wallet connected. Let's do this."},
   {type:"deposit_btn"},
